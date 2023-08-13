@@ -9,6 +9,11 @@
 # npm
 node_modules
 
+# yarn
+.yarn/cache
+.yarn/unplugged
+.yarn/install-state.gz
+
 # build
 *.js
 *.js.map
