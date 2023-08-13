@@ -19,8 +19,8 @@ jobs:
 
       - name: Build plugin
         run: |
-          npm ci
-          npm run build
+          yarn ci
+          yarn run build
 
       - name: Create release
         env:
