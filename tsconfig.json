@@ -25,6 +25,8 @@
   ],
   "exclude": [
     "node_modules/**/*",
+    ".yarn/**/*",
+    "dist/**/*",
     "*.config.js",
     "**/*.js",
   ]

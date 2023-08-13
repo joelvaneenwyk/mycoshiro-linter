@@ -1,12 +1,11 @@
-//
 // jest.config.ts
-//
-
-import {Config} from '@jest/types';
-
-process.env.TZ = 'UTC'; // eslint-disable-line no-undef
+import type { Config } from "@jest/types"
 
 const config: Config.InitialOptions = {
+  preset: "ts-jest",
+  // testEnvironment: "node",
+  verbose: true,
+  // automock: true,
   transformIgnorePatterns: [
     '"/node_modules/(?!unified-lint-rule)',
   ],
@@ -15,6 +14,5 @@ const config: Config.InitialOptions = {
     '**/?(*.)+(spec|test).[jt]s?(x)',
     '!**/__tests__/common.ts',
   ],
-};
-
-export default config;
+}
+export default config

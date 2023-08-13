@@ -17,11 +17,10 @@
     "translate": "yarn build && node ./dist/translation-helper.js",
     "lint": "yarn eslint --fix **/*.ts",
     "check": "yarn ci && yarn compile && yarn lint && yarn test",
-    "test": "yarn test:build && yarn test:clear && yarn test:base",
-    "test:build": "yarn tsc jest.config.ts",
-    "test:clear": "yarn jest --config ./dist/jest.config.js --clearCache",
-    "test:base": "jest --config ./dist/jest.config.js",
-    "test:suite": "jest --config ./dist/jest.config.js -t \"$1\""
+    "test": "yarn build && yarn test:clear && yarn test:base",
+    "test:clear": "yarn ts-jest --clearCache",
+    "test:base": "yarn ts-jest",
+    "test:suite": "yarn ts-jest -t \"$1\""
   },
   "dependencies": {
     "@babel/core": "^7.22.10",
@@ -74,6 +73,7 @@
     "quick-lru": "^6.1.1",
     "shx": "^0.3.4",
     "ts-dedent": "^2.2.0",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "tslib": "^2.6.1",
     "typescript": "^5.1.6",
