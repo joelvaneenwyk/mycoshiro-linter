@@ -7,7 +7,6 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "ci": "yarn install --frozen-lockfile",
     "compile": "yarn build && yarn docs && yarn lint && yarn test",
@@ -20,7 +19,7 @@
     "check": "yarn ci && yarn compile && yarn lint && yarn test",
     "test": "yarn test:build && yarn test:clear && yarn test:base",
     "test:build": "yarn tsc jest.config.ts",
-    "test:clear": "yarn jest --clearCache",
+    "test:clear": "yarn jest --config jest.config.js --clearCache",
     "test:base": "jest --config jest.config.js",
     "test:suite": "jest --config jest.config.js -t \"$1\""
   },
