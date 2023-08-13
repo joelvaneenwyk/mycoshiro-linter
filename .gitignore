@@ -2,6 +2,9 @@
 *.iml
 .idea
 
+# Generated
+dist/
+
 # VSCode
 .vscode/*
 !/.vscode/settings.json

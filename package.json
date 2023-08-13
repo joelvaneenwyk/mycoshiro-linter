@@ -12,16 +12,16 @@
     "compile": "yarn build && yarn docs && yarn lint && yarn test",
     "dev": "node esbuild.config.mjs",
     "build": "node esbuild.config.mjs production && yarn tsc jest.config.ts",
-    "deploy": "cross-env-shell \"yarn shx --verbose cp -u main.js manifest.json versions.json \"${PROJECT_CWD}/.obsidian/plugins/${npm_package_name}\" \"",
-    "docs": "yarn dev && yarn node docs.js",
-    "translate": "yarn build && node translation-helper.js",
-    "lint": "yarn eslint --fix src/**/*.ts",
+    "deploy": "cross-env-shell \"yarn shx --verbose cp -u ./dist/main.js manifest.json versions.json \"${PROJECT_CWD}/.obsidian/plugins/${npm_package_name}\" \"",
+    "docs": "yarn dev && yarn node ./dist/docs.js",
+    "translate": "yarn build && node ./dist/translation-helper.js",
+    "lint": "yarn eslint --fix **/*.ts",
     "check": "yarn ci && yarn compile && yarn lint && yarn test",
     "test": "yarn test:build && yarn test:clear && yarn test:base",
     "test:build": "yarn tsc jest.config.ts",
-    "test:clear": "yarn jest --config jest.config.js --clearCache",
-    "test:base": "jest --config jest.config.js",
-    "test:suite": "jest --config jest.config.js -t \"$1\""
+    "test:clear": "yarn jest --config ./dist/jest.config.js --clearCache",
+    "test:base": "jest --config ./dist/jest.config.js",
+    "test:suite": "jest --config ./dist/jest.config.js -t \"$1\""
   },
   "dependencies": {
     "@babel/core": "^7.22.10",

@@ -34,7 +34,7 @@ const defaultBuildSettings = {
   sourcemap: isProduction ? false : 'inline',
   minify: isProduction,
   treeShaking: true,
-  outfile: 'main.js',
+  outfile: 'dist/main.js',
 };
 
 const localBuildPlugins = () => [
@@ -63,7 +63,7 @@ esbuild
       },
       entryPoints: ['src/docs.ts'],
       plugins: localBuildPlugins(),
-      outfile: 'docs.js'
+      outfile: 'dist/docs.js'
     });
   }).then(() => {
     console.log('Mycoshiro Linter: Built \'docs.js\'');
@@ -74,7 +74,7 @@ esbuild
       },
       entryPoints: ['src/translation-helper.ts'],
       plugins: localBuildPlugins(),
-      outfile: 'translation-helper.js',
+      outfile: 'dist/translation-helper.js',
     });
   }).then(() => {
     console.log('Mycoshiro Linter: Built \'translation-helper.js\'');
