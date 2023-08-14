@@ -24,7 +24,7 @@ export default class RemoveTrailingPunctuationInHeading extends RuleBuilder<Remo
   apply(text: string, options: RemoveTrailingPunctuationInHeadingOptions): string {
     return text.replaceAll(allHeadersRegex,
         (heading: string, $1: string = '', $2: string = '', $3: string = '', $4: string = '', $5: string = '') => {
-          // ignore the html entities and entries without any heading text
+        // ignore the html entities and entries without any heading text
           if ($4 == '' || $4.match(htmlEntitiesRegex)) {
             return heading;
           }

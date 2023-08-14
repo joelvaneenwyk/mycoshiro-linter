@@ -1,8 +1,8 @@
 // jest.config.ts
-import type { Config } from "@jest/types"
+import type {Config} from '@jest/types';
 
 const config: Config.InitialOptions = {
-  preset: "ts-jest",
+  preset: 'ts-jest',
   // testEnvironment: "node",
   verbose: true,
   // automock: true,
@@ -14,5 +14,5 @@ const config: Config.InitialOptions = {
     '**/?(*.)+(spec|test).[jt]s?(x)',
     '!**/__tests__/common.ts',
   ],
-}
-export default config
+};
+export default config;

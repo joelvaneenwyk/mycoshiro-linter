@@ -154,7 +154,7 @@ export class DropdownOption extends Option {
   public display(containerEl: HTMLElement, settings: LinterSettings, plugin: LinterPlugin): void {
     const setting = new Setting(containerEl)
         .addDropdown((dropdown) => {
-          // First, add all the available options
+        // First, add all the available options
           for (const option of this.options) {
             dropdown.addOption(option.value.replace('enums.', ''), option.getDisplayValue());
           }

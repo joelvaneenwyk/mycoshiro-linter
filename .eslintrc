@@ -21,15 +21,11 @@
     "unicorn"
   ],
   "rules": {
-    "indent": [
-      "error",
-      2
-    ],
     "camelcase": "off",
     "max-len": "off",
     "object-curly-spacing": [
       "error",
-      "always"
+      "never"
     ],
     "no-constant-binary-expression": "error",
     "no-template-curly-in-string": "error",
