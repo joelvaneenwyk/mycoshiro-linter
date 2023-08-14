@@ -150,6 +150,7 @@ function translateAllKeysInALanguage() {
         console.log('"' + language + `" is missing ${missingKeys.length} ${keyText}:`);
 
         const firstElement = missingKeys.shift();
+        // @ts-ignore
         getNextTranslation(missingKeys, firstElement, language);
       }
     } else {
@@ -174,6 +175,7 @@ function getNextTranslation(missingKeys: string[], element: string, language: st
     }
 
     const nextKey = missingKeys.shift();
+    // @ts-ignore
     getNextTranslation(missingKeys, nextKey, language);
     if (missingKeys.length === 0) {
       replaceTranslationValuesInFile(language);
@@ -186,16 +188,20 @@ function setValueInLanguage(language: string, key: string, value: string) {
   let object = localeMap[language] as object;
   const keyParts = key.split('.');
   keyParts.forEach((keyPart: string, index: number) => {
-    if (keyParts.length -1 === index) {
+    if (keyParts.length - 1 === index) {
+      // @ts-ignore
       object[keyPart] = value;
 
       return;
     }
 
+    // @ts-ignore
     if (object[keyPart] == undefined) {
+      // @ts-ignore
       object[keyPart] = {};
     }
 
+    // @ts-ignore
     object = object[keyPart];
   });
 }
@@ -213,6 +219,7 @@ function getMissingKeysInLanguage(language: string): string[] {
 }
 
 function getObjectKeys(obj: any, prefix: string = ''): string[] {
+  // @ts-ignore
   return Object.entries(obj).reduce((collector, [key, val]) => {
     const newKeys = [...collector, prefix ? `${prefix}.${key}` : key];
     if (Object.prototype.toString.call(val) === '[object Object]') {
