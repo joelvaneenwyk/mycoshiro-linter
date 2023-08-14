@@ -1,5 +1,5 @@
-// babel.config.js
-module.exports = {
+// babel.config.ts
+const config = {
   presets: [
     ['@babel/preset-env', {targets: {node: 'current'}}],
     '@babel/preset-typescript',
@@ -11,3 +11,5 @@ module.exports = {
     ['import-glob'],
   ],
 };
+
+export default config;

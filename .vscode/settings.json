@@ -1,17 +1,66 @@
 {
-    "eslint.validate": [
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact"
-    ],
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[markdown]": {
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
     },
-    "editor.tabSize": 2,
-    "files.eol": "\n",
-    "files.insertFinalNewline": true,
-    "editor.detectIndentation": true,
-    "files.encoding": "utf8",
-    "files.trimTrailingWhitespace": false,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+    "cSpell.fixSpellingWithRenameProvider": true,
+    "cSpell.advanced.feature.useReferenceProviderWithRename": true,
+    "cSpell.advanced.feature.useReferenceProviderRemove": "/^#+\\s/"
+  },
+  "typescript.experimental.aiQuickFix": true,
+  "typescript.suggest.enabled": true,
+  "npm.autoDetect": "on",
+  "npm.packageManager": "yarn",
+  "typescript.format.enable": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.fixAll.eslint": true
+    }
+  },
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "editor.detectIndentation": true,
+  "files.encoding": "utf8",
+  "files.trimTrailingWhitespace": false,
+  "cSpell.words": [
+    "autogen",
+    "borales",
+    "camelcase",
+    "chrisgrieser",
+    "codestyle",
+    "Frontmatter",
+    "multicursor",
+    "mycoshiro",
+    "outfile"
+  ],
+  "sarif-viewer.connectToGithubCodeScanning": "off",
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "eslint.nodePath": ".yarn/sdks",
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

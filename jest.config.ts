@@ -1,10 +1,11 @@
-process.env.TZ = 'UTC'; // eslint-disable-line no-undef
-
 // jest.config.ts
 import type {Config} from '@jest/types';
 
-// Sync object
 const config: Config.InitialOptions = {
+  preset: 'ts-jest',
+  // testEnvironment: "node",
+  verbose: true,
+  // automock: true,
   transformIgnorePatterns: [
     '"/node_modules/(?!unified-lint-rule)',
   ],

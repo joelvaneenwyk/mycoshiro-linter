@@ -1,13 +1,15 @@
-# Intellij
-*.iml
-.idea
-
-# VSCode
-.vscode/*
-!/.vscode/settings.json
+# Generated
+dist/
 
 # npm
 node_modules
+
+# yarn
+.yarn/cache
+.yarn/unplugged
+.yarn/install-state.gz
+.pnp.cjs
+.pnp.loader.mjs
 
 # build
 *.js
@@ -16,10 +18,4 @@ node_modules
 # obsidian
 data.json
 
-yarn.lock
-
 .DS_Store
-
-!__mocks__/*.js
-!/.eslintrc.js
-!babel.config.js

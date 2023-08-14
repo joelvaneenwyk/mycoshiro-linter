@@ -16,11 +16,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16.x"
+                
+      - name: Install yarn
+        run: |-
+          curl -fsSL --create-dirs -o $HOME/bin/yarn \
+          https://github.com/yarnpkg/yarn/releases/download/v1.22.19/yarn-1.22.19.js
+          chmod +x $HOME/bin/yarn
+          echo "$HOME/bin" >> $GITHUB_PATH
 
       - name: Build plugin
         run: |
-          npm ci
-          npm run build
+          yarn install --frozen-lockfile
+          yarn run build
 
       - name: Create release
         env:

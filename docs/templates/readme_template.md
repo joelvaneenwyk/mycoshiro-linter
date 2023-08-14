@@ -12,7 +12,7 @@ Rules can be toggled and configured in the settings.
 
 To lint the current file, run `Lint the current file` (`Ctrl+Alt+L` by default).
 To lint all files, run `Lint all files in the vault`.
-To lint all files in the current folder run `Lint all files in the current folder`. This action includes all subfolders.  
+To lint all files in the current folder run `Lint all files in the current folder`. This action includes all subfolders.
 You can also lint a folder by right clicking on it in the folder list and selecting "Lint folder" from the options.
 
 ![Lint folder contents](docs/docs/assets/lint-folder.png)
@@ -51,6 +51,7 @@ More content goes here...
 ```
 
 Things to note about range ignores:
+
 - Paste rules are not affected by range ignores as that would require the copied text to have a range ignore in them.
 
 ## Rules
@@ -87,9 +88,10 @@ These rules can be useful in swapping out certain tags, words, and formatting fo
 
 [Here](https://javascript.info/regexp-introduction#flags) is an explanation on what each flag means. Feel free to use them as needed. The default ones added are `g` (global) and `m` (multiline).
 
-_Note: lookbehinds do not work on iOS mobile and using them will cause linting to fail. So please **DO NOT** use them for iOS mobile._
+_Note: look-behinds does not work on iOS mobile and using them will cause linting to fail. So please **DO NOT** use them for iOS mobile._
 
 ### Paste Limitations
+
 - The plugin only works with the standard pasting (`cmd/ctrl + v`) shortcut, and not with the `p` operator in vim. (Pasting with `cmd/ctrl + v` in normal or insert mode does work though.)
 - To avoid conflicts with Plugins like [Auto Link Title](https://obsidian.md/plugins?id=obsidian-auto-link-title) or [Paste URL into Selection](https://obsidian.md/plugins?id=url-into-selection), will not be triggered when an URL is detected in the clipboard.
 - On mobile, in order to paste the URL, ensure you perform the `Tap and Hold -> Paste` action to paste into your document and use the paste rules.
@@ -102,7 +104,7 @@ As of version [0.9.7 of Obsidian](https://forum.obsidian.md/t/obsidian-release-v
 ### Manual installation
 
 1. Download the [latest release](https://github.com/platers/obsidian-linter/releases/latest)
-1. Extract the obsidian-linter folder from the zip to your vault's plugins folder: `<vault>/.obsidian/plugins/`  
+1. Extract the obsidian-linter folder from the zip to your vault's plugins folder: `<vault>/.obsidian/plugins/`
 Note: On some machines the `.obsidian` folder may be hidden. On MacOS you should be able to press `Command+Shift+Dot` to show the folder in Finder.
 1. Reload Obsidian
 1. If prompted about Safe Mode, you can disable safe mode and enable the plugin.
@@ -112,11 +114,13 @@ Note: On some machines the `.obsidian` folder may be hidden. On MacOS you should
 Contributions are welcome and appreciated. You can help in any of the following ways:
 
 No repo setup required:
+
 - [Reporting a bug](https://github.com/platers/obsidian-linter/issues/new?assignees=&labels=bug&template=bug_report.md&title=Bug%3A+)
 - [Requesting a feature](https://github.com/platers/obsidian-linter/issues/new?assignees=&labels=rule+suggestion&template=feature_request.md&title=FR%3A+)
 - [Suggesting documentation](https://github.com/platers/obsidian-linter/issues/new?assignees=&labels=documentation&template=documentation_request.md&title=Doc%3A+)
 
 Varying repo and development setup required:
+
 - [Updating or adding documentation](https://github.com/platers/obsidian-linter/blob/master/CONTRIBUTING.md#updating-documentation)
 - [Translating the plugin into a new language](https://github.com/platers/obsidian-linter/blob/master/CONTRIBUTING.md#adding-translations-for-a-language)
 - [Fixing a bug](https://github.com/platers/obsidian-linter/blob/master/CONTRIBUTING.md#bug-fixes)
@@ -124,5 +128,5 @@ Varying repo and development setup required:
 
 ## Credits
 
-Thanks to all of the different people who have contributed to this plugin!  
+Thanks to all of the different people who have contributed to this plugin!
 A special thanks to [chrisgrieser](https://github.com/chrisgrieser) for doing all of the base work for and for suggesting that the paste logic should reside in the Linter!
