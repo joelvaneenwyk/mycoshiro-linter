@@ -2,6 +2,7 @@
   "root": true,
   "env": {
     "browser": true,
+    "node": true,
     "es2021": true,
     "jest/globals": true
   },
@@ -20,8 +21,16 @@
     "unicorn"
   ],
   "rules": {
+    "indent": [
+      "error",
+      2
+    ],
     "camelcase": "off",
     "max-len": "off",
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
     "no-constant-binary-expression": "error",
     "no-template-curly-in-string": "error",
     "no-unmodified-loop-condition": "error",

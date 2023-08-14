@@ -1,24 +1,46 @@
 {
-    "eslint.validate": [
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact"
-    ],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "typescript.experimental.aiQuickFix": true,
+  "typescript.suggest.enabled": true,
+  "npm.autoDetect": "on",
+  "npm.packageManager": "yarn",
+  "typescript.format.enable": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true,
-    },
-    "editor.tabSize": 2,
-    "files.eol": "\n",
-    "files.insertFinalNewline": true,
-    "editor.detectIndentation": true,
-    "files.encoding": "utf8",
-    "files.trimTrailingWhitespace": false,
-    "cSpell.words": [
-        "borales",
-        "camelcase",
-        "Frontmatter",
-        "mycoshiro",
-        "outfile"
-    ],
+      "source.fixAll": true,
+      "source.fixAll.eslint": true
+    }
+  },
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "editor.detectIndentation": true,
+  "files.encoding": "utf8",
+  "files.trimTrailingWhitespace": false,
+  "cSpell.words": [
+    "borales",
+    "camelcase",
+    "Frontmatter",
+    "mycoshiro",
+    "outfile"
+  ],
+  "sarif-viewer.connectToGithubCodeScanning": "off",
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "eslint.nodePath": ".yarn/sdks",
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

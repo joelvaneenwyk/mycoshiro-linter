@@ -1,4 +1,4 @@
-import esbuild from 'esbuild';
+import { build, BuildOptions } from 'esbuild';
 import process from 'process';
 import builtins from 'builtin-modules';
 import importGlobPlugin from 'esbuild-plugin-import-glob';
@@ -10,20 +10,20 @@ if you want to view the source, please visit the github repository of this plugi
 */
 `;
 
-const dummyMocksForDocs = `
+const dummyMocksForDocs: string = `
 document = {
     createElement: function() {},
 };
 `;
 
-const isProduction = (process.argv[2] === 'production');
-const defaultBuildSettings = {
+const isProduction: boolean = (process.argv[2] === 'production');
+const defaultBuildSettings: BuildOptions = {
   banner: {
     js: banner,
   },
   entryPoints: ['src/main.ts'],
   plugins: [
-    importGlobPlugin.default(),
+    importGlobPlugin(),
   ],
   bundle: true,
   external: [
@@ -38,7 +38,7 @@ const defaultBuildSettings = {
 };
 
 const localBuildPlugins = () => [
-  importGlobPlugin.default(),
+  importGlobPlugin(),
   replace({
     values: {
       // update usage of moment from obsidian to the node implementation of moment we have
@@ -52,22 +52,21 @@ const localBuildPlugins = () => [
   }),
 ];
 
-esbuild
-  .build(defaultBuildSettings)
+build(defaultBuildSettings)
   .then(() => {
     console.log('Mycoshiro Linter: Built \'main.js\'');
-    esbuild.build({
+    build({
       ...defaultBuildSettings,
       banner: {
         js: banner + dummyMocksForDocs,
       },
       entryPoints: ['src/docs.ts'],
       plugins: localBuildPlugins(),
-      outfile: 'dist/docs.js'
+      outfile: 'dist/docs.js',
     });
   }).then(() => {
     console.log('Mycoshiro Linter: Built \'docs.js\'');
-    esbuild.build({
+    build({
       ...defaultBuildSettings,
       banner: {
         js: banner + dummyMocksForDocs,
@@ -78,7 +77,7 @@ esbuild
     });
   }).then(() => {
     console.log('Mycoshiro Linter: Built \'translation-helper.js\'');
-    })
+  })
   .catch(() => {
     console.error('Mycoshiro Linter: Failed to build JavaScript output files.');
     process.exit(90);

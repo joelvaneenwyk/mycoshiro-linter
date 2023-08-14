@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "christian-kohler.npm-intellisense",
+    "arcanis.vscode-zipfs",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}
