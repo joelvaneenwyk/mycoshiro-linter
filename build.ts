@@ -26,11 +26,12 @@ const defaultBuildSettings: BuildOptions = {
     importGlobPlugin(),
   ],
   bundle: true,
+  tsconfig: 'tsconfig.json',
   external: [
     'obsidian',
     ...builtins],
   format: 'cjs',
-  target: 'es2020',
+  target: 'es2022',
   sourcemap: isProduction ? false : 'inline',
   minify: isProduction,
   treeShaking: true,

@@ -11,8 +11,8 @@
   "scripts": {
     "ci": "yarn install --frozen-lockfile",
     "compile": "yarn build && yarn docs && yarn lint && yarn test",
-    "dev": "yarn ts-node build.ts",
-    "build": "yarn ts-node build.ts production && yarn tsc jest.config.ts",
+    "dev": "yarn ts-node --project tsconfig.esbuild.json build.ts",
+    "build": "yarn ts-node --project tsconfig.esbuild.json build.ts production && yarn tsc jest.config.ts",
     "deploy": "cross-env-shell \"yarn shx --verbose cp -u ./dist/main.js manifest.json versions.json \"${PROJECT_CWD}/.obsidian/plugins/${npm_package_name}\" \"",
     "docs": "yarn dev && yarn node ./dist/docs.js",
     "translate": "yarn build && node ./dist/translation-helper.js",
