@@ -1,7 +1,7 @@
-import {readFileSync, writeFileSync, existsSync} from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import dedent from 'ts-dedent';
-import {DropdownOption} from './option';
-import {rules} from './rules';
+import { DropdownOption } from './option';
+import { rules } from './rules';
 import './rules-registry';
 
 const autogen_warning = '<!--- This file was automatically generated. See docs.ts and *_template.md files for the source. -->\n';

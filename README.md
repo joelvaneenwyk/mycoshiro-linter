@@ -165,7 +165,7 @@ These rules can be useful in swapping out certain tags, words, and formatting fo
 
 [Here](https://javascript.info/regexp-introduction#flags) is an explanation on what each flag means. Feel free to use them as needed. The default ones added are `g` (global) and `m` (multiline).
 
-_Note: lookbehinds do not work on iOS mobile and using them will cause linting to fail. So please **DO NOT** use them for iOS mobile._
+_Note: look-behinds does not work on iOS mobile and using them will cause linting to fail. So please **DO NOT** use them for iOS mobile._
 
 ### Paste Limitations
 

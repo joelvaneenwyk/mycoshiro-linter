@@ -8,6 +8,22 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "[markdown]": {
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+    "cSpell.fixSpellingWithRenameProvider": true,
+    "cSpell.advanced.feature.useReferenceProviderWithRename": true,
+    "cSpell.advanced.feature.useReferenceProviderRemove": "/^#+\\s/"
+  },
   "typescript.experimental.aiQuickFix": true,
   "typescript.suggest.enabled": true,
   "npm.autoDetect": "on",
@@ -28,9 +44,13 @@
   "files.encoding": "utf8",
   "files.trimTrailingWhitespace": false,
   "cSpell.words": [
+    "autogen",
     "borales",
     "camelcase",
+    "chrisgrieser",
+    "codestyle",
     "Frontmatter",
+    "multicursor",
     "mycoshiro",
     "outfile"
   ],
