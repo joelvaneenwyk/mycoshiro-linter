@@ -17,6 +17,9 @@ jobs:
         with:
           node-version: "16.x"
 
+      - name: Install GH CLI
+        uses: dev-hanz-ops/install-gh-cli-action
+
       - name: Build plugin
         run: |
           npm ci
