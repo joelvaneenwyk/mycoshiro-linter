@@ -1,7 +1,7 @@
 // Credits go to Liam's Periodic Notes Plugin: https://github.com/liamcain/obsidian-periodic-notes
 
-import {App, ISuggestOwner, Scope} from 'obsidian';
-import {createPopper, Instance as PopperInstance} from '@popperjs/core';
+import { App, ISuggestOwner, Scope } from 'obsidian';
+import { createPopper, Instance as PopperInstance } from '@popperjs/core';
 
 const wrapAround = (value: number, size: number): number => {
   return ((value % size) + size) % size;
@@ -14,24 +14,12 @@ class Suggest<T> {
   private selectedItem: number;
   private containerEl: HTMLElement;
 
-  constructor(
-      owner: ISuggestOwner<T>,
-      containerEl: HTMLElement,
-      scope: Scope,
-  ) {
+  constructor(owner: ISuggestOwner<T>, containerEl: HTMLElement, scope: Scope) {
     this.owner = owner;
     this.containerEl = containerEl;
 
-    containerEl.on(
-        'click',
-        '.suggestion-item',
-        this.onSuggestionClick.bind(this),
-    );
-    containerEl.on(
-        'mousemove',
-        '.suggestion-item',
-        this.onSuggestionMouseover.bind(this),
-    );
+    containerEl.on('click', '.suggestion-item', this.onSuggestionClick.bind(this));
+    containerEl.on('mousemove', '.suggestion-item', this.onSuggestionMouseover.bind(this));
 
     scope.register([], 'ArrowUp', (event) => {
       if (!event.isComposing) {
@@ -91,10 +79,7 @@ class Suggest<T> {
   }
 
   setSelectedItem(selectedIndex: number, scrollIntoView: boolean) {
-    const normalizedIndex = wrapAround(
-        selectedIndex,
-        this.suggestions.length,
-    );
+    const normalizedIndex = wrapAround(selectedIndex, this.suggestions.length);
     const prevSelectedSuggestion = this.suggestions[this.selectedItem];
     const selectedSuggestion = this.suggestions[normalizedIndex];
 
@@ -133,13 +118,9 @@ export abstract class TextInputSuggest<T> implements ISuggestOwner<T> {
     this.inputEl.addEventListener('input', this.onInputChanged.bind(this));
     this.inputEl.addEventListener('focus', this.onInputChanged.bind(this));
     this.inputEl.addEventListener('blur', this.close.bind(this));
-    this.suggestEl.on(
-        'mousedown',
-        '.suggestion-container',
-        (event: MouseEvent) => {
-          event.preventDefault();
-        },
-    );
+    this.suggestEl.on('mousedown', '.suggestion-container', (event: MouseEvent) => {
+      event.preventDefault();
+    });
   }
 
   onInputChanged(): void {
@@ -169,7 +150,7 @@ export abstract class TextInputSuggest<T> implements ISuggestOwner<T> {
         {
           name: 'sameWidth',
           enabled: true,
-          fn: ({state, instance}) => {
+          fn: ({ state, instance }) => {
             // Note: positioning needs to be calculated twice -
             // first pass - positioning it according to the width of the popper
             // second pass - position it with the width bound to the reference element
@@ -182,9 +163,9 @@ export abstract class TextInputSuggest<T> implements ISuggestOwner<T> {
             instance.update();
           },
           phase: 'beforeWrite',
-          requires: ['computeStyles'],
-        },
-      ],
+          requires: ['computeStyles']
+        }
+      ]
     });
   }
 
@@ -196,7 +177,7 @@ export abstract class TextInputSuggest<T> implements ISuggestOwner<T> {
     this.suggestEl.detach();
   }
 
-    abstract getSuggestions(inputStr: string): T[];
-    abstract renderSuggestion(item: T, el: HTMLElement): void;
-    abstract selectSuggestion(item: T): void;
+  abstract getSuggestions(inputStr: string): T[];
+  abstract renderSuggestion(item: T, el: HTMLElement): void;
+  abstract selectSuggestion(item: T): void;
 }

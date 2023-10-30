@@ -1,9 +1,14 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {BooleanOptionBuilder, ExampleBuilder, OptionBuilderBase, TextOptionBuilder} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, {
+  BooleanOptionBuilder,
+  ExampleBuilder,
+  OptionBuilderBase,
+  TextOptionBuilder
+} from './rule-builder';
 import dedent from 'ts-dedent';
-import {ignoreListOfTypes, IgnoreTypes} from '../utils/ignore-types';
-import {updateListItemText} from '../utils/mdast';
-import {escapeRegExp} from '../utils/regex';
+import { ignoreListOfTypes, IgnoreTypes } from '../utils/ignore-types';
+import { updateListItemText } from '../utils/mdast';
+import { escapeRegExp } from '../utils/regex';
 
 class RemoveSpaceAroundCharactersOptions implements Options {
   includeFullwidthForms?: boolean = true;
@@ -19,7 +24,14 @@ export default class RemoveSpaceAroundCharacters extends RuleBuilder<RemoveSpace
       nameKey: 'rules.remove-space-around-characters.name',
       descriptionKey: 'rules.remove-space-around-characters.description',
       type: RuleType.SPACING,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.inlineCode, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag
+      ]
     });
   }
   get OptionsClass(): new () => RemoveSpaceAroundCharactersOptions {
@@ -49,7 +61,7 @@ export default class RemoveSpaceAroundCharacters extends RuleBuilder<RemoveSpace
     const fullwidthCharacterWithTextAtStart = new RegExp(`([ \t])+([${symbolsRegExpBuilder}])`, 'g');
     const fullwidthCharacterWithTextAtEnd = new RegExp(`([${symbolsRegExpBuilder}])([ \t])+`, 'g');
 
-    const replaceWhitespaceAroundFullwidthCharacters = function(text: string): string {
+    const replaceWhitespaceAroundFullwidthCharacters = function (text: string): string {
       return text.replace(fullwidthCharacterWithTextAtStart, '$2').replace(fullwidthCharacterWithTextAtEnd, '$1');
     };
 
@@ -82,7 +94,7 @@ export default class RemoveSpaceAroundCharacters extends RuleBuilder<RemoveSpace
           This is a fullwidth colon：with text after it.
           This is a fullwidth semicolon；with text after it.
           Ｒemoves space at start of line
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Fullwidth Characters in List Do not Affect List Markdown Syntax',
@@ -131,8 +143,8 @@ export default class RemoveSpaceAroundCharacters extends RuleBuilder<RemoveSpace
           > >   - ［more contents here］more text here
           > > + ［another item here］
           > > * ［one last item here］
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<RemoveSpaceAroundCharactersOptions>[] {
@@ -141,26 +153,26 @@ export default class RemoveSpaceAroundCharacters extends RuleBuilder<RemoveSpace
         nameKey: 'rules.remove-space-around-characters.include-fullwidth-forms.name',
         descriptionKey: 'rules.remove-space-around-characters.include-fullwidth-forms.description',
         OptionsClass: RemoveSpaceAroundCharactersOptions,
-        optionsKey: 'includeFullwidthForms',
+        optionsKey: 'includeFullwidthForms'
       }),
       new BooleanOptionBuilder({
         nameKey: 'rules.remove-space-around-characters.include-cjk-symbols-and-punctuation.name',
         descriptionKey: 'rules.remove-space-around-characters.include-cjk-symbols-and-punctuation.description',
         OptionsClass: RemoveSpaceAroundCharactersOptions,
-        optionsKey: 'includeCJKSymbolsAndPunctuation',
+        optionsKey: 'includeCJKSymbolsAndPunctuation'
       }),
       new BooleanOptionBuilder({
         nameKey: 'rules.remove-space-around-characters.include-dashes.name',
         descriptionKey: 'rules.remove-space-around-characters.include-dashes.description',
         OptionsClass: RemoveSpaceAroundCharactersOptions,
-        optionsKey: 'includeDashes',
+        optionsKey: 'includeDashes'
       }),
       new TextOptionBuilder({
         nameKey: 'rules.remove-space-around-characters.other-symbols.name',
         descriptionKey: 'rules.remove-space-around-characters.other-symbols.description',
         OptionsClass: RemoveSpaceAroundCharactersOptions,
-        optionsKey: 'otherSymbols',
-      }),
+        optionsKey: 'otherSymbols'
+      })
     ];
   }
 }

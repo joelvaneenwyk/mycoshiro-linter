@@ -1,10 +1,10 @@
-import {IgnoreType, IgnoreTypes, ignoreListOfTypes} from '../src/utils/ignore-types';
+import { IgnoreType, IgnoreTypes, ignoreListOfTypes } from '../src/utils/ignore-types';
 import dedent from 'ts-dedent';
 
 type customIgnoresInTextTestCase = {
-  name: string,
-  text: string,
-  expectedTextAfterIgnore: string,
+  name: string;
+  text: string;
+  expectedTextAfterIgnore: string;
   ignoreTypes: IgnoreType[];
 };
 
@@ -19,9 +19,10 @@ const ignoreListOfTypesTestCases: customIgnoresInTextTestCase[] = [
       Here is some text
       Here is some more text
     `,
-    ignoreTypes: [],
+    ignoreTypes: []
   },
-  { // accounts for https://github.com/platers/obsidian-linter/issues/733
+  {
+    // accounts for https://github.com/platers/obsidian-linter/issues/733
     name: 'when no custom ignore ranges are used and multiple times, the text is properly replaced and put back together',
     text: dedent`
       content
@@ -57,8 +58,8 @@ const ignoreListOfTypesTestCases: customIgnoresInTextTestCase[] = [
       ${''}
       content
     `,
-    ignoreTypes: [IgnoreTypes.customIgnore],
-  },
+    ignoreTypes: [IgnoreTypes.customIgnore]
+  }
 ];
 
 describe('Ignore List of Types', () => {
@@ -68,7 +69,7 @@ describe('Ignore List of Types', () => {
         expect(text).toEqual(testCase.expectedTextAfterIgnore);
 
         return text;
-      } );
+      });
 
       expect(text).toEqual(testCase.text);
     });

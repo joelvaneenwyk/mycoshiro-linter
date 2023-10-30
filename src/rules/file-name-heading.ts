@@ -1,12 +1,12 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {IgnoreTypes} from '../utils/ignore-types';
-import {insert} from '../utils/strings';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { insert } from '../utils/strings';
 
 class FileNameHeadingOptions implements Options {
   @RuleBuilder.noSettingControl()
-    fileName: string;
+  fileName: string;
 }
 
 @RuleBuilder.register
@@ -16,7 +16,14 @@ export default class FileNameHeading extends RuleBuilder<FileNameHeadingOptions>
       nameKey: 'rules.file-name-heading.name',
       descriptionKey: 'rules.file-name-heading.description',
       type: RuleType.HEADING,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag
+      ]
     });
   }
   get OptionsClass(): new () => FileNameHeadingOptions {
@@ -32,8 +39,7 @@ export default class FileNameHeading extends RuleBuilder<FileNameHeadingOptions>
     const fileName = options.fileName;
     // insert H1 heading after front matter
     let yaml_end = text.indexOf('\n---');
-    yaml_end =
-        yaml_end == -1 || !text.startsWith('---\n') ? 0 : yaml_end + 5;
+    yaml_end = yaml_end == -1 || !text.startsWith('---\n') ? 0 : yaml_end + 5;
 
     let header = `# ${fileName}\n`;
     if (text.length < yaml_end) {
@@ -54,8 +60,8 @@ export default class FileNameHeading extends RuleBuilder<FileNameHeadingOptions>
           This is a line of text
         `,
         options: {
-          fileName: 'File Name',
-        },
+          fileName: 'File Name'
+        }
       }),
       new ExampleBuilder({
         description: 'Inserts heading after YAML front matter',
@@ -73,9 +79,9 @@ export default class FileNameHeading extends RuleBuilder<FileNameHeadingOptions>
           This is a line of text
         `,
         options: {
-          fileName: 'File Name',
-        },
-      }),
+          fileName: 'File Name'
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<FileNameHeadingOptions>[] {

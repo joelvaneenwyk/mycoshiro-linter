@@ -1,6 +1,6 @@
 import InsertYamlAttributes from '../src/rules/insert-yaml-attributes';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: InsertYamlAttributes,
@@ -17,10 +17,8 @@ ruleTest({
         ${''}
       `,
       options: {
-        textToInsert: [
-          'tags:',
-        ],
-      },
+        textToInsert: ['tags:']
+      }
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/176
@@ -49,14 +47,13 @@ ruleTest({
         ${''}
       `,
       options: {
-        textToInsert: [
-          'tags:',
-        ],
-      },
+        textToInsert: ['tags:']
+      }
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/157
-      testName: 'When a file has tabs at the start of a line in the frontmatter, the YAML insertion still works leaving other tabs as they were',
+      testName:
+        'When a file has tabs at the start of a line in the frontmatter, the YAML insertion still works leaving other tabs as they were',
       before: dedent`
         ---
         title: this title\thas a tab
@@ -75,10 +72,8 @@ ruleTest({
         ---
       `,
       options: {
-        textToInsert: [
-          'blob:',
-        ],
-      },
-    },
-  ],
+        textToInsert: ['blob:']
+      }
+    }
+  ]
 });

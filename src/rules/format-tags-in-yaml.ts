@@ -1,7 +1,7 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {formatYAML, OBSIDIAN_TAG_KEY_SINGULAR, OBSIDIAN_TAG_KEY_PLURAL} from '../utils/yaml';
+import { formatYAML, OBSIDIAN_TAG_KEY_SINGULAR, OBSIDIAN_TAG_KEY_PLURAL } from '../utils/yaml';
 
 class FormatTagsInYamlOptions implements Options {}
 
@@ -12,7 +12,7 @@ export default class FormatTagsInYaml extends RuleBuilder<FormatTagsInYamlOption
       nameKey: 'rules.format-tags-in-yaml.name',
       descriptionKey: 'rules.format-tags-in-yaml.description',
       type: RuleType.YAML,
-      hasSpecialExecutionOrder: true, // runs before other rules to help cleanup the YAML before other rules try to have it parsed and hit errors
+      hasSpecialExecutionOrder: true // runs before other rules to help cleanup the YAML before other rules try to have it parsed and hit errors
     });
   }
   get OptionsClass(): new () => FormatTagsInYamlOptions {
@@ -21,10 +21,13 @@ export default class FormatTagsInYaml extends RuleBuilder<FormatTagsInYamlOption
   apply(text: string, options: FormatTagsInYamlOptions): string {
     return formatYAML(text, (text) => {
       return text.replace(
-          new RegExp(`\\n(${OBSIDIAN_TAG_KEY_PLURAL}|${OBSIDIAN_TAG_KEY_SINGULAR}):(.*?)(?=\\n(?:[A-Za-z-]+?:|---))`, 's'),
-          function(tagsYAML) {
-            return tagsYAML.replaceAll('#', '');
-          },
+        new RegExp(
+          `\\n(${OBSIDIAN_TAG_KEY_PLURAL}|${OBSIDIAN_TAG_KEY_SINGULAR}):(.*?)(?=\\n(?:[A-Za-z-]+?:|---))`,
+          's'
+        ),
+        function (tagsYAML) {
+          return tagsYAML.replaceAll('#', '');
+        }
       );
     });
   }
@@ -41,7 +44,7 @@ export default class FormatTagsInYaml extends RuleBuilder<FormatTagsInYamlOption
           ---
           tags: one two three nested/four/five
           ---
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Format tags in array',
@@ -54,9 +57,10 @@ export default class FormatTagsInYaml extends RuleBuilder<FormatTagsInYamlOption
           ---
           tags: [one two three]
           ---
-        `,
+        `
       }),
-      new ExampleBuilder({ // relates to https://github.com/platers/obsidian-linter/issues/441
+      new ExampleBuilder({
+        // relates to https://github.com/platers/obsidian-linter/issues/441
         description: 'Format tags in array with `tag` as the tags key',
         before: dedent`
           ---
@@ -67,7 +71,7 @@ export default class FormatTagsInYaml extends RuleBuilder<FormatTagsInYamlOption
           ---
           tag: [one two three]
           ---
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Format tags in list',
@@ -84,8 +88,8 @@ export default class FormatTagsInYaml extends RuleBuilder<FormatTagsInYamlOption
           - tag1
           - tag2
           ---
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<FormatTagsInYamlOptions>[] {

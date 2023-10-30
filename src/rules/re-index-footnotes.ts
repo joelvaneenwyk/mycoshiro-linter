@@ -1,8 +1,8 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {IgnoreTypes} from '../utils/ignore-types';
-import {reIndexFootnotes} from '../utils/mdast';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { reIndexFootnotes } from '../utils/mdast';
 
 class ReIndexFootnotesOptions implements Options {}
 
@@ -13,7 +13,15 @@ export default class ReIndexFootnotes extends RuleBuilder<ReIndexFootnotesOption
       nameKey: 'rules.re-index-footnotes.name',
       descriptionKey: 'rules.re-index-footnotes.description',
       type: RuleType.FOOTNOTE,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.inlineCode, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.inlineCode,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag
+      ]
     });
   }
   get OptionsClass(): new () => ReIndexFootnotesOptions {
@@ -37,7 +45,7 @@ export default class ReIndexFootnotes extends RuleBuilder<ReIndexFootnotesOption
           ${''}
           [^1]: first footnote
           [^2]: second footnote
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Re-indexing footnotes after inserting a footnote between',
@@ -54,7 +62,7 @@ export default class ReIndexFootnotes extends RuleBuilder<ReIndexFootnotesOption
           [^1]: first footnote
           [^2]: third footnote, inserted later
           [^3]: second footnotes
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Re-indexing footnotes preserves multiple references to the same footnote index',
@@ -71,9 +79,10 @@ export default class ReIndexFootnotes extends RuleBuilder<ReIndexFootnotesOption
           [^1]: first footnote
           [^2]: third footnote, inserted later
           [^3]: second footnotes
-        `,
+        `
       }),
-      new ExampleBuilder({ // accounts for https://github.com/platers/obsidian-linter/issues/466
+      new ExampleBuilder({
+        // accounts for https://github.com/platers/obsidian-linter/issues/466
         description: 'Re-indexing footnotes condense duplicate footnotes into 1 when key and footnote are the same',
         before: dedent`
           bla[^1], bla[^1], bla[^2]
@@ -86,8 +95,8 @@ export default class ReIndexFootnotes extends RuleBuilder<ReIndexFootnotesOption
           ${''}
           [^1]: bla
           [^2]: bla
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<ReIndexFootnotesOptions>[] {

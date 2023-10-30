@@ -1,6 +1,6 @@
 // based on https://github.com/chrisgrieser/obsidian-smarter-paste/blob/master/clipboardModification.ts#L17
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
 
 class RemoveLeadingOrTrailingWhitespaceOnPasteOptions implements Options {}
@@ -11,7 +11,7 @@ export default class RemoveLeadingOrTrailingWhitespaceOnPaste extends RuleBuilde
     super({
       nameKey: 'rules.remove-leading-or-trailing-whitespace-on-paste.name',
       descriptionKey: 'rules.remove-leading-or-trailing-whitespace-on-paste.description',
-      type: RuleType.PASTE,
+      type: RuleType.PASTE
     });
   }
   get OptionsClass(): new () => RemoveLeadingOrTrailingWhitespaceOnPasteOptions {
@@ -32,7 +32,7 @@ export default class RemoveLeadingOrTrailingWhitespaceOnPaste extends RuleBuilde
         `,
         after: dedent`
           This text was really indented
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Leaves leading tabs alone',
@@ -42,8 +42,8 @@ export default class RemoveLeadingOrTrailingWhitespaceOnPaste extends RuleBuilde
           \t\tThis text is really indented
           ${''}
         `,
-        after: '\t\tThis text is really indented',
-      }),
+        after: '\t\tThis text is really indented'
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<RemoveLeadingOrTrailingWhitespaceOnPasteOptions>[] {

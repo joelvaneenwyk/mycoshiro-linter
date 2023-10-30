@@ -1,6 +1,6 @@
 import TrailingSpaces from '../src/rules/trailing-spaces';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: TrailingSpaces,
@@ -14,7 +14,7 @@ ruleTest({
       after: dedent`
         # H1
         line with one trailing spaces
-      `,
+      `
     },
     {
       testName: 'Three trailing whitespaces removed',
@@ -25,7 +25,7 @@ ruleTest({
       after: dedent`
         # H1
         line with three trailing spaces
-      `,
+      `
     },
     {
       testName: 'Tab-Space-Linebreak removed',
@@ -40,8 +40,8 @@ ruleTest({
         ${''}
       `,
       options: {
-        twoSpaceLineBreak: true,
-      },
+        twoSpaceLineBreak: true
+      }
     },
     {
       testName: 'Two Space Linebreak not removed',
@@ -56,8 +56,8 @@ ruleTest({
         ${''}
       `,
       options: {
-        twoSpaceLineBreak: true,
-      },
+        twoSpaceLineBreak: true
+      }
     },
     {
       testName: 'Regular link with spaces stays the same',
@@ -70,7 +70,7 @@ ruleTest({
         # Hello world
         ${''}
         [This has  spaces in it](File with  spaces.md)
-      `,
+      `
     },
     {
       testName: 'Image link with spaces stays the same',
@@ -83,7 +83,7 @@ ruleTest({
         # Hello world
         ${''}
         ![This has  spaces in it](File with  spaces.png)
-      `,
+      `
     },
     {
       testName: 'Wiki link with spaces stays the same',
@@ -96,7 +96,7 @@ ruleTest({
         # Hello world
         ${''}
         [[File with  spaces]]
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

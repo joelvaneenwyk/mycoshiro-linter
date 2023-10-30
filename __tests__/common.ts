@@ -1,17 +1,17 @@
-import {Options} from '../src/rules';
-import RuleBuilder, {RuleBuilderBase} from '../src/rules/rule-builder';
+import { Options } from '../src/rules';
+import RuleBuilder, { RuleBuilderBase } from '../src/rules/rule-builder';
 
 type TestCase<TOptions extends Options> = {
-  testName: string,
-  before: string,
-  after: string,
-  options?: TOptions | (() => TOptions),
-  afterTestFunc?: () => void,
+  testName: string;
+  before: string;
+  after: string;
+  options?: TOptions | (() => TOptions);
+  afterTestFunc?: () => void;
 };
 
 export function ruleTest<TOptions extends Options>(args: {
-  RuleBuilderClass: typeof RuleBuilderBase & (new() => RuleBuilder<TOptions>),
-  testCases: TestCase<TOptions>[]
+  RuleBuilderClass: typeof RuleBuilderBase & (new () => RuleBuilder<TOptions>);
+  testCases: TestCase<TOptions>[];
 }): void {
   const rule = args.RuleBuilderClass.getRule();
 

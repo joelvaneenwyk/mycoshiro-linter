@@ -1,20 +1,19 @@
 import SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbers from '../src/rules/space-between-chinese-japanese-or-korean-and-english-or-numbers';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbers,
   testCases: [
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/303
-      testName:
-        'Make sure that spaces are added after a dollar sign if followed by Chinese characters',
+      testName: 'Make sure that spaces are added after a dollar sign if followed by Chinese characters',
       before: dedent`
         这是一个数学公式$f(x)=x^2$这是一个数学公式
       `,
       after: dedent`
         这是一个数学公式 $f(x)=x^2$ 这是一个数学公式
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/378
@@ -58,9 +57,10 @@ ruleTest({
         \`filepath = './知识_巴别图书馆.md'\`
         \`テスト_ＴＥＳＴ\`
         \`filepath = './ちしき_図書館.md'\`
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/407
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/407
       testName: 'Make sure that inline math blocks are not affected',
       before: dedent`
         # Title Here
@@ -71,9 +71,10 @@ ruleTest({
         # Title Here
 
         $M0 = 现金$
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/583
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/583
       testName: 'Make sure that wiki link and markdown links are ignored in italics',
       before: dedent`
         *[[abs 接口]]*
@@ -82,9 +83,10 @@ ruleTest({
       after: dedent`
         *[[abs 接口]]*
         *[abs 接口](abs 接口.md)*
-      `,
+      `
     },
-    { // relates for https://github.com/platers/obsidian-linter/issues/583
+    {
+      // relates for https://github.com/platers/obsidian-linter/issues/583
       testName: 'Make sure that wiki link and markdown links are ignored in bold',
       before: dedent`
         **[[abs 接口]]**
@@ -93,34 +95,37 @@ ruleTest({
       after: dedent`
         **[[abs 接口]]**
         **[abs 接口](abs 接口.md)**
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/662
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/662
       testName: 'Make sure that html is ignored',
       before: dedent`
         <img src="中文small.png" />
       `,
       after: dedent`
         <img src="中文small.png" />
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/667
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/667
       testName: 'Make sure that html elements do not affect the surrounding text',
       before: dedent`
         <u>自己想说的</u>
       `,
       after: dedent`
         <u>自己想说的</u>
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/681
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/681
       testName: 'Make sure that wiki links with their size specified are unaffected',
       before: dedent`
         ![[流浪地球-1.webp|image title|600]]
       `,
       after: dedent`
         ![[流浪地球-1.webp|image title|600]]
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

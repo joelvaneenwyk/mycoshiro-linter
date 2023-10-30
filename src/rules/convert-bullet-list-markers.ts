@@ -1,6 +1,6 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
 
 class ConvertBulletListMarkersOptions implements Options {}
@@ -12,7 +12,14 @@ export default class ConvertBulletListMarkers extends RuleBuilder<ConvertBulletL
       nameKey: 'rules.convert-bullet-list-markers.name',
       descriptionKey: 'rules.convert-bullet-list-markers.description',
       type: RuleType.CONTENT,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag
+      ]
     });
   }
   get OptionsClass(): new () => ConvertBulletListMarkersOptions {
@@ -33,7 +40,7 @@ export default class ConvertBulletListMarkers extends RuleBuilder<ConvertBulletL
         after: dedent`
           - item 1
           - item 2
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Converts §',
@@ -46,8 +53,8 @@ export default class ConvertBulletListMarkers extends RuleBuilder<ConvertBulletL
           - item 1
             - item 2
             - item 3
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<ConvertBulletListMarkersOptions>[] {

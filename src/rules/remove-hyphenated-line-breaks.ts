@@ -1,7 +1,7 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {IgnoreTypes} from '../utils/ignore-types';
+import { IgnoreTypes } from '../utils/ignore-types';
 
 class RemoveHyphenatedLineBreaksOptions implements Options {}
 
@@ -12,7 +12,14 @@ export default class RemoveHyphenatedLineBreaks extends RuleBuilder<RemoveHyphen
       nameKey: 'rules.remove-hyphenated-line-breaks.name',
       descriptionKey: 'rules.remove-hyphenated-line-breaks.description',
       type: RuleType.CONTENT,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag
+      ]
     });
   }
   get OptionsClass(): new () => RemoveHyphenatedLineBreaksOptions {
@@ -30,8 +37,8 @@ export default class RemoveHyphenatedLineBreaks extends RuleBuilder<RemoveHyphen
         `,
         after: dedent`
           This text has a linebreak.
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<RemoveHyphenatedLineBreaksOptions>[] {

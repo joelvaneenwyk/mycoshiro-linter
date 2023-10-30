@@ -1,36 +1,44 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {BooleanOptionBuilder, DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase, TextAreaOptionBuilder} from './rule-builder';
 import dedent from 'ts-dedent';
-import {convertAliasValueToStringOrStringArray,
+import { Options, RuleType } from '../rules';
+import {
+  NormalArrayFormats,
+  OBSIDIAN_ALIASES_KEYS,
+  OBSIDIAN_TAG_KEYS,
+  QuoteCharacter,
+  SpecialArrayFormats,
+  TagSpecificArrayFormats,
+  convertAliasValueToStringOrStringArray,
   convertTagValueToStringOrStringArray,
   formatYAML,
   formatYamlArrayValue,
   getYamlSectionValue,
   loadYAML,
-  NormalArrayFormats,
-  OBSIDIAN_ALIASES_KEYS,
-  OBSIDIAN_TAG_KEYS,
-  QuoteCharacter,
   setYamlSection,
-  SpecialArrayFormats,
-  splitValueIfSingleOrMultilineArray,
-  TagSpecificArrayFormats} from '../utils/yaml';
+  splitValueIfSingleOrMultilineArray
+} from '../utils/yaml';
+import RuleBuilder, {
+  BooleanOptionBuilder,
+  DropdownOptionBuilder,
+  ExampleBuilder,
+  OptionBuilderBase,
+  TextAreaOptionBuilder
+} from './rule-builder';
 
 class FormatYamlArrayOptions implements Options {
   @RuleBuilder.noSettingControl()
-    aliasArrayStyle?: NormalArrayFormats | SpecialArrayFormats = NormalArrayFormats.SingleLine;
+  aliasArrayStyle?: NormalArrayFormats | SpecialArrayFormats = NormalArrayFormats.SingleLine;
   formatAliasKey?: boolean = true;
   @RuleBuilder.noSettingControl()
-    tagArrayStyle?: TagSpecificArrayFormats | NormalArrayFormats | SpecialArrayFormats = NormalArrayFormats.SingleLine;
+  tagArrayStyle?: TagSpecificArrayFormats | NormalArrayFormats | SpecialArrayFormats = NormalArrayFormats.SingleLine;
   formatTagKey?: boolean = true;
   defaultArrayStyle?: NormalArrayFormats = NormalArrayFormats.SingleLine;
   formatArrayKeys?: boolean = true;
   forceSingleLineArrayStyle?: string[] = [];
   forceMultiLineArrayStyle?: string[] = [];
   @RuleBuilder.noSettingControl()
-    defaultEscapeCharacter?: QuoteCharacter = '"';
+  defaultEscapeCharacter?: QuoteCharacter = '"';
   @RuleBuilder.noSettingControl()
-    removeUnnecessaryEscapeCharsForMultiLineArrays?: boolean = false;
+  removeUnnecessaryEscapeCharsForMultiLineArrays?: boolean = false;
 }
 
 @RuleBuilder.register
@@ -39,7 +47,7 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
     super({
       nameKey: 'rules.format-yaml-array.name',
       descriptionKey: 'rules.format-yaml-array.description',
-      type: RuleType.YAML,
+      type: RuleType.YAML
     });
   }
   get OptionsClass(): new () => FormatYamlArrayOptions {
@@ -54,15 +62,18 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
 
       for (const aliasKey of OBSIDIAN_ALIASES_KEYS) {
         if (options.formatAliasKey && Object.keys(yaml).includes(aliasKey)) {
-          text = setYamlSection(text,
-              aliasKey,
-              formatYamlArrayValue(
-                  convertAliasValueToStringOrStringArray(splitValueIfSingleOrMultilineArray(getYamlSectionValue(text, aliasKey))),
-                  options.aliasArrayStyle,
-                  options.defaultEscapeCharacter,
-                  options.removeUnnecessaryEscapeCharsForMultiLineArrays,
-                  true, // escape numeric aliases see https://github.com/platers/obsidian-linter/issues/747
+          text = setYamlSection(
+            text,
+            aliasKey,
+            formatYamlArrayValue(
+              convertAliasValueToStringOrStringArray(
+                splitValueIfSingleOrMultilineArray(getYamlSectionValue(text, aliasKey))
               ),
+              options.aliasArrayStyle,
+              options.defaultEscapeCharacter,
+              options.removeUnnecessaryEscapeCharsForMultiLineArrays,
+              true // escape numeric aliases see https://github.com/platers/obsidian-linter/issues/747
+            )
           );
 
           break;
@@ -71,14 +82,17 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
 
       for (const tagKey of OBSIDIAN_TAG_KEYS) {
         if (options.formatTagKey && Object.keys(yaml).includes(tagKey)) {
-          text = setYamlSection(text,
-              tagKey,
-              formatYamlArrayValue(
-                  convertTagValueToStringOrStringArray(splitValueIfSingleOrMultilineArray(getYamlSectionValue(text, tagKey))),
-                  options.tagArrayStyle,
-                  options.defaultEscapeCharacter,
-                  options.removeUnnecessaryEscapeCharsForMultiLineArrays,
+          text = setYamlSection(
+            text,
+            tagKey,
+            formatYamlArrayValue(
+              convertTagValueToStringOrStringArray(
+                splitValueIfSingleOrMultilineArray(getYamlSectionValue(text, tagKey))
               ),
+              options.tagArrayStyle,
+              options.defaultEscapeCharacter,
+              options.removeUnnecessaryEscapeCharsForMultiLineArrays
+            )
           );
 
           break;
@@ -86,22 +100,33 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
       }
 
       if (options.formatArrayKeys) {
-        const keysToIgnore = [...OBSIDIAN_ALIASES_KEYS, ...OBSIDIAN_TAG_KEYS, ...options.forceMultiLineArrayStyle, ...options.forceSingleLineArrayStyle];
+        const keysToIgnore = [
+          ...OBSIDIAN_ALIASES_KEYS,
+          ...OBSIDIAN_TAG_KEYS,
+          ...options.forceMultiLineArrayStyle,
+          ...options.forceSingleLineArrayStyle
+        ];
 
         for (const key of Object.keys(yaml)) {
+          const value = yaml[key];
           // skip non-arrays, arrays of objects, ignored keys, and already accounted for keys
-          if (keysToIgnore.includes(key) || !Array.isArray(yaml[key]) || (yaml[key].length !== 0 && typeof yaml[key][0] === 'object' && yaml[key][0] !== null)) {
+          if (
+            keysToIgnore.includes(key) ||
+            !Array.isArray(value) ||
+            (value.length !== 0 && typeof value[0] === 'object' && value[0] !== null)
+          ) {
             continue;
           }
 
-          text = setYamlSection(text,
-              key,
-              formatYamlArrayValue(
-                  splitValueIfSingleOrMultilineArray(getYamlSectionValue(text, key)),
-                  options.defaultArrayStyle,
-                  options.defaultEscapeCharacter,
-                  options.removeUnnecessaryEscapeCharsForMultiLineArrays,
-              ),
+          text = setYamlSection(
+            text,
+            key,
+            formatYamlArrayValue(
+              splitValueIfSingleOrMultilineArray(getYamlSectionValue(text, key)),
+              options.defaultArrayStyle,
+              options.defaultEscapeCharacter,
+              options.removeUnnecessaryEscapeCharsForMultiLineArrays
+            )
           );
         }
       }
@@ -111,14 +136,15 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
           continue;
         }
 
-        text = setYamlSection(text,
-            singleLineArrayKey,
-            formatYamlArrayValue(
-                splitValueIfSingleOrMultilineArray(getYamlSectionValue(text, singleLineArrayKey)),
-                NormalArrayFormats.SingleLine,
-                options.defaultEscapeCharacter,
-                options.removeUnnecessaryEscapeCharsForMultiLineArrays,
-            ),
+        text = setYamlSection(
+          text,
+          singleLineArrayKey,
+          formatYamlArrayValue(
+            splitValueIfSingleOrMultilineArray(getYamlSectionValue(text, singleLineArrayKey)),
+            NormalArrayFormats.SingleLine,
+            options.defaultEscapeCharacter,
+            options.removeUnnecessaryEscapeCharsForMultiLineArrays
+          )
         );
       }
 
@@ -127,14 +153,15 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
           continue;
         }
 
-        text = setYamlSection(text,
-            multiLineArrayKey,
-            formatYamlArrayValue(
-                splitValueIfSingleOrMultilineArray(getYamlSectionValue(text, multiLineArrayKey)),
-                NormalArrayFormats.MultiLine,
-                options.defaultEscapeCharacter,
-                options.removeUnnecessaryEscapeCharsForMultiLineArrays,
-            ),
+        text = setYamlSection(
+          text,
+          multiLineArrayKey,
+          formatYamlArrayValue(
+            splitValueIfSingleOrMultilineArray(getYamlSectionValue(text, multiLineArrayKey)),
+            NormalArrayFormats.MultiLine,
+            options.defaultEscapeCharacter,
+            options.removeUnnecessaryEscapeCharsForMultiLineArrays
+          )
         );
       }
 
@@ -144,7 +171,8 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
   get exampleBuilders(): ExampleBuilder<FormatYamlArrayOptions>[] {
     return [
       new ExampleBuilder({
-        description: 'Format tags as a single-line array delimited by spaces and aliases as a multi-line array and format the key `test` to be a single-line array',
+        description:
+          'Format tags as a single-line array delimited by spaces and aliases as a multi-line array and format the key `test` to be a single-line array',
         before: dedent`
           ---
           tags:
@@ -177,11 +205,12 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
         `,
         options: {
           aliasArrayStyle: NormalArrayFormats.MultiLine,
-          forceSingleLineArrayStyle: ['test'],
-        },
+          forceSingleLineArrayStyle: ['test']
+        }
       }),
       new ExampleBuilder({
-        description: 'Format tags as a single string with space delimiters, ignore aliases, and format regular YAML arrays as single-line arrays',
+        description:
+          'Format tags as a single string with space delimiters, ignore aliases, and format regular YAML arrays as single-line arrays',
         before: dedent`
           ---
           aliases: Typescript
@@ -200,8 +229,8 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
         `,
         options: {
           formatAliasKey: false,
-          tagArrayStyle: TagSpecificArrayFormats.SingleStringSpaceDelimited,
-        },
+          tagArrayStyle: TagSpecificArrayFormats.SingleStringSpaceDelimited
+        }
       }),
       new ExampleBuilder({
         description: 'Arrays with dictionaries in them are ignored',
@@ -225,9 +254,9 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
         `,
         options: {
           formatArrayKeys: true,
-          defaultArrayStyle: NormalArrayFormats.SingleLine,
-        },
-      }),
+          defaultArrayStyle: NormalArrayFormats.SingleLine
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<FormatYamlArrayOptions>[] {
@@ -236,13 +265,13 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
         OptionsClass: FormatYamlArrayOptions,
         nameKey: 'rules.format-yaml-array.alias-key.name',
         descriptionKey: 'rules.format-yaml-array.alias-key.description',
-        optionsKey: 'formatAliasKey',
+        optionsKey: 'formatAliasKey'
       }),
       new BooleanOptionBuilder({
         OptionsClass: FormatYamlArrayOptions,
         nameKey: 'rules.format-yaml-array.tag-key.name',
         descriptionKey: 'rules.format-yaml-array.tag-key.description',
-        optionsKey: 'formatTagKey',
+        optionsKey: 'formatTagKey'
       }),
       new DropdownOptionBuilder({
         OptionsClass: FormatYamlArrayOptions,
@@ -252,32 +281,32 @@ export default class RuleTemplate extends RuleBuilder<FormatYamlArrayOptions> {
         records: [
           {
             value: NormalArrayFormats.MultiLine as NormalArrayFormats,
-            description: '```key:\\n  - value```',
+            description: '```key:\\n  - value```'
           },
           {
             value: NormalArrayFormats.SingleLine,
-            description: '```key: [value]```',
-          },
-        ],
+            description: '```key: [value]```'
+          }
+        ]
       }),
       new BooleanOptionBuilder({
         OptionsClass: FormatYamlArrayOptions,
         nameKey: 'rules.format-yaml-array.default-array-keys.name',
         descriptionKey: 'rules.format-yaml-array.default-array-keys.description',
-        optionsKey: 'formatArrayKeys',
+        optionsKey: 'formatArrayKeys'
       }),
       new TextAreaOptionBuilder({
         OptionsClass: FormatYamlArrayOptions,
         nameKey: 'rules.format-yaml-array.force-single-line-array-style.name',
         descriptionKey: 'rules.format-yaml-array.force-single-line-array-style.description',
-        optionsKey: 'forceSingleLineArrayStyle',
+        optionsKey: 'forceSingleLineArrayStyle'
       }),
       new TextAreaOptionBuilder({
         OptionsClass: FormatYamlArrayOptions,
         nameKey: 'rules.format-yaml-array.force-multi-line-array-style.name',
         descriptionKey: 'rules.format-yaml-array.force-multi-line-array-style.description',
-        optionsKey: 'forceMultiLineArrayStyle',
-      }),
+        optionsKey: 'forceMultiLineArrayStyle'
+      })
     ];
   }
 }

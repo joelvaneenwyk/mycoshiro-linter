@@ -1,13 +1,13 @@
-import {makeSureContentHasEmptyLinesAddedBeforeAndAfter} from '../src/utils/strings';
+import { makeSureContentHasEmptyLinesAddedBeforeAndAfter } from '../src/utils/strings';
 import dedent from 'ts-dedent';
 
 type EmptyStringBeforeAndAfterTestCase = {
-  testName: string,
-  startOfContent: number,
-  endOfContent: number
-  before: string,
-  after: string,
-}
+  testName: string;
+  startOfContent: number;
+  endOfContent: number;
+  before: string;
+  after: string;
+};
 
 const testCases: EmptyStringBeforeAndAfterTestCase[] = [
   {
@@ -25,7 +25,7 @@ const testCases: EmptyStringBeforeAndAfterTestCase[] = [
       Text content here
       ${''}
       ## Other Header
-    `,
+    `
   },
   {
     testName: 'Content with multiple empty lines before it should have one added before and after',
@@ -46,7 +46,7 @@ const testCases: EmptyStringBeforeAndAfterTestCase[] = [
       Text content here
       ${''}
       ## Other Header
-    `,
+    `
   },
   {
     testName: 'Content at the start of the file should not get an empty line added before it',
@@ -61,7 +61,7 @@ const testCases: EmptyStringBeforeAndAfterTestCase[] = [
       Text content here
       ${''}
       ## Other Header
-    `,
+    `
   },
   {
     testName: 'Content at the end of the file should not get an empty line added after it',
@@ -75,7 +75,7 @@ const testCases: EmptyStringBeforeAndAfterTestCase[] = [
       # Header
       ${''}
       Text content here
-    `,
+    `
   },
   {
     testName: 'Content in blockquote has en empty line added before and after it',
@@ -92,10 +92,11 @@ const testCases: EmptyStringBeforeAndAfterTestCase[] = [
       > Text content here
       ${''}
       More unrelated content here
-    `,
+    `
   },
   {
-    testName: 'Content in blockquote that is surrounded by more content in the same blockquote does not end the blockquote',
+    testName:
+      'Content in blockquote that is surrounded by more content in the same blockquote does not end the blockquote',
     startOfContent: 64,
     endOfContent: 81,
     before: dedent`
@@ -111,7 +112,7 @@ const testCases: EmptyStringBeforeAndAfterTestCase[] = [
       > Text content here
       >
       > Content after content to put empty lines around
-    `,
+    `
   },
   {
     testName: 'A table in a blockquote or callout should have a blank line added before and after the table',
@@ -137,7 +138,7 @@ const testCases: EmptyStringBeforeAndAfterTestCase[] = [
       > | quux     | quuz     | glob     |
       ${''}
       More content here
-    `,
+    `
   },
   {
     testName: 'A table in a nested blockquote or callout should have a blank line added before and after the table',
@@ -166,7 +167,7 @@ const testCases: EmptyStringBeforeAndAfterTestCase[] = [
       > > | quux     | quuz     | glob     |
       ${''}
       More content here
-    `,
+    `
   },
   {
     startOfContent: 124, // start of the 2nd code block: "`"
@@ -207,16 +208,17 @@ const testCases: EmptyStringBeforeAndAfterTestCase[] = [
       > > \`\`\`js
       > > var other text = 'this is more text';
       > > \`\`\`
-    `,
-  },
+    `
+  }
 ];
-
 
 describe('Make Sure Content Has Empty Lines Added Before and After', () => {
   for (const testCase of testCases) {
     it(testCase.testName, () => {
       // console.log(testCase.testName, testCase.before.indexOf('Text content here')); // helpful for adding new tests
-      expect(makeSureContentHasEmptyLinesAddedBeforeAndAfter(testCase.before, testCase.startOfContent, testCase.endOfContent)).toStrictEqual(testCase.after);
+      expect(
+        makeSureContentHasEmptyLinesAddedBeforeAndAfter(testCase.before, testCase.startOfContent, testCase.endOfContent)
+      ).toStrictEqual(testCase.after);
     });
   }
 });

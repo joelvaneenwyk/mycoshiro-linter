@@ -1,8 +1,8 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {BooleanOptionBuilder, ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { BooleanOptionBuilder, ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {yamlRegex} from '../utils/regex';
+import { yamlRegex } from '../utils/regex';
 
 class HeadingBlankLinesOptions implements Options {
   bottom: boolean = true;
@@ -16,7 +16,7 @@ export default class HeadingBlankLines extends RuleBuilder<HeadingBlankLinesOpti
       nameKey: 'rules.heading-blank-lines.name',
       descriptionKey: 'rules.heading-blank-lines.description',
       type: RuleType.SPACING,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink],
+      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink]
     });
   }
   get OptionsClass(): new () => HeadingBlankLinesOptions {
@@ -24,7 +24,7 @@ export default class HeadingBlankLines extends RuleBuilder<HeadingBlankLinesOpti
   }
   apply(text: string, options: HeadingBlankLinesOptions): string {
     if (!options.bottom) {
-      text = text.replace(/^([^#\n]+)\n+(#+\s.*)/gm, '$1\n\n$2');
+      text = text.replace(/\n+(#+\s.*)/g, '\n\n$1'); // trim blank lines before headings
     } else {
       text = text.replace(/^(#+\s.*)/gm, '\n\n$1\n\n'); // add blank line before and after headings
       text = text.replace(/\n+(#+\s.*)/g, '\n\n$1'); // trim blank lines before headings
@@ -64,7 +64,7 @@ export default class HeadingBlankLines extends RuleBuilder<HeadingBlankLinesOpti
           line
           ${''}
           ## H2
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'With `Bottom=false`',
@@ -80,17 +80,19 @@ export default class HeadingBlankLines extends RuleBuilder<HeadingBlankLinesOpti
           line
           ${''}
           ## H2
+          ${''}
           # H1
           line
         `,
         options: {
           bottom: false,
-          emptyLineAfterYaml: true,
-        },
+          emptyLineAfterYaml: true
+        }
       }),
       new ExampleBuilder({
         // accounts for https://github.com/platers/obsidian-linter/issues/219
-        description: 'Empty line before header and after YAML is removed with `Empty Line Between YAML and Header=false`',
+        description:
+          'Empty line before header and after YAML is removed with `Empty Line Between YAML and Header=false`',
         before: dedent`
           ---
           key: value
@@ -109,9 +111,9 @@ export default class HeadingBlankLines extends RuleBuilder<HeadingBlankLinesOpti
         `,
         options: {
           bottom: true,
-          emptyLineAfterYaml: false,
-        },
-      }),
+          emptyLineAfterYaml: false
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<HeadingBlankLinesOptions>[] {
@@ -120,14 +122,14 @@ export default class HeadingBlankLines extends RuleBuilder<HeadingBlankLinesOpti
         OptionsClass: HeadingBlankLinesOptions,
         nameKey: 'rules.heading-blank-lines.bottom.name',
         descriptionKey: 'rules.heading-blank-lines.bottom.description',
-        optionsKey: 'bottom',
+        optionsKey: 'bottom'
       }),
       new BooleanOptionBuilder({
         OptionsClass: HeadingBlankLinesOptions,
         nameKey: 'rules.heading-blank-lines.empty-line-after-yaml.name',
         descriptionKey: 'rules.heading-blank-lines.empty-line-after-yaml.description',
-        optionsKey: 'emptyLineAfterYaml',
-      }),
+        optionsKey: 'emptyLineAfterYaml'
+      })
     ];
   }
 }

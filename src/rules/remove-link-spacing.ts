@@ -1,8 +1,8 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {removeSpacesInLinkText} from '../utils/mdast';
-import {removeSpacesInWikiLinkText} from '../utils/regex';
+import { removeSpacesInLinkText } from '../utils/mdast';
+import { removeSpacesInWikiLinkText } from '../utils/regex';
 
 class RemoveLinkSpacingOptions implements Options {}
 
@@ -12,7 +12,7 @@ export default class RemoveLinkSpacing extends RuleBuilder<RemoveLinkSpacingOpti
     super({
       nameKey: 'rules.remove-link-spacing.name',
       descriptionKey: 'rules.remove-link-spacing.description',
-      type: RuleType.SPACING,
+      type: RuleType.SPACING
     });
   }
   get OptionsClass(): new () => RemoveLinkSpacingOptions {
@@ -45,7 +45,7 @@ export default class RemoveLinkSpacing extends RuleBuilder<RemoveLinkSpacingOpti
           [](link_here)
           **Note that image markdown syntax does not get affected even if it is transclusion:**
           ![\there is link text6 ](link_here)
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Space in wiki link text',
@@ -66,8 +66,8 @@ export default class RemoveLinkSpacing extends RuleBuilder<RemoveLinkSpacingOpti
           [[link_here|here is link text5]]
           ![[link_here|here is link text6]]
           [[link_here]]
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<RemoveLinkSpacingOptions>[] {

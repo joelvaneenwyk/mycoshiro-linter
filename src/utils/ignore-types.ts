@@ -1,48 +1,69 @@
-import {obsidianMultilineCommentRegex, tagWithLeadingWhitespaceRegex, wikiLinkRegex, yamlRegex, escapeDollarSigns, genericLinkRegex, urlRegex, anchorTagRegex, templaterCommandRegex, footnoteDefinitionIndicatorAtStartOfLine} from './regex';
-import {getAllCustomIgnoreSectionsInText, getAllTablesInText, getPositions, MDAstTypes} from './mdast';
-import type {Position} from 'unist';
-import {replaceTextBetweenStartAndEndWithNewValue} from './strings';
+import {
+  obsidianMultilineCommentRegex,
+  tagWithLeadingWhitespaceRegex,
+  wikiLinkRegex,
+  yamlRegex,
+  escapeDollarSigns,
+  genericLinkRegex,
+  urlRegex,
+  anchorTagRegex,
+  templaterCommandRegex,
+  footnoteDefinitionIndicatorAtStartOfLine
+} from './regex';
+import { getAllCustomIgnoreSectionsInText, getAllTablesInText, getPositions, MDAstTypes } from './mdast';
+import type { Position } from 'unist';
+import { replaceTextBetweenStartAndEndWithNewValue } from './strings';
 
-export type IgnoreResults = {replacedValues: string[], newText: string};
-export type IgnoreFunction = ((text: string, placeholder: string) => IgnoreResults);
-export type IgnoreType = {replaceAction: MDAstTypes | RegExp | IgnoreFunction, placeholder: string};
+export type IgnoreResults = { replacedValues: string[]; newText: string };
+export type IgnoreFunction = (text: string, placeholder: string) => IgnoreResults;
+export type IgnoreType = { replaceAction: MDAstTypes | RegExp | IgnoreFunction; placeholder: string };
 
 export const IgnoreTypes: Record<string, IgnoreType> = {
   // mdast node types
-  code: {replaceAction: MDAstTypes.Code, placeholder: '{CODE_BLOCK_PLACEHOLDER}'},
-  inlineCode: {replaceAction: MDAstTypes.InlineCode, placeholder: '{INLINE_CODE_BLOCK_PLACEHOLDER}'},
-  image: {replaceAction: MDAstTypes.Image, placeholder: '{IMAGE_PLACEHOLDER}'},
-  thematicBreak: {replaceAction: MDAstTypes.HorizontalRule, placeholder: '{HORIZONTAL_RULE_PLACEHOLDER}'},
-  italics: {replaceAction: MDAstTypes.Italics, placeholder: '{ITALICS_PLACEHOLDER}'},
-  bold: {replaceAction: MDAstTypes.Bold, placeholder: '{STRONG_PLACEHOLDER}'},
-  list: {replaceAction: MDAstTypes.List, placeholder: '{LIST_PLACEHOLDER}'},
-  blockquote: {replaceAction: MDAstTypes.Blockquote, placeholder: '{BLOCKQUOTE_PLACEHOLDER}'},
-  math: {replaceAction: MDAstTypes.Math, placeholder: '{MATH_PLACEHOLDER}'},
-  inlineMath: {replaceAction: MDAstTypes.InlineMath, placeholder: '{INLINE_MATH_PLACEHOLDER}'},
-  html: {replaceAction: MDAstTypes.Html, placeholder: '{HTML_PLACEHOLDER}'},
+  code: { replaceAction: MDAstTypes.Code, placeholder: '{CODE_BLOCK_PLACEHOLDER}' },
+  inlineCode: { replaceAction: MDAstTypes.InlineCode, placeholder: '{INLINE_CODE_BLOCK_PLACEHOLDER}' },
+  image: { replaceAction: MDAstTypes.Image, placeholder: '{IMAGE_PLACEHOLDER}' },
+  thematicBreak: { replaceAction: MDAstTypes.HorizontalRule, placeholder: '{HORIZONTAL_RULE_PLACEHOLDER}' },
+  italics: { replaceAction: MDAstTypes.Italics, placeholder: '{ITALICS_PLACEHOLDER}' },
+  bold: { replaceAction: MDAstTypes.Bold, placeholder: '{STRONG_PLACEHOLDER}' },
+  list: { replaceAction: MDAstTypes.List, placeholder: '{LIST_PLACEHOLDER}' },
+  blockquote: { replaceAction: MDAstTypes.Blockquote, placeholder: '{BLOCKQUOTE_PLACEHOLDER}' },
+  math: { replaceAction: MDAstTypes.Math, placeholder: '{MATH_PLACEHOLDER}' },
+  inlineMath: { replaceAction: MDAstTypes.InlineMath, placeholder: '{INLINE_MATH_PLACEHOLDER}' },
+  html: { replaceAction: MDAstTypes.Html, placeholder: '{HTML_PLACEHOLDER}' },
   // RegExp
-  yaml: {replaceAction: yamlRegex, placeholder: escapeDollarSigns('---\n---')},
-  wikiLink: {replaceAction: wikiLinkRegex, placeholder: '{WIKI_LINK_PLACEHOLDER}'},
-  obsidianMultiLineComments: {replaceAction: obsidianMultilineCommentRegex, placeholder: '{OBSIDIAN_COMMENT_PLACEHOLDER}'},
-  footnoteAtStartOfLine: {replaceAction: footnoteDefinitionIndicatorAtStartOfLine, placeholder: '{FOOTNOTE_AT_START_OF_LINE_PLACEHOLDER}'},
-  footnoteAfterATask: {replaceAction: /- \[.] (\[\^\w+\]) ?([,.;!:?])/gm, placeholder: '{FOOTNOTE_AFTER_A_TASK_PLACEHOLDER}'},
-  url: {replaceAction: urlRegex, placeholder: '{URL_PLACEHOLDER}'},
-  anchorTag: {replaceAction: anchorTagRegex, placeholder: '{ANCHOR_PLACEHOLDER}'},
-  templaterCommand: {replaceAction: templaterCommandRegex, placeholder: '{TEMPLATER_PLACEHOLDER}'},
+  yaml: { replaceAction: yamlRegex, placeholder: escapeDollarSigns('---\n---') },
+  wikiLink: { replaceAction: wikiLinkRegex, placeholder: '{WIKI_LINK_PLACEHOLDER}' },
+  obsidianMultiLineComments: {
+    replaceAction: obsidianMultilineCommentRegex,
+    placeholder: '{OBSIDIAN_COMMENT_PLACEHOLDER}'
+  },
+  footnoteAtStartOfLine: {
+    replaceAction: footnoteDefinitionIndicatorAtStartOfLine,
+    placeholder: '{FOOTNOTE_AT_START_OF_LINE_PLACEHOLDER}'
+  },
+  footnoteAfterATask: {
+    replaceAction: /- \[.\] (\[\^\w+\]) ?([,.;!:?])/g,
+    placeholder: '{FOOTNOTE_AFTER_A_TASK_PLACEHOLDER}'
+  },
+  url: { replaceAction: urlRegex, placeholder: '{URL_PLACEHOLDER}' },
+  anchorTag: { replaceAction: anchorTagRegex, placeholder: '{ANCHOR_PLACEHOLDER}' },
+  templaterCommand: { replaceAction: templaterCommandRegex, placeholder: '{TEMPLATER_PLACEHOLDER}' },
   // custom functions
-  link: {replaceAction: replaceMarkdownLinks, placeholder: '{REGULAR_LINK_PLACEHOLDER}'},
-  tag: {replaceAction: replaceTags, placeholder: '#tag-placeholder'},
-  table: {replaceAction: replaceTables, placeholder: '{TABLE_PLACEHOLDER}'},
-  customIgnore: {replaceAction: replaceCustomIgnore, placeholder: '{CUSTOM_IGNORE_PLACEHOLDER}'},
+  link: { replaceAction: replaceMarkdownLinks, placeholder: '{REGULAR_LINK_PLACEHOLDER}' },
+  tag: { replaceAction: replaceTags, placeholder: '#tag-placeholder' },
+  table: { replaceAction: replaceTables, placeholder: '{TABLE_PLACEHOLDER}' },
+  customIgnore: { replaceAction: replaceCustomIgnore, placeholder: '{CUSTOM_IGNORE_PLACEHOLDER}' }
 } as const;
 
-export function ignoreListOfTypes(ignoreTypes: IgnoreType[], text: string, func: ((text: string) => string)): string {
-  let setOfPlaceholders: {placeholder: string, replacedValues: string[]}[] = [];
+export function ignoreListOfTypes(ignoreTypes: IgnoreType[], text: string, func: (text: string) => string): string {
+  let setOfPlaceholders: { placeholder: string; replacedValues: string[] }[] = [];
 
   // replace ignore blocks with their placeholders
   for (const ignoreType of ignoreTypes) {
     let ignoredResult: IgnoreResults;
-    if (typeof ignoreType.replaceAction === 'string') { // mdast
+    if (typeof ignoreType.replaceAction === 'string') {
+      // mdast
       ignoredResult = replaceMdastType(text, ignoreType.placeholder, ignoreType.replaceAction);
     } else if (ignoreType.replaceAction instanceof RegExp) {
       ignoredResult = replaceRegex(text, ignoreType.placeholder, ignoreType.replaceAction);
@@ -52,7 +73,7 @@ export function ignoreListOfTypes(ignoreTypes: IgnoreType[], text: string, func:
     }
 
     text = ignoredResult.newText;
-    setOfPlaceholders.push({replacedValues: ignoredResult.replacedValues, placeholder: ignoreType.placeholder});
+    setOfPlaceholders.push({ replacedValues: ignoredResult.replacedValues, placeholder: ignoreType.placeholder });
   }
 
   text = func(text);
@@ -60,13 +81,15 @@ export function ignoreListOfTypes(ignoreTypes: IgnoreType[], text: string, func:
   setOfPlaceholders = setOfPlaceholders.reverse();
   // add back values that were replaced with their placeholders
   if (setOfPlaceholders != null && setOfPlaceholders.length > 0) {
-    setOfPlaceholders.forEach((replacedInfo: {placeholder: string, replacedValues: string[], replaceDollarSigns: boolean}) => {
-      replacedInfo.replacedValues.forEach((replacedValue: string) => {
-        // Regex was added to fix capitalization issue  where another rule made the text not match the original place holder's case
-        // see https://github.com/platers/obsidian-linter/issues/201
-        text = text.replace(new RegExp(replacedInfo.placeholder, 'i'), escapeDollarSigns(replacedValue));
-      });
-    });
+    setOfPlaceholders.forEach(
+      (replacedInfo: { placeholder: string; replacedValues: string[]; replaceDollarSigns: boolean }) => {
+        replacedInfo.replacedValues.forEach((replacedValue: string) => {
+          // Regex was added to fix capitalization issue  where another rule made the text not match the original place holder's case
+          // see https://github.com/platers/obsidian-linter/issues/201
+          text = text.replace(new RegExp(replacedInfo.placeholder, 'i'), escapeDollarSigns(replacedValue));
+        });
+      }
+    );
   }
 
   return text;
@@ -93,7 +116,7 @@ function replaceMdastType(text: string, placeholder: string, type: MDAstTypes): 
   // Reverse the replaced values so that they are in the same order as the original text
   replacedValues.reverse();
 
-  return {newText: text, replacedValues};
+  return { newText: text, replacedValues };
 }
 
 /**
@@ -123,7 +146,7 @@ function replaceRegex(text: string, placeholder: string, regex: RegExp): IgnoreR
     }
   }
 
-  return {newText: text, replacedValues: textMatches};
+  return { newText: text, replacedValues: textMatches };
 }
 
 /**
@@ -149,13 +172,18 @@ function replaceMarkdownLinks(text: string, regularLinkPlaceholder: string): Ign
     }
 
     replacedRegularLinks.push(regularLink);
-    text = replaceTextBetweenStartAndEndWithNewValue(text, position.start.offset, position.end.offset, regularLinkPlaceholder);
+    text = replaceTextBetweenStartAndEndWithNewValue(
+      text,
+      position.start.offset,
+      position.end.offset,
+      regularLinkPlaceholder
+    );
   }
 
   // Reverse the regular links so that they are in the same order as the original text
   replacedRegularLinks.reverse();
 
-  return {newText: text, replacedValues: replacedRegularLinks};
+  return { newText: text, replacedValues: replacedRegularLinks };
 }
 
 function replaceTags(text: string, placeholder: string): IgnoreResults {
@@ -166,7 +194,7 @@ function replaceTags(text: string, placeholder: string): IgnoreResults {
     return whitespace + placeholder;
   });
 
-  return {newText: text, replacedValues: replacedValues};
+  return { newText: text, replacedValues: replacedValues };
 }
 
 function replaceTables(text: string, tablePlaceholder: string): IgnoreResults {
@@ -177,12 +205,16 @@ function replaceTables(text: string, tablePlaceholder: string): IgnoreResults {
   const length = replacedTables.length;
   for (const tablePosition of tablePositions) {
     replacedTables[length - 1 - index++] = text.substring(tablePosition.startIndex, tablePosition.endIndex);
-    text = replaceTextBetweenStartAndEndWithNewValue(text, tablePosition.startIndex, tablePosition.endIndex, tablePlaceholder);
+    text = replaceTextBetweenStartAndEndWithNewValue(
+      text,
+      tablePosition.startIndex,
+      tablePosition.endIndex,
+      tablePlaceholder
+    );
   }
 
-  return {newText: text, replacedValues: replacedTables};
+  return { newText: text, replacedValues: replacedTables };
 }
-
 
 function replaceCustomIgnore(text: string, customIgnorePlaceholder: string): IgnoreResults {
   const customIgnorePositions = getAllCustomIgnoreSectionsInText(text);
@@ -191,9 +223,17 @@ function replaceCustomIgnore(text: string, customIgnorePlaceholder: string): Ign
   let index = 0;
   const length = replacedSections.length;
   for (const customIgnorePosition of customIgnorePositions) {
-    replacedSections[length - 1 - index++] = text.substring(customIgnorePosition.startIndex, customIgnorePosition.endIndex);
-    text = replaceTextBetweenStartAndEndWithNewValue(text, customIgnorePosition.startIndex, customIgnorePosition.endIndex, customIgnorePlaceholder);
+    replacedSections[length - 1 - index++] = text.substring(
+      customIgnorePosition.startIndex,
+      customIgnorePosition.endIndex
+    );
+    text = replaceTextBetweenStartAndEndWithNewValue(
+      text,
+      customIgnorePosition.startIndex,
+      customIgnorePosition.endIndex,
+      customIgnorePlaceholder
+    );
   }
 
-  return {newText: text, replacedValues: replacedSections};
+  return { newText: text, replacedValues: replacedSections };
 }

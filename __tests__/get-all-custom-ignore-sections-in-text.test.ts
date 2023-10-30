@@ -1,11 +1,11 @@
-import {getAllCustomIgnoreSectionsInText} from '../src/utils/mdast';
+import { getAllCustomIgnoreSectionsInText } from '../src/utils/mdast';
 import dedent from 'ts-dedent';
 
 type customIgnoresInTextTestCase = {
-  name: string,
-  text: string,
-  expectedCustomIgnoresInText: number,
-  expectedPositions: {startIndex:number, endIndex: number}[]
+  name: string;
+  text: string;
+  expectedCustomIgnoresInText: number;
+  expectedPositions: { startIndex: number; endIndex: number }[];
 };
 
 const getCustomIgnoreSectionsInTextTestCases: customIgnoresInTextTestCase[] = [
@@ -16,7 +16,7 @@ const getCustomIgnoreSectionsInTextTestCases: customIgnoresInTextTestCase[] = [
       Here is some more text
     `,
     expectedCustomIgnoresInText: 0,
-    expectedPositions: [],
+    expectedPositions: []
   },
   {
     name: 'when no custom ignore start indicator is present, no positions are returned even if custom ignore end indicator is present',
@@ -26,7 +26,7 @@ const getCustomIgnoreSectionsInTextTestCases: customIgnoresInTextTestCase[] = [
       Here is some more text
     `,
     expectedCustomIgnoresInText: 0,
-    expectedPositions: [],
+    expectedPositions: []
   },
   {
     name: 'a simple example of a start and end custom ignore indicator results in the proper start and end positions for the ignore section',
@@ -39,7 +39,7 @@ const getCustomIgnoreSectionsInTextTestCases: customIgnoresInTextTestCase[] = [
       More text here...
     `,
     expectedCustomIgnoresInText: 1,
-    expectedPositions: [{startIndex: 18, endIndex: 135}],
+    expectedPositions: [{ startIndex: 18, endIndex: 135 }]
   },
   {
     name: 'when a custom ignore start indicator is not followed by a custom ignore end indicator in the text, the end is considered to be the end of the text',
@@ -51,7 +51,7 @@ const getCustomIgnoreSectionsInTextTestCases: customIgnoresInTextTestCase[] = [
       More text here...
     `,
     expectedCustomIgnoresInText: 1,
-    expectedPositions: [{startIndex: 18, endIndex: 129}],
+    expectedPositions: [{ startIndex: 18, endIndex: 129 }]
   },
   {
     name: 'when a custom ignore start indicator shows up midline, it ignores the part in question',
@@ -62,7 +62,7 @@ const getCustomIgnoreSectionsInTextTestCases: customIgnoresInTextTestCase[] = [
       More text here...
     `,
     expectedCustomIgnoresInText: 1,
-    expectedPositions: [{startIndex: 17, endIndex: 87}],
+    expectedPositions: [{ startIndex: 17, endIndex: 87 }]
   },
   {
     name: 'when a custom ignore start indicator does not follow the exact syntax, it is counted as existing when it is a single-line comment',
@@ -73,7 +73,7 @@ const getCustomIgnoreSectionsInTextTestCases: customIgnoresInTextTestCase[] = [
       More text here...
     `,
     expectedCustomIgnoresInText: 1,
-    expectedPositions: [{startIndex: 17, endIndex: 109}],
+    expectedPositions: [{ startIndex: 17, endIndex: 109 }]
   },
   {
     name: 'multiple matches can be returned',
@@ -91,9 +91,13 @@ const getCustomIgnoreSectionsInTextTestCases: customIgnoresInTextTestCase[] = [
       Finish
     `,
     expectedCustomIgnoresInText: 2,
-    expectedPositions: [{startIndex: 178, endIndex: 316}, {startIndex: 17, endIndex: 87}],
+    expectedPositions: [
+      { startIndex: 178, endIndex: 316 },
+      { startIndex: 17, endIndex: 87 }
+    ]
   },
-  { // relates to https://github.com/platers/obsidian-linter/issues/733
+  {
+    // relates to https://github.com/platers/obsidian-linter/issues/733
     name: 'multiple matches can be returned',
     text: dedent`
       content
@@ -121,8 +125,11 @@ const getCustomIgnoreSectionsInTextTestCases: customIgnoresInTextTestCase[] = [
       content
     `,
     expectedCustomIgnoresInText: 2,
-    expectedPositions: [{startIndex: 86, endIndex: 152}, {startIndex: 9, endIndex: 75}],
-  },
+    expectedPositions: [
+      { startIndex: 86, endIndex: 152 },
+      { startIndex: 9, endIndex: 75 }
+    ]
+  }
 ];
 
 describe('Get All Custom Ignore Sections in Text', () => {

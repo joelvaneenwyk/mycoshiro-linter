@@ -1,13 +1,13 @@
-import {Command} from 'obsidian';
-import {RulesRunner} from '../src/rules-runner';
-import {CustomReplace} from '../src/ui/linter-components/custom-replace-option';
+import { Command } from 'obsidian';
+import { RulesRunner } from '../src/rules-runner';
+import { CustomReplace } from '../src/ui/linter-components/custom-replace-option';
 import dedent from 'ts-dedent';
 
 const rulesRunner = new RulesRunner();
 const appCommandsMock = {
   numberOfCommands: 0,
   numberOfHitsPerId: new Map<string, number>(),
-  executeCommandById: function(id: string): void {
+  executeCommandById: function (id: string): void {
     this.numberOfCommands += 1;
     if (!this.numberOfHitsPerId.has(id)) {
       this.numberOfHitsPerId.set(id, 1);
@@ -17,25 +17,25 @@ const appCommandsMock = {
   },
   commands: {
     'editor:save-file': {
-      callback: () => {},
-    },
+      callback: () => {}
+    }
   },
   listCommands: (): Command[] => {
     return [];
   },
-  resetStats: function() {
+  resetStats: function () {
     this.numberOfCommands = 0;
     this.numberOfHitsPerId = new Map<string, number>();
-  },
+  }
 };
 
 type CustomCommandTestCase = {
-  testName: string,
-  listOfCommands: Command[],
+  testName: string;
+  listOfCommands: Command[];
   expectedCommandCount: Map<string, number>;
   expectedNumberOfCommandsRun: number;
-  skipFileValue: boolean
-}
+  skipFileValue: boolean;
+};
 
 const customCommandTestCases: CustomCommandTestCase[] = [
   {
@@ -43,71 +43,67 @@ const customCommandTestCases: CustomCommandTestCase[] = [
     listOfCommands: [],
     expectedCommandCount: new Map<string, number>(),
     expectedNumberOfCommandsRun: 0,
-    skipFileValue: false,
+    skipFileValue: false
   },
   {
     testName: 'When an app lint command is run it should be executed',
     listOfCommands: [
-      {id: 'first id', name: 'command name'},
-      {id: 'second id', name: 'command name 2'},
+      { id: 'first id', name: 'command name' },
+      { id: 'second id', name: 'command name 2' }
     ],
     expectedCommandCount: new Map([
       ['first id', 1],
-      ['second id', 1],
+      ['second id', 1]
     ]),
     expectedNumberOfCommandsRun: 2,
-    skipFileValue: false,
+    skipFileValue: false
   },
   {
     testName: 'A lint command with an empty id should not get run',
-    listOfCommands: [
-      {id: '', name: ''},
-    ],
-    expectedCommandCount: new Map([
-      ['', 0],
-    ]),
+    listOfCommands: [{ id: '', name: '' }],
+    expectedCommandCount: new Map([['', 0]]),
     expectedNumberOfCommandsRun: 0,
-    skipFileValue: false,
+    skipFileValue: false
   },
   {
     testName: 'When custom commands are run with two of the same command, the second command instance is skipped',
     listOfCommands: [
-      {id: 'first id', name: 'command name'},
-      {id: 'first id', name: 'command name'},
+      { id: 'first id', name: 'command name' },
+      { id: 'first id', name: 'command name' }
     ],
-    expectedCommandCount: new Map([
-      ['first id', 1],
-    ]),
+    expectedCommandCount: new Map([['first id', 1]]),
     expectedNumberOfCommandsRun: 1,
-    skipFileValue: false,
+    skipFileValue: false
   },
   {
     testName: 'When the file is listed to be skipped, no custom commands are run',
     listOfCommands: [
-      {id: 'first id', name: 'command name'},
-      {id: 'second id', name: 'command name 2'},
+      { id: 'first id', name: 'command name' },
+      { id: 'second id', name: 'command name 2' }
     ],
     expectedCommandCount: new Map<string, number>(),
     expectedNumberOfCommandsRun: 0,
-    skipFileValue: true,
-  },
+    skipFileValue: true
+  }
 ];
 
-
 type CustomReplaceTestCase = {
-  testName: string,
-  listOfRegexReplacements: CustomReplace[],
-  before: string,
-  after: string,
-}
+  testName: string;
+  listOfRegexReplacements: CustomReplace[];
+  before: string;
+  after: string;
+};
 
 const customReplaceTestCases: CustomReplaceTestCase[] = [
   {
     testName: 'A custom replace with no find value does not affect the text',
     listOfRegexReplacements: [
       {
-        label: '', find: '', replace: 'hello', flags: 'g',
-      },
+        label: '',
+        find: '',
+        replace: 'hello',
+        flags: 'g'
+      }
     ],
     before: dedent`
       How does this look?
@@ -116,17 +112,23 @@ const customReplaceTestCases: CustomReplaceTestCase[] = [
     after: dedent`
       How does this look?
       Did it stay the same?
-    `,
+    `
   },
   {
     testName: 'A custom replace with a null or undefined find value does not affect the text',
     listOfRegexReplacements: [
       {
-        label: '', find: 'How', replace: null, flags: '',
+        label: '',
+        find: 'How',
+        replace: null,
+        flags: ''
       },
       {
-        label: 'Replace 2', find: 'look', replace: undefined, flags: '',
-      },
+        label: 'Replace 2',
+        find: 'look',
+        replace: undefined,
+        flags: ''
+      }
     ],
     before: dedent`
       How does this look?
@@ -135,14 +137,17 @@ const customReplaceTestCases: CustomReplaceTestCase[] = [
     after: dedent`
       How does this look?
       Did it stay the same?
-    `,
+    `
   },
   {
     testName: 'A custom replace searching for multiple blank lines in a row works (has proper escaping of a slash)',
     listOfRegexReplacements: [
       {
-        label: 'condense multiple blanks into 1', find: '\n{3,}', replace: '\n\n', flags: 'g',
-      },
+        label: 'condense multiple blanks into 1',
+        find: '\n{3,}',
+        replace: '\n\n',
+        flags: 'g'
+      }
     ],
     before: dedent`
       How does this look?
@@ -154,14 +159,17 @@ const customReplaceTestCases: CustomReplaceTestCase[] = [
       How does this look?
       ${''}
       Did it stay the same?
-    `,
+    `
   },
   {
     testName: 'A custom replace using capture groups works',
     listOfRegexReplacements: [
       {
-        label: 'Remove a question mark proceeded by a k or an e', find: '(k|e)(\\?)', replace: '$1', flags: 'g',
-      },
+        label: 'Remove a question mark proceeded by a k or an e',
+        find: '(k|e)(\\?)',
+        replace: '$1',
+        flags: 'g'
+      }
     ],
     before: dedent`
       How does this look?
@@ -170,14 +178,17 @@ const customReplaceTestCases: CustomReplaceTestCase[] = [
     after: dedent`
       How does this look
       Did it stay the same
-    `,
+    `
   },
   {
     testName: 'A custom replace using ^ and $ works',
     listOfRegexReplacements: [
       {
-        label: 'Replace Did at the start of a line or look? at the end of a line', find: '(^Did)|(look\\?$)', replace: 'swapped', flags: 'gm',
-      },
+        label: 'Replace Did at the start of a line or look? at the end of a line',
+        find: '(^Did)|(look\\?$)',
+        replace: 'swapped',
+        flags: 'gm'
+      }
     ],
     before: dedent`
       How does this look?
@@ -186,14 +197,18 @@ const customReplaceTestCases: CustomReplaceTestCase[] = [
     after: dedent`
       How does this swapped
       swapped it stay the same?
-    `,
+    `
   },
-  { // accounts for https://github.com/platers/obsidian-linter/issues/739
+  {
+    // accounts for https://github.com/platers/obsidian-linter/issues/739
     testName: 'A custom replace should respect linter ignore ranges',
     listOfRegexReplacements: [
       {
-        label: 'Replace Did at the start of a line or look? at the end of a line', find: '(^Did)|(look\\?$)', replace: 'swapped', flags: 'gm',
-      },
+        label: 'Replace Did at the start of a line or look? at the end of a line',
+        find: '(^Did)|(look\\?$)',
+        replace: 'swapped',
+        flags: 'gm'
+      }
     ],
     before: dedent`
       How does this look?
@@ -206,8 +221,8 @@ const customReplaceTestCases: CustomReplaceTestCase[] = [
       <!-- linter-disable -->
       Did it stay the same?
       <!-- linter-enable -->
-    `,
-  },
+    `
+  }
 ];
 
 describe('Rules Runner', () => {
@@ -220,7 +235,9 @@ describe('Rules Runner', () => {
 
       expect(appCommandsMock.numberOfCommands).toEqual(testCase.expectedNumberOfCommandsRun);
       for (const command of testCase.listOfCommands) {
-        expect(appCommandsMock.numberOfHitsPerId.get(command.id) ?? 0).toEqual(testCase.expectedCommandCount.get(command.id) ?? 0);
+        expect(appCommandsMock.numberOfHitsPerId.get(command.id) ?? 0).toEqual(
+          testCase.expectedCommandCount.get(command.id) ?? 0
+        );
       }
     });
   }

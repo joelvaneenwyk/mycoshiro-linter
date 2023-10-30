@@ -1,12 +1,12 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {IgnoreTypes} from '../utils/ignore-types';
-import {makeSureMathBlockIndicatorsAreOnTheirOwnLines} from '../utils/mdast';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { makeSureMathBlockIndicatorsAreOnTheirOwnLines } from '../utils/mdast';
 
 class MoveMathBlockIndicatorsToOwnLineOptions implements Options {
   @RuleBuilder.noSettingControl()
-    minimumNumberOfDollarSignsToBeAMathBlock: number = 2;
+  minimumNumberOfDollarSignsToBeAMathBlock: number = 2;
 }
 
 @RuleBuilder.register
@@ -16,8 +16,7 @@ export default class MoveMathBlockIndicatorsToOwnLine extends RuleBuilder<MoveMa
       nameKey: 'rules.move-math-block-indicators-to-their-own-line.name',
       descriptionKey: 'rules.move-math-block-indicators-to-their-own-line.description',
       type: RuleType.SPACING,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.inlineCode],
-      hasSpecialExecutionOrder: true,
+      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.inlineCode]
     });
   }
   get OptionsClass(): new () => MoveMathBlockIndicatorsToOwnLineOptions {
@@ -29,7 +28,8 @@ export default class MoveMathBlockIndicatorsToOwnLine extends RuleBuilder<MoveMa
   get exampleBuilders(): ExampleBuilder<MoveMathBlockIndicatorsToOwnLineOptions>[] {
     return [
       new ExampleBuilder({
-        description: 'Moving math block indicator to its own line when `Number of Dollar Signs to Indicate a Math Block` = 2',
+        description:
+          'Moving math block indicator to its own line when `Number of Dollar Signs to Indicate a Math Block` = 2',
         before: dedent`
           This is left alone:
           $$
@@ -47,10 +47,11 @@ export default class MoveMathBlockIndicatorsToOwnLine extends RuleBuilder<MoveMa
           $$
           L = \\frac{1}{2} \\rho v^2 S C_L
           $$
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Moving math block indicator to its own line when `Number of Dollar Signs to Indicate a Math Block` = 3 and opening indicator is on the same line as the start of the content',
+        description:
+          'Moving math block indicator to its own line when `Number of Dollar Signs to Indicate a Math Block` = 3 and opening indicator is on the same line as the start of the content',
         before: dedent`
           $$$\\boldsymbol{a}=\\begin{bmatrix}a_x \\\\ a_y\\end{bmatrix}
           $$$
@@ -59,10 +60,11 @@ export default class MoveMathBlockIndicatorsToOwnLine extends RuleBuilder<MoveMa
           $$$
           \\boldsymbol{a}=\\begin{bmatrix}a_x \\\\ a_y\\end{bmatrix}
           $$$
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Moving math block indicator to its own line when `Number of Dollar Signs to Indicate a Math Block` = 2 and ending indicator is on the same line as the ending line of the content',
+        description:
+          'Moving math block indicator to its own line when `Number of Dollar Signs to Indicate a Math Block` = 2 and ending indicator is on the same line as the ending line of the content',
         before: dedent`
           $$
           \\boldsymbol{a}=\\begin{bmatrix}a_x \\\\ a_y\\end{bmatrix}$$
@@ -71,8 +73,8 @@ export default class MoveMathBlockIndicatorsToOwnLine extends RuleBuilder<MoveMa
           $$
           \\boldsymbol{a}=\\begin{bmatrix}a_x \\\\ a_y\\end{bmatrix}
           $$
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<MoveMathBlockIndicatorsToOwnLineOptions>[] {

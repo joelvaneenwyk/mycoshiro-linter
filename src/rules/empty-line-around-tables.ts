@@ -1,8 +1,8 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {IgnoreTypes} from '../utils/ignore-types';
-import {ensureEmptyLinesAroundTables} from '../utils/regex';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { ensureEmptyLinesAroundTables } from '../utils/regex';
 
 class EmptyLineAroundTablesOptions implements Options {}
 
@@ -13,7 +13,14 @@ export default class EmptyLineAroundTables extends RuleBuilder<EmptyLineAroundTa
       nameKey: 'rules.empty-line-around-tables.name',
       descriptionKey: 'rules.empty-line-around-tables.description',
       type: RuleType.SPACING,
-      ruleIgnoreTypes: [IgnoreTypes.yaml, IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.inlineMath, IgnoreTypes.wikiLink, IgnoreTypes.link],
+      ruleIgnoreTypes: [
+        IgnoreTypes.yaml,
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.inlineMath,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.link
+      ]
     });
   }
   get OptionsClass(): new () => EmptyLineAroundTablesOptions {
@@ -48,7 +55,7 @@ export default class EmptyLineAroundTables extends RuleBuilder<EmptyLineAroundTa
           # Heading
           ${''}
           **Note that text directly following a table is considered part of a table according to github markdown**
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Tables that end a document do not get an empty line after them.',
@@ -68,10 +75,11 @@ export default class EmptyLineAroundTables extends RuleBuilder<EmptyLineAroundTa
           | foo      | bar      |
           | baz      | qux      |
           | quux     | quuz     |
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Tables that are not at the start or the end of the document will have an empty line added before and after them',
+        description:
+          'Tables that are not at the start or the end of the document will have an empty line added before and after them',
         before: dedent`
           # Table 1
           | Column 1 | Column 2 | Column 3 |
@@ -105,7 +113,7 @@ export default class EmptyLineAroundTables extends RuleBuilder<EmptyLineAroundTa
           ${''}
           # Header for more content
           New paragraph.
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Tables in callouts or blockquotes have the appropriately formatted blank lines added',
@@ -144,8 +152,8 @@ export default class EmptyLineAroundTables extends RuleBuilder<EmptyLineAroundTa
           > > | foo      | bar      | blob     |
           > > | baz      | qux      | trust    |
           > > | quux     | quuz     | glob     |
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<EmptyLineAroundTablesOptions>[] {

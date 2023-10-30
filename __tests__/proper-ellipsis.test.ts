@@ -1,5 +1,5 @@
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 import ProperEllipsis from '../src/rules/proper-ellipsis';
 
 ruleTest({
@@ -14,7 +14,7 @@ ruleTest({
       after: dedent`
         ![title](a...b.md)
         ![](c...d.png)
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

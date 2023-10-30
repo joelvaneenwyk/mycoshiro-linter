@@ -1,6 +1,6 @@
-import {formatYAML} from '../utils/yaml';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {BooleanOptionBuilder, ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { formatYAML } from '../utils/yaml';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { BooleanOptionBuilder, ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
 
 class CompactYamlOptions implements Options {
@@ -13,7 +13,7 @@ export default class CompactYaml extends RuleBuilder<CompactYamlOptions> {
     super({
       nameKey: 'rules.compact-yaml.name',
       descriptionKey: 'rules.compact-yaml.description',
-      type: RuleType.SPACING,
+      type: RuleType.SPACING
     });
   }
   get OptionsClass(): new () => CompactYamlOptions {
@@ -49,7 +49,7 @@ export default class CompactYaml extends RuleBuilder<CompactYamlOptions> {
           ${''}
           title: unchanged without inner new lines turned on
           ---
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Remove blank lines anywhere in YAML with inner new lines set to true',
@@ -80,9 +80,9 @@ export default class CompactYaml extends RuleBuilder<CompactYamlOptions> {
           Body content here.
         `,
         options: {
-          innerNewLines: true,
-        },
-      }),
+          innerNewLines: true
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<CompactYamlOptions>[] {
@@ -91,8 +91,8 @@ export default class CompactYaml extends RuleBuilder<CompactYamlOptions> {
         OptionsClass: CompactYamlOptions,
         nameKey: 'rules.compact-yaml.inner-new-lines.name',
         descriptionKey: 'rules.compact-yaml.inner-new-lines.description',
-        optionsKey: 'innerNewLines',
-      }),
+        optionsKey: 'innerNewLines'
+      })
     ];
   }
 }

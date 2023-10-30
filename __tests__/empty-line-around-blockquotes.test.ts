@@ -1,11 +1,12 @@
 import EmptyLineAroundBlockquotes from '../src/rules/empty-line-around-blockquotes';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: EmptyLineAroundBlockquotes,
   testCases: [
-    { // accounts for https://github.com/platers/obsidian-linter/issues/668
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/668
       testName: 'Make sure that consecutive blockquotes are not merged when a blank line is between them',
       before: dedent`
         > [!quote] Title 1
@@ -20,9 +21,10 @@ ruleTest({
         ${''}
         > [!quote] Title 2
         > The quote 2
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/668
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/668
       testName: 'Make sure that consecutive blockquotes are not merged when multiple blank lines are between them',
       before: dedent`
         > [!quote] title 1
@@ -38,9 +40,10 @@ ruleTest({
         ${''}
         > [!quote] title 2
         > the quote 2
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/668
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/668
       testName: 'Make sure that consecutive blockquotes are not merged when a blank line is between them',
       before: dedent`
         > [!quote] Title 1
@@ -61,9 +64,10 @@ ruleTest({
         ${''}
         > [!quote] Title 3
         > The quote 3
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/668
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/668
       testName: 'Make sure that consecutive blockquotes are not merged when multiple blank lines are between them',
       before: dedent`
         > [!quote] Title 1
@@ -88,10 +92,12 @@ ruleTest({
         ${''}
         > [!quote] Title 3
         > The quote 3
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/684
-      testName: 'Make sure that consecutive blockquotes do not get merged when the first one ends with an empty blockquote line',
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/684
+      testName:
+        'Make sure that consecutive blockquotes do not get merged when the first one ends with an empty blockquote line',
       before: dedent`
         > [!FAQ] Title
         > 
@@ -105,10 +111,12 @@ ruleTest({
         ${''}
         > [!NOTES] Title
         > Content
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/684
-      testName: 'Make sure that consecutive blockquotes do not get merged when the second one starts with an empty blockquote line',
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/684
+      testName:
+        'Make sure that consecutive blockquotes do not get merged when the second one starts with an empty blockquote line',
       before: dedent`
         > [!FAQ] Title
         > Content here
@@ -124,10 +132,12 @@ ruleTest({
         >
         > [!NOTES] Title
         > Content
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/684
-      testName: 'Make sure that a nested set of callouts are not merged when only a blank lines is between them with no content',
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/684
+      testName:
+        'Make sure that a nested set of callouts are not merged when only a blank lines is between them with no content',
       before: dedent`
         > [!multi-column]
         >
@@ -165,7 +175,7 @@ ruleTest({
         >> - [x] Define Use Case
         >> - [ ] Craft User Story
         >> - [ ] Develop draft sketches
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

@@ -1,6 +1,6 @@
 import EmphasisStyle from '../src/rules/emphasis-style';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: EmphasisStyle,
@@ -14,7 +14,7 @@ ruleTest({
       after: dedent`
         - $m_{pq} = \int^{\infty}_{-\infty}\int^{\infty}_{-\infty} x^p y^q f(x,y) dxdy$
       `,
-      options: {style: 'asterisk'},
-    },
-  ],
+      options: { style: 'asterisk' }
+    }
+  ]
 });

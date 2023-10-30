@@ -1,14 +1,11 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase, TextAreaOptionBuilder} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase, TextAreaOptionBuilder } from './rule-builder';
 import dedent from 'ts-dedent';
-import {formatYAML, initYAML, loadYAML} from '../utils/yaml';
-import {escapeDollarSigns, yamlRegex} from '../utils/regex';
+import { formatYAML, initYAML, loadYAML } from '../utils/yaml';
+import { escapeDollarSigns, yamlRegex } from '../utils/regex';
 
 class InsertYamlAttributesOptions implements Options {
-  textToInsert: string[] = [
-    'aliases: ',
-    'tags: ',
-  ];
+  textToInsert: string[] = ['aliases: ', 'tags: '];
 }
 
 @RuleBuilder.register
@@ -17,7 +14,7 @@ export default class InsertYamlAttributes extends RuleBuilder<InsertYamlAttribut
     super({
       nameKey: 'rules.insert-yaml-attributes.name',
       descriptionKey: 'rules.insert-yaml-attributes.description',
-      type: RuleType.YAML,
+      type: RuleType.YAML
     });
   }
   get OptionsClass(): new () => InsertYamlAttributesOptions {
@@ -56,13 +53,9 @@ export default class InsertYamlAttributes extends RuleBuilder<InsertYamlAttribut
           ---
         `,
         options: {
-          textToInsert: [
-            'aliases:',
-            'tags: doc',
-            'animal: dog',
-          ],
-        },
-      }),
+          textToInsert: ['aliases:', 'tags: doc', 'animal: dog']
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<InsertYamlAttributesOptions>[] {
@@ -71,8 +64,8 @@ export default class InsertYamlAttributes extends RuleBuilder<InsertYamlAttribut
         OptionsClass: InsertYamlAttributesOptions,
         nameKey: 'rules.insert-yaml-attributes.text-to-insert.name',
         descriptionKey: 'rules.insert-yaml-attributes.text-to-insert.description',
-        optionsKey: 'textToInsert',
-      }),
+        optionsKey: 'textToInsert'
+      })
     ];
   }
 }

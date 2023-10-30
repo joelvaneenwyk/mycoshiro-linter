@@ -1,6 +1,6 @@
 import dedent from 'ts-dedent';
-import {Example, rules, RuleType} from '../src/rules';
-import {yamlRegex, escapeRegExp} from '../src/utils/regex';
+import { Example, rules, RuleType } from '../src/rules';
+import { yamlRegex, escapeRegExp } from '../src/utils/regex';
 import '../src/rules-registry';
 
 describe('Examples pass', () => {
@@ -27,7 +27,9 @@ describe('Augmented examples pass', () => {
           `;
 
           const before = yaml + example.before;
-          expect(rule.apply(before, example.options)).toMatch(new RegExp(`${escapeRegExp(yaml)}\n?${escapeRegExp(example.after)}`));
+          expect(rule.apply(before, example.options)).toMatch(
+            new RegExp(`${escapeRegExp(yaml)}\n?${escapeRegExp(example.after)}`)
+          );
         }
       });
     });

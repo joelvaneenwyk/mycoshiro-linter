@@ -1,8 +1,8 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {makeEmphasisOrBoldConsistent, MDAstTypes} from '../utils/mdast';
+import { makeEmphasisOrBoldConsistent, MDAstTypes } from '../utils/mdast';
 
 type StrongStyleValues = 'consistent' | 'asterisk' | 'underscore';
 
@@ -17,7 +17,15 @@ export default class StrongStyle extends RuleBuilder<StrongStyleOptions> {
       nameKey: 'rules.strong-style.name',
       descriptionKey: 'rules.strong-style.description',
       type: RuleType.CONTENT,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag, IgnoreTypes.math, IgnoreTypes.inlineMath],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag,
+        IgnoreTypes.math,
+        IgnoreTypes.inlineMath
+      ]
     });
   }
   get OptionsClass(): new () => StrongStyleOptions {
@@ -29,7 +37,7 @@ export default class StrongStyle extends RuleBuilder<StrongStyleOptions> {
   get exampleBuilders(): ExampleBuilder<StrongStyleOptions>[] {
     return [
       new ExampleBuilder<StrongStyleOptions>({
-        description: 'Strong indicators should use underscores when style is set to \'underscore\'',
+        description: "Strong indicators should use underscores when style is set to 'underscore'",
         before: dedent`
           # Strong/Bold Cases
           ${''}
@@ -63,11 +71,11 @@ export default class StrongStyle extends RuleBuilder<StrongStyleOptions> {
           * List Item2
         `,
         options: {
-          style: 'underscore',
-        },
+          style: 'underscore'
+        }
       }),
       new ExampleBuilder<StrongStyleOptions>({
-        description: 'Strong indicators should use asterisks when style is set to \'asterisk\'',
+        description: "Strong indicators should use asterisks when style is set to 'asterisk'",
         before: dedent`
           # Strong/Bold Cases
           ${''}
@@ -95,11 +103,12 @@ export default class StrongStyle extends RuleBuilder<StrongStyleOptions> {
           _Test emphasis_
         `,
         options: {
-          style: 'asterisk',
-        },
+          style: 'asterisk'
+        }
       }),
       new ExampleBuilder<StrongStyleOptions>({
-        description: 'Strong indicators should use consistent style based on first strong indicator in a file when style is set to \'consistent\'',
+        description:
+          "Strong indicators should use consistent style based on first strong indicator in a file when style is set to 'consistent'",
         before: dedent`
           # Strong First Strong Is an Asterisk
           ${''}
@@ -125,11 +134,12 @@ export default class StrongStyle extends RuleBuilder<StrongStyleOptions> {
           **Test bold**
         `,
         options: {
-          style: 'consistent',
-        },
+          style: 'consistent'
+        }
       }),
       new ExampleBuilder<StrongStyleOptions>({
-        description: 'Strong indicators should use consistent style based on first strong indicator in a file when style is set to \'consistent\'',
+        description:
+          "Strong indicators should use consistent style based on first strong indicator in a file when style is set to 'consistent'",
         before: dedent`
           # Strong First Strong Is an Underscore
           ${''}
@@ -155,9 +165,9 @@ export default class StrongStyle extends RuleBuilder<StrongStyleOptions> {
           __Test bold__
         `,
         options: {
-          style: 'consistent',
-        },
-      }),
+          style: 'consistent'
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<StrongStyleOptions>[] {
@@ -170,18 +180,19 @@ export default class StrongStyle extends RuleBuilder<StrongStyleOptions> {
         records: [
           {
             value: 'consistent',
-            description: 'Makes sure the first instance of strong is the style that will be used throughout the document',
+            description:
+              'Makes sure the first instance of strong is the style that will be used throughout the document'
           },
           {
             value: 'asterisk',
-            description: 'Makes sure ** is the strong indicator',
+            description: 'Makes sure ** is the strong indicator'
           },
           {
             value: 'underscore',
-            description: 'Makes sure __ is the strong indicator',
-          },
-        ],
-      }),
+            description: 'Makes sure __ is the strong indicator'
+          }
+        ]
+      })
     ];
   }
 }

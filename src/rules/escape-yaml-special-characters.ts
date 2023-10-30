@@ -1,11 +1,11 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {BooleanOptionBuilder, ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { BooleanOptionBuilder, ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {escapeStringIfNecessaryAndPossible, formatYAML, QuoteCharacter} from '../utils/yaml';
+import { escapeStringIfNecessaryAndPossible, formatYAML, QuoteCharacter } from '../utils/yaml';
 
 class EscapeYamlSpecialCharactersOptions implements Options {
   @RuleBuilder.noSettingControl()
-    defaultEscapeCharacter?: QuoteCharacter = '"';
+  defaultEscapeCharacter?: QuoteCharacter = '"';
   tryToEscapeSingleLineArrays?: boolean = false;
 }
 
@@ -16,7 +16,7 @@ export default class EscapeYamlSpecialCharacters extends RuleBuilder<EscapeYamlS
       nameKey: 'rules.escape-yaml-special-characters.name',
       descriptionKey: 'rules.escape-yaml-special-characters.description',
       type: RuleType.YAML,
-      hasSpecialExecutionOrder: true,
+      hasSpecialExecutionOrder: true
     });
   }
   get OptionsClass(): new () => EscapeYamlSpecialCharactersOptions {
@@ -45,16 +45,23 @@ export default class EscapeYamlSpecialCharacters extends RuleBuilder<EscapeYamlS
         let valueStartIndex = 1;
         if (!startsWithDash) {
           valueStartIndex += firstColonIndex;
-        } else if (firstColonIndex !== -1 && i + 1 < yamlLineCount) { // account for arrays of dictionaries
+        } else if (firstColonIndex !== -1 && i + 1 < yamlLineCount) {
+          // account for arrays of dictionaries
           const fullLine = yamlLines[i];
           let expectedIndentationToBeAnArrayOfDictionaries = fullLine.indexOf('-') + 1;
-          while (expectedIndentationToBeAnArrayOfDictionaries < fullLine.length && fullLine.charAt(expectedIndentationToBeAnArrayOfDictionaries) === ' ') {
+          while (
+            expectedIndentationToBeAnArrayOfDictionaries < fullLine.length &&
+            fullLine.charAt(expectedIndentationToBeAnArrayOfDictionaries) === ' '
+          ) {
             expectedIndentationToBeAnArrayOfDictionaries++;
           }
 
           let actualIndentationOfNextLine = 0;
-          const nextLine = yamlLines[i+1];
-          while (actualIndentationOfNextLine < nextLine.length && nextLine.charAt(actualIndentationOfNextLine) === ' ') {
+          const nextLine = yamlLines[i + 1];
+          while (
+            actualIndentationOfNextLine < nextLine.length &&
+            nextLine.charAt(actualIndentationOfNextLine) === ' '
+          ) {
             actualIndentationOfNextLine++;
           }
 
@@ -84,7 +91,10 @@ export default class EscapeYamlSpecialCharacters extends RuleBuilder<EscapeYamlS
                 arrayItem = arrayItem.substring(0, arrayItem.length - 1).trimEnd();
               }
 
-              arrayItems[j] = arrayItems[j].replace(arrayItem, escapeStringIfNecessaryAndPossible(arrayItem, options.defaultEscapeCharacter, false, true));
+              arrayItems[j] = arrayItems[j].replace(
+                arrayItem,
+                escapeStringIfNecessaryAndPossible(arrayItem, options.defaultEscapeCharacter, false, true)
+              );
             }
 
             yamlLines[i] = yamlLines[i].replace(value, '[' + arrayItems.join(',') + ']');
@@ -93,7 +103,10 @@ export default class EscapeYamlSpecialCharacters extends RuleBuilder<EscapeYamlS
           continue;
         }
 
-        yamlLines[i] = yamlLines[i].replace(value, escapeStringIfNecessaryAndPossible(value, options.defaultEscapeCharacter, false, true));
+        yamlLines[i] = yamlLines[i].replace(
+          value,
+          escapeStringIfNecessaryAndPossible(value, options.defaultEscapeCharacter, false, true)
+        );
       }
 
       return yamlLines.join('\n');
@@ -114,7 +127,7 @@ export default class EscapeYamlSpecialCharacters extends RuleBuilder<EscapeYamlS
           key: value
           otherKey: []
           ---
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'YAML with unescaped values',
@@ -139,10 +152,10 @@ export default class EscapeYamlSpecialCharacters extends RuleBuilder<EscapeYamlS
           sixthKey: colon:between characters is fine
           otherKey: []
           ---
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'YAML with unescaped values in an expanded list with `Default Escape Character = \'`',
+        description: "YAML with unescaped values in an expanded list with `Default Escape Character = '`",
         before: dedent`
           ---
           key:
@@ -166,8 +179,8 @@ export default class EscapeYamlSpecialCharacters extends RuleBuilder<EscapeYamlS
           ---
         `,
         options: {
-          defaultEscapeCharacter: '\'',
-        },
+          defaultEscapeCharacter: "'"
+        }
       }),
       new ExampleBuilder({
         description: 'YAML with unescaped values with arrays',
@@ -190,9 +203,9 @@ export default class EscapeYamlSpecialCharacters extends RuleBuilder<EscapeYamlS
           _Note that escaped commas in a YAML array will be treated as a separator._
         `,
         options: {
-          tryToEscapeSingleLineArrays: true,
-        },
-      }),
+          tryToEscapeSingleLineArrays: true
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<EscapeYamlSpecialCharactersOptions>[] {
@@ -201,8 +214,8 @@ export default class EscapeYamlSpecialCharacters extends RuleBuilder<EscapeYamlS
         OptionsClass: EscapeYamlSpecialCharactersOptions,
         nameKey: 'rules.escape-yaml-special-characters.try-to-escape-single-line-arrays.name',
         descriptionKey: 'rules.escape-yaml-special-characters.try-to-escape-single-line-arrays.description',
-        optionsKey: 'tryToEscapeSingleLineArrays',
-      }),
+        optionsKey: 'tryToEscapeSingleLineArrays'
+      })
     ];
   }
 }

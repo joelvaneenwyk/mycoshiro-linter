@@ -1,4 +1,4 @@
-import {Component, MarkdownRenderer} from 'obsidian';
+import { Component, MarkdownRenderer } from 'obsidian';
 
 export function parseTextToHTMLWithoutOuterParagraph(text: string, containerEl: HTMLElement, component: Component) {
   MarkdownRenderer.renderMarkdown(text, containerEl, '', component);

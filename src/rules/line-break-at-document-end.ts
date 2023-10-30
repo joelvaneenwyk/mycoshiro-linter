@@ -1,5 +1,5 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
 
 class LineBreakAtDocumentEndOptions implements Options {}
@@ -10,7 +10,7 @@ export default class LineBreakAtDocumentEnd extends RuleBuilder<LineBreakAtDocum
     super({
       nameKey: 'rules.line-break-at-document-end.name',
       descriptionKey: 'rules.line-break-at-document-end.description',
-      type: RuleType.SPACING,
+      type: RuleType.SPACING
     });
   }
   get OptionsClass(): new () => LineBreakAtDocumentEndOptions {
@@ -31,7 +31,7 @@ export default class LineBreakAtDocumentEnd extends RuleBuilder<LineBreakAtDocum
         after: dedent`
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           ${''}
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Removing trailing line breaks to the end of the document, except one.',
@@ -44,8 +44,8 @@ export default class LineBreakAtDocumentEnd extends RuleBuilder<LineBreakAtDocum
         after: dedent`
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           ${''}
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<LineBreakAtDocumentEndOptions>[] {

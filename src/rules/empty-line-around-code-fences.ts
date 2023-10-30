@@ -1,7 +1,7 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {ensureEmptyLinesAroundFencedCodeBlocks} from '../utils/mdast';
+import { ensureEmptyLinesAroundFencedCodeBlocks } from '../utils/mdast';
 
 class EmptyLineAroundCodeFencesOptions implements Options {}
 
@@ -11,7 +11,7 @@ export default class EmptyLineAroundCodeFences extends RuleBuilder<EmptyLineArou
     super({
       nameKey: 'rules.empty-line-around-code-fences.name',
       descriptionKey: 'rules.empty-line-around-code-fences.description',
-      type: RuleType.SPACING,
+      type: RuleType.SPACING
     });
   }
   get OptionsClass(): new () => EmptyLineAroundCodeFencesOptions {
@@ -38,7 +38,7 @@ export default class EmptyLineAroundCodeFences extends RuleBuilder<EmptyLineArou
           \`\`\`
           ${''}
           Text after code block.
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Fenced code blocks that end a document do not get an empty line after them.',
@@ -54,7 +54,7 @@ export default class EmptyLineAroundCodeFences extends RuleBuilder<EmptyLineArou
           \`\`\`
           Here is a code block
           \`\`\`
-        `,
+        `
       }),
       new ExampleBuilder({
         // accounts for https://github.com/platers/obsidian-linter/issues/299
@@ -95,7 +95,7 @@ export default class EmptyLineAroundCodeFences extends RuleBuilder<EmptyLineArou
           > > \`\`\`js
           > > var other text = 'this is more text';
           > > \`\`\`
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Nested fenced code blocks get empty lines added around them',
@@ -117,8 +117,8 @@ export default class EmptyLineAroundCodeFences extends RuleBuilder<EmptyLineArou
           \`\`\`\`
           ${''}
           \`\`\`
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<EmptyLineAroundCodeFencesOptions>[] {

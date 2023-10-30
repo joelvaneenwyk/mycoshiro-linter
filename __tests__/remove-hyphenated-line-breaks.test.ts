@@ -1,6 +1,6 @@
 import RemoveHyphenatedLineBreaks from '../src/rules/remove-hyphenated-line-breaks';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: RemoveHyphenatedLineBreaks,
@@ -19,7 +19,7 @@ ruleTest({
         ${''}
         Paragraph contents are here- [link text](pathToFile/file.md)
         Paragraph contents are here- [[file]]
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

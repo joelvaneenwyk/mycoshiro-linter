@@ -1,7 +1,7 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {IgnoreTypes} from '../utils/ignore-types';
+import { IgnoreTypes } from '../utils/ignore-types';
 
 class RemoveConsecutiveListMarkersOptions implements Options {}
 
@@ -12,7 +12,14 @@ export default class RemoveConsecutiveListMarkers extends RuleBuilder<RemoveCons
       nameKey: 'rules.remove-consecutive-list-markers.name',
       descriptionKey: 'rules.remove-consecutive-list-markers.description',
       type: RuleType.CONTENT,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag
+      ]
     });
   }
   get OptionsClass(): new () => RemoveConsecutiveListMarkersOptions {
@@ -38,8 +45,8 @@ export default class RemoveConsecutiveListMarkers extends RuleBuilder<RemoveCons
           - item 2
             - indented item
             - copypasted item B
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<RemoveConsecutiveListMarkersOptions>[] {

@@ -1,7 +1,9 @@
-import {TFile, moment} from 'obsidian';
-import {logDebug, logWarn, timingBegin, timingEnd} from './utils/logger';
-import {getDisabledRules, rules, wrapLintError, RuleType} from './rules';
+import { TFile, moment } from 'obsidian';
+import { getTextInLanguage } from './lang/helpers';
+import { RuleType, getDisabledRules, rules, wrapLintError } from './rules';
+import BlockquoteStyle from './rules/blockquote-style';
 import BlockquotifyOnPaste from './rules/blockquotify-on-paste';
+import CapitalizeHeadings from './rules/capitalize-headings';
 import EscapeYamlSpecialCharacters from './rules/escape-yaml-special-characters';
 import ForceYamlEscape from './rules/force-yaml-escape';
 import FormatTagsInYaml from './rules/format-tags-in-yaml';
@@ -12,33 +14,30 @@ import RemoveHyphensOnPaste from './rules/remove-hyphens-on-paste';
 import RemoveLeadingOrTrailingWhitespaceOnPaste from './rules/remove-leading-or-trailing-whitespace-on-paste';
 import RemoveLeftoverFootnotesFromQuoteOnPaste from './rules/remove-leftover-footnotes-from-quote-on-paste';
 import RemoveMultipleBlankLinesOnPaste from './rules/remove-multiple-blank-lines-on-paste';
-import {RuleBuilderBase} from './rules/rule-builder';
+import { RuleBuilderBase } from './rules/rule-builder';
 import YamlKeySort from './rules/yaml-key-sort';
 import YamlTimestamp from './rules/yaml-timestamp';
-import {ObsidianCommandInterface} from './typings/obsidian-ex';
-import {CustomReplace} from './ui/linter-components/custom-replace-option';
-import {LintCommand} from './ui/linter-components/custom-command-option';
-import {convertStringVersionOfEscapeCharactersToEscapeCharacters} from './utils/strings';
-import {getTextInLanguage} from './lang/helpers';
-import CapitalizeHeadings from './rules/capitalize-headings';
-import BlockquoteStyle from './rules/blockquote-style';
-import {IgnoreTypes, ignoreListOfTypes} from './utils/ignore-types';
-import MoveMathBlockIndicatorsToOwnLine from './rules/move-math-block-indicators-to-own-line';
-import {LinterSettings} from './settings-data';
+import { LinterSettings } from './settings-data';
+import { ObsidianCommandInterface } from './typings/obsidian-ex';
+import { LintCommand } from './ui/linter-components/custom-command-option';
+import { CustomReplace } from './ui/linter-components/custom-replace-option';
+import { IgnoreTypes, ignoreListOfTypes } from './utils/ignore-types';
+import { logDebug, logWarn, timingBegin, timingEnd } from './utils/logger';
+import { convertStringVersionOfEscapeCharactersToEscapeCharacters } from './utils/strings';
 
 export type RunLinterRulesOptions = {
-  oldText: string,
-  fileInfo: FileInfo,
-  settings: LinterSettings,
-  momentLocale: string,
-  getCurrentTime: () => moment.Moment
-}
+  oldText: string;
+  fileInfo: FileInfo;
+  settings: LinterSettings;
+  momentLocale: string;
+  getCurrentTime: () => moment.Moment;
+};
 
 type FileInfo = {
-  name: string,
-  createdAtFormatted: string,
-  modifiedAtFormatted: string,
-}
+  name: string;
+  createdAtFormatted: string;
+  modifiedAtFormatted: string;
+};
 
 export class RulesRunner {
   private disabledRules: string[] = [];
@@ -74,11 +73,13 @@ export class RulesRunner {
         fileModifiedTime: runOptions.fileInfo.modifiedAtFormatted,
         fileName: runOptions.fileInfo.name,
         locale: runOptions.momentLocale,
-        minimumNumberOfDollarSignsToBeAMathBlock: runOptions.settings.commonStyles.minimumNumberOfDollarSignsToBeAMathBlock,
+        minimumNumberOfDollarSignsToBeAMathBlock:
+          runOptions.settings.commonStyles.minimumNumberOfDollarSignsToBeAMathBlock,
         aliasArrayStyle: runOptions.settings.commonStyles.aliasArrayStyle,
         tagArrayStyle: runOptions.settings.commonStyles.tagArrayStyle,
         defaultEscapeCharacter: runOptions.settings.commonStyles.escapeCharacter,
-        removeUnnecessaryEscapeCharsForMultiLineArrays: runOptions.settings.commonStyles.removeUnnecessaryEscapeCharsForMultiLineArrays,
+        removeUnnecessaryEscapeCharsForMultiLineArrays:
+          runOptions.settings.commonStyles.removeUnnecessaryEscapeCharsForMultiLineArrays
       });
     }
 
@@ -99,11 +100,7 @@ export class RulesRunner {
 
     // escape YAML where possible before parsing yaml
     [newText] = EscapeYamlSpecialCharacters.applyIfEnabled(newText, runOptions.settings, this.disabledRules, {
-      defaultEscapeCharacter: runOptions.settings.commonStyles.escapeCharacter,
-    });
-
-    [newText] = MoveMathBlockIndicatorsToOwnLine.applyIfEnabled(newText, runOptions.settings, this.disabledRules, {
-      minimumNumberOfDollarSignsToBeAMathBlock: runOptions.settings.commonStyles.minimumNumberOfDollarSignsToBeAMathBlock,
+      defaultEscapeCharacter: runOptions.settings.commonStyles.escapeCharacter
     });
 
     return newText;
@@ -114,31 +111,35 @@ export class RulesRunner {
     const postRuleLogText = getTextInLanguage('logs.post-rules');
     timingBegin(postRuleLogText);
     [newText] = CapitalizeHeadings.applyIfEnabled(newText, runOptions.settings, this.disabledRules);
-
     [newText] = BlockquoteStyle.applyIfEnabled(newText, runOptions.settings, this.disabledRules);
-
     [newText] = ForceYamlEscape.applyIfEnabled(newText, runOptions.settings, this.disabledRules, {
-      defaultEscapeCharacter: runOptions.settings.commonStyles.escapeCharacter,
+      defaultEscapeCharacter: runOptions.settings.commonStyles.escapeCharacter
     });
 
     let currentTime = runOptions.getCurrentTime();
+
     // run YAML timestamp at the end to help determine if something has changed
-    let isYamlTimestampEnabled;
-    [newText, isYamlTimestampEnabled] = YamlTimestamp.applyIfEnabled(newText, runOptions.settings, this.disabledRules, {
-      fileCreatedTime: runOptions.fileInfo.createdAtFormatted,
-      fileModifiedTime: runOptions.fileInfo.modifiedAtFormatted,
-      currentTime: currentTime,
-      alreadyModified: originalText != newText,
-      locale: runOptions.momentLocale,
-    });
+    const [updatedText, isYamlTimestampEnabled] = YamlTimestamp.applyIfEnabled(
+      newText,
+      runOptions.settings,
+      this.disabledRules,
+      {
+        fileCreatedTime: runOptions.fileInfo.createdAtFormatted,
+        fileModifiedTime: runOptions.fileInfo.modifiedAtFormatted,
+        currentTime: currentTime,
+        alreadyModified: originalText != newText,
+        locale: runOptions.momentLocale
+      }
+    );
+    newText = updatedText;
 
     const yamlTimestampOptions = YamlTimestamp.getRuleOptions(runOptions.settings);
 
     currentTime = runOptions.getCurrentTime();
     [newText] = YamlKeySort.applyIfEnabled(newText, runOptions.settings, this.disabledRules, {
-      currentTimeFormatted: currentTime.format(yamlTimestampOptions.format.trimEnd()),
+      currentTimeFormatted: currentTime.format(yamlTimestampOptions.format),
       yamlTimestampDateModifiedEnabled: isYamlTimestampEnabled && yamlTimestampOptions.dateModified,
-      dateModifiedKey: yamlTimestampOptions.dateModifiedKey,
+      dateModifiedKey: yamlTimestampOptions.dateModifiedKey
     });
     timingEnd(postRuleLogText);
     timingEnd(getTextInLanguage('logs.rule-running'));
@@ -203,20 +204,31 @@ export class RulesRunner {
 
     [newText] = RemoveLeadingOrTrailingWhitespaceOnPaste.applyIfEnabled(newText, runOptions.settings, []);
 
-    [newText] = PreventDoubleChecklistIndicatorOnPaste.applyIfEnabled(newText, runOptions.settings, [], {lineContent: currentLine, selectedText: selectedText});
+    [newText] = PreventDoubleChecklistIndicatorOnPaste.applyIfEnabled(newText, runOptions.settings, [], {
+      lineContent: currentLine,
+      selectedText: selectedText
+    });
 
-    [newText] = PreventDoubleListItemIndicatorOnPaste.applyIfEnabled(newText, runOptions.settings, [], {lineContent: currentLine, selectedText: selectedText});
+    [newText] = PreventDoubleListItemIndicatorOnPaste.applyIfEnabled(newText, runOptions.settings, [], {
+      lineContent: currentLine,
+      selectedText: selectedText
+    });
 
-    [newText] = BlockquotifyOnPaste.applyIfEnabled(newText, runOptions.settings, [], {lineContent: currentLine});
+    [newText] = BlockquotifyOnPaste.applyIfEnabled(newText, runOptions.settings, [], { lineContent: currentLine });
 
     return newText;
   }
 }
 
-export function createRunLinterRulesOptions(text: string, file: TFile = null, momentLocale: string, settings: LinterSettings): RunLinterRulesOptions {
-  const createdAt = file ? moment(file.stat.ctime): moment();
+export function createRunLinterRulesOptions(
+  text: string,
+  file: TFile = null,
+  momentLocale: string,
+  settings: LinterSettings
+): RunLinterRulesOptions {
+  const createdAt = file ? moment(file.stat.ctime) : moment();
   createdAt.locale(momentLocale);
-  const modifiedAt = file ? moment(file.stat.mtime): moment();
+  const modifiedAt = file ? moment(file.stat.mtime) : moment();
   modifiedAt.locale(momentLocale);
   const modifiedAtTime = modifiedAt.format();
   const createdAtTime = createdAt.format();
@@ -224,9 +236,9 @@ export function createRunLinterRulesOptions(text: string, file: TFile = null, mo
   return {
     oldText: text,
     fileInfo: {
-      name: file ? file.basename: '',
+      name: file ? file.basename : '',
       createdAtFormatted: createdAtTime,
-      modifiedAtFormatted: modifiedAtTime,
+      modifiedAtFormatted: modifiedAtTime
     },
     settings: settings,
     momentLocale: momentLocale,
@@ -235,6 +247,6 @@ export function createRunLinterRulesOptions(text: string, file: TFile = null, mo
       currentTime.locale(momentLocale);
 
       return currentTime;
-    },
+    }
   };
 }

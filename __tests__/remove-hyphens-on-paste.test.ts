@@ -1,11 +1,12 @@
 import RemoveHyphensOnPaste from '../src/rules/remove-hyphens-on-paste';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: RemoveHyphensOnPaste,
   testCases: [
-    { // accounts for https://github.com/platers/obsidian-linter/issues/653
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/653
       testName: 'Make sure that hyphenated line breaks does not apply to YAML frontmatter on paste',
       before: dedent`
         ---
@@ -32,7 +33,7 @@ ruleTest({
         ${''}
         Paragraph contents are here- [link text](pathToFile/file.md)
         Paragraph contents are here- [[file]]
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

@@ -1,12 +1,12 @@
-import {LintCommand} from '../linter-components/custom-command-option';
-import {TextInputSuggest} from './suggest';
-import type {App, Command} from 'obsidian';
+import { LintCommand } from '../linter-components/custom-command-option';
+import { TextInputSuggest } from './suggest';
+import type { App, Command } from 'obsidian';
 
 export default class CommandSuggester extends TextInputSuggest<Command> {
   constructor(
     public app: App,
     public inputEl: HTMLInputElement,
-    public valuesToExclude: LintCommand[] = [],
+    public valuesToExclude: LintCommand[] = []
   ) {
     super(app, inputEl);
   }
@@ -19,7 +19,8 @@ export default class CommandSuggester extends TextInputSuggest<Command> {
 
     const nonSelectedCommands = all_commands.filter((el: Command) => {
       for (const selectedCommandInfo of this.valuesToExclude) {
-        if (selectedCommandInfo.id == el.id &&
+        if (
+          selectedCommandInfo.id == el.id &&
           !(this.inputEl.hasAttribute('commandId') && this.inputEl.getAttribute('commandId') == el.id)
         ) {
           return false;
@@ -29,9 +30,9 @@ export default class CommandSuggester extends TextInputSuggest<Command> {
       return true;
     });
 
-    const commands:Command[] = [];
+    const commands: Command[] = [];
     const lower_input_str = input_str.toLowerCase();
-    nonSelectedCommands.forEach((command:Command) => {
+    nonSelectedCommands.forEach((command: Command) => {
       if (command.id.contains(lower_input_str) || command.name.toLowerCase().contains(lower_input_str)) {
         commands.push(command);
       }

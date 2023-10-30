@@ -1,5 +1,5 @@
-import {Component, Setting} from 'obsidian';
-import {parseTextToHTMLWithoutOuterParagraph} from '../helpers';
+import { Component, Setting } from 'obsidian';
+import { parseTextToHTMLWithoutOuterParagraph } from '../helpers';
 
 /**
  * AddCustomRow is meant to be used where you have a setting that needs a name a description, possibly a warning,
@@ -15,26 +15,24 @@ export abstract class AddCustomRow {
     public description: string,
     public warning: string,
     private addInputBtnText: string,
+    protected isMobile: boolean,
     protected saveSettings: () => void,
-    private onAddInput: () => void) {
-  }
+    private onAddInput: () => void
+  ) {}
 
   display() {
-    this.containerEl.createDiv({cls: 'setting-item-name', text: this.name});
+    this.containerEl.createEl(this.isMobile ? 'h4' : 'h3', { text: this.name });
 
-    const descriptionAndWarningContainer = this.containerEl.createDiv({cls: 'setting-item-description'});
-
-    parseTextToHTMLWithoutOuterParagraph(this.description, descriptionAndWarningContainer.createEl('p', {cls: 'custom-row-description'}), this.parentComponent);
-    if (this.warning != null && this.warning.trim() != '') {
-      descriptionAndWarningContainer.createEl('p', {text: this.warning, cls: 'mod-warning'});
+    parseTextToHTMLWithoutOuterParagraph(this.description, this.containerEl, this.parentComponent);
+    if (this.warning != null) {
+      this.containerEl.createEl('p', { text: this.warning, cls: 'mod-warning' });
     }
 
-    new Setting(this.containerEl)
-        .addButton((cb)=>{
-          cb.setButtonText(this.addInputBtnText)
-              .setCta()
-              .onClick(() => this.onAddInput());
-        });
+    new Setting(this.containerEl).addButton((cb) => {
+      cb.setButtonText(this.addInputBtnText)
+        .setCta()
+        .onClick(() => this.onAddInput());
+    });
 
     this.inputElDiv = this.containerEl.createDiv();
     this.showInputEls();

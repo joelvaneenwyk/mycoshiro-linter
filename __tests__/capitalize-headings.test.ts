@@ -1,6 +1,6 @@
 import CapitalizeHeadings from '../src/rules/capitalize-headings';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: CapitalizeHeadings,
@@ -28,8 +28,8 @@ ruleTest({
         ## This État
       `,
       options: {
-        style: 'Title Case',
-      },
+        style: 'Title Case'
+      }
     },
     {
       testName: 'Ignores tags',
@@ -40,8 +40,8 @@ ruleTest({
         #tag not line
       `,
       options: {
-        style: 'Title Case',
-      },
+        style: 'Title Case'
+      }
     },
     {
       testName: 'Can capitalize only first letter',
@@ -53,8 +53,8 @@ ruleTest({
       `,
       options: {
         style: 'First letter',
-        ignoreCasedWords: false,
-      },
+        ignoreCasedWords: false
+      }
     },
     {
       testName: 'Can capitalize only first letter that is a - Z',
@@ -67,8 +67,8 @@ ruleTest({
         # 1 John
       `,
       options: {
-        style: 'First letter',
-      },
+        style: 'First letter'
+      }
     },
     {
       testName: 'Can capitalize to all caps',
@@ -79,8 +79,8 @@ ruleTest({
         # THIS IS A HEADING
       `,
       options: {
-        style: 'ALL CAPS',
-      },
+        style: 'ALL CAPS'
+      }
     },
     {
       testName: 'Link in heading is still present with first letter capitalization rules on',
@@ -95,11 +95,13 @@ ruleTest({
         # Heading ![docker](docker)
       `,
       options: {
-        style: 'First letter',
-      },
+        style: 'First letter'
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/321
-      testName: 'Make sure non-english letters get capitalized when they are the first letter and the rule is set to capitalize the first letter',
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/321
+      testName:
+        'Make sure non-english letters get capitalized when they are the first letter and the rule is set to capitalize the first letter',
       before: dedent`
         # état
       `,
@@ -107,10 +109,11 @@ ruleTest({
         # État
       `,
       options: {
-        style: 'First letter',
-      },
+        style: 'First letter'
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/484
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/484
       testName: 'Make sure that first letter to be capitalized by `First Letter` is preceded by a space or tab',
       before: dedent`
         ### 1.0.0-b.4
@@ -123,10 +126,11 @@ ruleTest({
         # 1.0-b This is a heading
       `,
       options: {
-        style: 'First letter',
-      },
+        style: 'First letter'
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/518
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/518
       testName: `Make sure that 'I' is capitalized by default when First Letter is the style of the header `,
       before: dedent`
         ### It Is I
@@ -136,8 +140,8 @@ ruleTest({
       `,
       options: {
         style: 'First letter',
-        ignoreCasedWords: false,
-      },
+        ignoreCasedWords: false
+      }
     },
     {
       testName: `Make sure that 'First Letter' ignores cased words just because they are cased when ignore cased words is enabled`,
@@ -149,10 +153,11 @@ ruleTest({
       `,
       options: {
         style: 'First letter',
-        ignoreCasedWords: true,
-      },
+        ignoreCasedWords: true
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/537
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/537
       testName: `Make sure that a heading with dollar signs does not have any added to it`,
       before: dedent`
         # Headline $LR(0)$ Set
@@ -162,10 +167,11 @@ ruleTest({
       `,
       options: {
         style: 'First letter',
-        ignoreCasedWords: true,
-      },
+        ignoreCasedWords: true
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/601
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/601
       testName: `Make sure that if the 1st word has a number in it, it will still be considered to be a word and have its first letter capitalized`,
       before: dedent`
         # EC2 instance
@@ -179,8 +185,8 @@ ruleTest({
       `,
       options: {
         style: 'First letter',
-        ignoreCasedWords: true,
-      },
-    },
-  ],
+        ignoreCasedWords: true
+      }
+    }
+  ]
 });

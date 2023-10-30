@@ -1,16 +1,13 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {BooleanOptionBuilder, ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {IgnoreTypes} from '../utils/ignore-types';
-import {replaceTextBetweenStartAndEndWithNewValue} from '../utils/strings';
-import {simpleURIRegex, urlRegex} from '../utils/regex';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { replaceTextBetweenStartAndEndWithNewValue } from '../utils/strings';
+import { urlRegex } from '../utils/regex';
 
-class NoBareUrlsOptions implements Options {
-  noBareURIs?: boolean = false;
-}
+class NoBareUrlsOptions implements Options {}
 
-const specialCharsToNotEscapeContentsWithin = `'"‘’“”\`[]`;
-const uriSchemesToIgnore = ['http', 'ftp', 'https', 'smtp'];
+const specialCharsToNotEscapeContentsWithin = '\'"‘’“”`[]';
 
 @RuleBuilder.register
 export default class NoBareUrls extends RuleBuilder<NoBareUrlsOptions> {
@@ -19,7 +16,18 @@ export default class NoBareUrls extends RuleBuilder<NoBareUrlsOptions> {
       nameKey: 'rules.no-bare-urls.name',
       descriptionKey: 'rules.no-bare-urls.description',
       type: RuleType.CONTENT,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag, IgnoreTypes.image, IgnoreTypes.inlineCode, IgnoreTypes.anchorTag, IgnoreTypes.html],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag,
+        IgnoreTypes.image,
+        IgnoreTypes.inlineCode,
+        IgnoreTypes.anchorTag,
+        IgnoreTypes.html
+      ]
     });
   }
   get OptionsClass(): new () => NoBareUrlsOptions {
@@ -27,84 +35,69 @@ export default class NoBareUrls extends RuleBuilder<NoBareUrlsOptions> {
   }
   apply(text: string, options: NoBareUrlsOptions): string {
     const URLMatches = text.match(urlRegex);
-    if (URLMatches) {
-      text = this.handleMatches(text, URLMatches, false);
+
+    if (!URLMatches) {
+      return text;
     }
 
-
-    if (options.noBareURIs) {
-      const URIMatches = text.match(simpleURIRegex);
-      if (URIMatches) {
-        text = this.handleMatches(text, URIMatches, true);
-      }
-    }
-
-    return text;
-  }
-  handleMatches(text: string, matches: RegExpMatchArray, isURISearch: boolean): string {
     // make sure you do not match on the same thing more than once by keeping track of the last position you checked up to
     let startSearch = 0;
-    const numMatches = matches.length;
+    const numMatches = URLMatches.length;
     for (let i = 0; i < numMatches; i++) {
-      let urlMatch = matches[i];
-      let urlStart = text.indexOf(urlMatch, startSearch);
-      let urlEnd = urlStart + urlMatch.length;
-      if (urlMatch.charAt(0) === '<') {
-        urlMatch = urlMatch.substring(1);
-        urlStart++;
-      }
-
-      if (urlMatch.charAt(urlMatch.length - 1) === '>') {
-        urlMatch = urlMatch.substring(0, urlMatch.length - 1);
-        urlEnd--;
-      }
+      const urlMatch = URLMatches[i];
+      const urlStart = text.indexOf(urlMatch, startSearch);
+      const urlEnd = urlStart + urlMatch.length;
 
       const previousChar = urlStart === 0 ? undefined : text.charAt(urlStart - 1);
       const nextChar = urlEnd >= text.length ? undefined : text.charAt(urlEnd);
-      if (this.skipMatch(previousChar, nextChar, urlMatch, isURISearch)) {
+      if (
+        previousChar != undefined &&
+        specialCharsToNotEscapeContentsWithin.includes(previousChar) &&
+        nextChar != undefined &&
+        specialCharsToNotEscapeContentsWithin.includes(nextChar)
+      ) {
         startSearch = urlStart + urlMatch.length;
         continue;
       }
 
       if (previousChar != undefined && previousChar === '<' && nextChar != undefined && nextChar === '>') {
         let startOfOpeningChevrons = urlStart - 1;
-        while (startOfOpeningChevrons > 0 && text.charAt(startOfOpeningChevrons-1) === '<') {
+        while (startOfOpeningChevrons > 0 && text.charAt(startOfOpeningChevrons - 1) === '<') {
           startOfOpeningChevrons--;
         }
 
         let endOfClosingChevrons = urlEnd;
-        while (endOfClosingChevrons < text.length -1 && text.charAt(endOfClosingChevrons+1) === '>') {
+        while (endOfClosingChevrons < text.length - 1 && text.charAt(endOfClosingChevrons + 1) === '>') {
           endOfClosingChevrons++;
         }
 
-        text = replaceTextBetweenStartAndEndWithNewValue(text, startOfOpeningChevrons, endOfClosingChevrons+1, '<' + urlMatch + '>');
+        text = replaceTextBetweenStartAndEndWithNewValue(
+          text,
+          startOfOpeningChevrons,
+          endOfClosingChevrons + 1,
+          '<' + urlMatch + '>'
+        );
 
         startSearch = urlStart + urlMatch.length;
         continue;
       }
 
-      text = replaceTextBetweenStartAndEndWithNewValue(text, urlStart, urlStart + urlMatch.length, '<' + urlMatch + '>');
+      text = replaceTextBetweenStartAndEndWithNewValue(
+        text,
+        urlStart,
+        urlStart + urlMatch.length,
+        '<' + urlMatch + '>'
+      );
       startSearch = urlStart + urlMatch.length + 2;
     }
+
     return text;
-  }
-  skipMatch(previousChar: string, nextChar: string, match: string, isURISearch: boolean) {
-    const startsWithSpecialCharacter = (previousChar != undefined && specialCharsToNotEscapeContentsWithin.includes(previousChar)) || specialCharsToNotEscapeContentsWithin.includes(match.charAt(0));
-    const endsWithSpecialCharacter = (nextChar != undefined && specialCharsToNotEscapeContentsWithin.includes(nextChar)) || specialCharsToNotEscapeContentsWithin.includes(match.charAt(match.length - 1));
-    if (startsWithSpecialCharacter && endsWithSpecialCharacter) {
-      return true;
-    }
-
-    if (isURISearch) {
-      return uriSchemesToIgnore.includes(match.substring(0, match.indexOf(':')));
-    }
-
-    return false;
   }
   get exampleBuilders(): ExampleBuilder<NoBareUrlsOptions>[] {
     return [
       new ExampleBuilder({
-        description: 'Make sure that links are inside of angle brackets when not in single quotes(\'), double quotes("), or backticks(`)',
+        description:
+          'Make sure that links are inside of angle brackets when not in single quotes(\'), double quotes("), or backticks(`)',
         before: dedent`
           https://github.com
           braces around url should stay the same: [https://github.com]
@@ -126,10 +119,11 @@ export default class NoBareUrls extends RuleBuilder<NoBareUrlsOptions> {
           <https://github.com>
           links should stay the same: [](https://github.com)
           <https://gitlab.com>
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Angle brackets are added if the url is not the only text in the single quotes(\') or double quotes(")',
+        description:
+          'Angle brackets are added if the url is not the only text in the single quotes(\') or double quotes(")',
         before: dedent`
           [https://github.com some text here]
           backticks around a url should stay the same: \`https://github.com some text here\`
@@ -141,7 +135,7 @@ export default class NoBareUrls extends RuleBuilder<NoBareUrlsOptions> {
           backticks around a url should stay the same: \`https://github.com some text here\`
           single quotes around a url should stay the same, but only if the contents of the single quotes is the url: '<https://github.com> some text here'
           double quotes around a url should stay the same, but only if the contents of the double quotes is the url: "<https://github.com> some text here"
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Multiple angle brackets at the start and or end of a url will be reduced down to 1',
@@ -154,30 +148,11 @@ export default class NoBareUrls extends RuleBuilder<NoBareUrlsOptions> {
           <https://github.com>
           <https://google.com>
           <https://gitlab.com>
-        `,
-      }),
-      new ExampleBuilder({// accounts for https://github.com/platers/obsidian-linter/issues/776
-        description: 'Puts angle brackets around URIs when `No Bare URIs` is enabled',
-        before: dedent`
-          obsidian://show-plugin?id=cycle-in-sidebar
-        `,
-        after: dedent`
-          <obsidian://show-plugin?id=cycle-in-sidebar>
-        `,
-        options: {
-          noBareURIs: true,
-        },
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<NoBareUrlsOptions>[] {
-    return [
-      new BooleanOptionBuilder({
-        OptionsClass: NoBareUrlsOptions,
-        nameKey: 'rules.no-bare-urls.no-bare-uris.name',
-        descriptionKey: 'rules.no-bare-urls.no-bare-uris.description',
-        optionsKey: 'noBareURIs',
-      }),
-    ];
+    return [];
   }
 }

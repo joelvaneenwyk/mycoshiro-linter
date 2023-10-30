@@ -1,6 +1,6 @@
 import RemoveLinkSpacing from '../src/rules/remove-link-spacing';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: RemoveLinkSpacing,
@@ -15,7 +15,7 @@ ruleTest({
       after: dedent`
         - [ ] [Link text](path/fileName.md)
         - [ ] [[fileName]]
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/236
@@ -41,8 +41,7 @@ ruleTest({
         # John & Jane Doe
 
         This stuff doesn't really matter.
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });
-

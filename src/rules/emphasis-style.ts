@@ -1,8 +1,8 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {makeEmphasisOrBoldConsistent, MDAstTypes} from '../utils/mdast';
+import { makeEmphasisOrBoldConsistent, MDAstTypes } from '../utils/mdast';
 
 type EmphasisStyleValues = 'consistent' | 'asterisk' | 'underscore';
 
@@ -17,7 +17,16 @@ export default class EmphasisStyle extends RuleBuilder<EmphasisStyleOptions> {
       nameKey: 'rules.emphasis-style.name',
       descriptionKey: 'rules.emphasis-style.description',
       type: RuleType.CONTENT,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag, IgnoreTypes.math, IgnoreTypes.inlineMath],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag,
+        IgnoreTypes.math,
+        IgnoreTypes.inlineMath
+      ]
     });
   }
   get OptionsClass(): new () => EmphasisStyleOptions {
@@ -29,7 +38,7 @@ export default class EmphasisStyle extends RuleBuilder<EmphasisStyleOptions> {
   get exampleBuilders(): ExampleBuilder<EmphasisStyleOptions>[] {
     return [
       new ExampleBuilder<EmphasisStyleOptions>({
-        description: 'Emphasis indicators should use underscores when style is set to \'underscore\'',
+        description: "Emphasis indicators should use underscores when style is set to 'underscore'",
         before: dedent`
           # Emphasis Cases
           ${''}
@@ -63,11 +72,11 @@ export default class EmphasisStyle extends RuleBuilder<EmphasisStyleOptions> {
           * List Item2
         `,
         options: {
-          style: 'underscore',
-        },
+          style: 'underscore'
+        }
       }),
       new ExampleBuilder<EmphasisStyleOptions>({
-        description: 'Emphasis indicators should use asterisks when style is set to \'asterisk\'',
+        description: "Emphasis indicators should use asterisks when style is set to 'asterisk'",
         before: dedent`
           # Emphasis Cases
           ${''}
@@ -95,11 +104,12 @@ export default class EmphasisStyle extends RuleBuilder<EmphasisStyleOptions> {
           __Test bold__
         `,
         options: {
-          style: 'asterisk',
-        },
+          style: 'asterisk'
+        }
       }),
       new ExampleBuilder<EmphasisStyleOptions>({
-        description: 'Emphasis indicators should use consistent style based on first emphasis indicator in a file when style is set to \'consistent\'',
+        description:
+          "Emphasis indicators should use consistent style based on first emphasis indicator in a file when style is set to 'consistent'",
         before: dedent`
           # Emphasis First Emphasis Is an Asterisk
           ${''}
@@ -125,11 +135,12 @@ export default class EmphasisStyle extends RuleBuilder<EmphasisStyleOptions> {
           __Test bold__
         `,
         options: {
-          style: 'consistent',
-        },
+          style: 'consistent'
+        }
       }),
       new ExampleBuilder<EmphasisStyleOptions>({
-        description: 'Emphasis indicators should use consistent style based on first emphasis indicator in a file when style is set to \'consistent\'',
+        description:
+          "Emphasis indicators should use consistent style based on first emphasis indicator in a file when style is set to 'consistent'",
         before: dedent`
           # Emphasis First Emphasis Is an Underscore
           ${''}
@@ -155,9 +166,9 @@ export default class EmphasisStyle extends RuleBuilder<EmphasisStyleOptions> {
           __Test bold__
         `,
         options: {
-          style: 'consistent',
-        },
-      }),
+          style: 'consistent'
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<EmphasisStyleOptions>[] {
@@ -170,18 +181,19 @@ export default class EmphasisStyle extends RuleBuilder<EmphasisStyleOptions> {
         records: [
           {
             value: 'consistent',
-            description: 'Makes sure the first instance of emphasis is the style that will be used throughout the document',
+            description:
+              'Makes sure the first instance of emphasis is the style that will be used throughout the document'
           },
           {
             value: 'asterisk',
-            description: 'Makes sure * is the emphasis indicator',
+            description: 'Makes sure * is the emphasis indicator'
           },
           {
             value: 'underscore',
-            description: 'Makes sure _ is the emphasis indicator',
-          },
-        ],
-      }),
+            description: 'Makes sure _ is the emphasis indicator'
+          }
+        ]
+      })
     ];
   }
 }

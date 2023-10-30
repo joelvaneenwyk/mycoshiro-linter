@@ -1,8 +1,8 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {checklistBoxIndicator} from '../utils/regex';
+import { checklistBoxIndicator } from '../utils/regex';
 
 class RemoveEmptyLinesBetweenListMarkersAndChecklistsOptions implements Options {}
 
@@ -13,7 +13,15 @@ export default class RemoveEmptyLinesBetweenListMarkersAndChecklists extends Rul
       nameKey: 'rules.remove-empty-lines-between-list-markers-and-checklists.name',
       descriptionKey: 'rules.remove-empty-lines-between-list-markers-and-checklists.description',
       type: RuleType.SPACING,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag, IgnoreTypes.thematicBreak],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag,
+        IgnoreTypes.thematicBreak
+      ]
     });
   }
   get OptionsClass(): new () => RemoveEmptyLinesBetweenListMarkersAndChecklistsOptions {
@@ -40,7 +48,7 @@ export default class RemoveEmptyLinesBetweenListMarkersAndChecklists extends Rul
     const splatMarkerRegexText = '(( |\\t)*\\*( |\\t)+.+)';
     return this.replaceEmptyLinesBetweenList(text, splatMarkerRegexText);
   }
-  replaceEmptyLinesBetweenList = function(text: string, listIndicatorRegexText: string): string {
+  replaceEmptyLinesBetweenList = function (text: string, listIndicatorRegexText: string): string {
     const listRegex = new RegExp(`^${listIndicatorRegexText}\n{2,}${listIndicatorRegexText}$`, 'gm');
     let match;
     let newText = text;
@@ -64,10 +72,10 @@ export default class RemoveEmptyLinesBetweenListMarkersAndChecklists extends Rul
         after: dedent`
           1. Item 1
           2. Item 2
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Blank lines are removed between list items when the list indicator is \'-\'',
+        description: "Blank lines are removed between list items when the list indicator is '-'",
         before: dedent`
           - Item 1
           ${''}
@@ -79,7 +87,7 @@ export default class RemoveEmptyLinesBetweenListMarkersAndChecklists extends Rul
           - Item 1
           \t- Subitem 1
           - Item 2
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Blank lines are removed between checklist items',
@@ -94,10 +102,10 @@ export default class RemoveEmptyLinesBetweenListMarkersAndChecklists extends Rul
           - [x] Item 1
           \t- [!] Subitem 1
           - [ ] Item 2
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Blank lines are removed between list items when the list indicator is \'+\'',
+        description: "Blank lines are removed between list items when the list indicator is '+'",
         before: dedent`
           + Item 1
           ${''}
@@ -109,10 +117,10 @@ export default class RemoveEmptyLinesBetweenListMarkersAndChecklists extends Rul
           + Item 1
           \t+ Subitem 1
           + Item 2
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Blank lines are removed between list items when the list indicator is \'*\'',
+        description: "Blank lines are removed between list items when the list indicator is '*'",
         before: dedent`
           * Item 1
           ${''}
@@ -124,10 +132,11 @@ export default class RemoveEmptyLinesBetweenListMarkersAndChecklists extends Rul
           * Item 1
           \t* Subitem 1
           * Item 2
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Blanks lines are removed between like list types (ordered, specific list item indicators, and checklists) while blanks are left between different kinds of list item indicators',
+        description:
+          'Blanks lines are removed between like list types (ordered, specific list item indicators, and checklists) while blanks are left between different kinds of list item indicators',
         before: dedent`
           1. Item 1
           ${''}
@@ -176,8 +185,8 @@ export default class RemoveEmptyLinesBetweenListMarkersAndChecklists extends Rul
           * Item 1
           \t* Subitem 1
           * Item 2
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<RemoveEmptyLinesBetweenListMarkersAndChecklistsOptions>[] {

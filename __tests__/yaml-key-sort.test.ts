@@ -1,12 +1,13 @@
 import YamlKeySort from '../src/rules/yaml-key-sort';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: YamlKeySort,
   testCases: [
     {
-      testName: 'When the sort changes the YAML contents and YAML timestamp date modified is active, update date modified value',
+      testName:
+        'When the sort changes the YAML contents and YAML timestamp date modified is active, update date modified value',
       before: dedent`
         ---
         language: Typescript
@@ -30,17 +31,14 @@ ruleTest({
         ---
       `,
       options: {
-        yamlKeyPrioritySortOrder: [
-          'date',
-          'type',
-          'language',
-        ],
+        yamlKeyPrioritySortOrder: ['date', 'type', 'language'],
         dateModifiedKey: 'modified',
         currentTimeFormatted: 'Thursday, January 2nd 2020, 12:00:00 am',
-        yamlTimestampDateModifiedEnabled: true,
-      },
+        yamlTimestampDateModifiedEnabled: true
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/415
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/415
       testName: 'Sort works with dictionary YAML value',
       before: dedent`
         ---
@@ -63,10 +61,11 @@ ruleTest({
         ---
       `,
       options: {
-        yamlSortOrderForOtherKeys: 'Ascending Alphabetical',
-      },
+        yamlSortOrderForOtherKeys: 'Ascending Alphabetical'
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/796
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/796
       testName: 'Sort works when priority keys end in a colon',
       before: dedent`
         ---
@@ -91,15 +90,11 @@ ruleTest({
         ---
       `,
       options: {
-        yamlKeyPrioritySortOrder: [
-          'date:',
-          'type:',
-          'language:',
-        ],
+        yamlKeyPrioritySortOrder: ['date:', 'type:', 'language:'],
         dateModifiedKey: 'modified',
         currentTimeFormatted: 'Thursday, January 2nd 2020, 12:00:00 am',
-        yamlTimestampDateModifiedEnabled: true,
-      },
-    },
-  ],
+        yamlTimestampDateModifiedEnabled: true
+      }
+    }
+  ]
 });

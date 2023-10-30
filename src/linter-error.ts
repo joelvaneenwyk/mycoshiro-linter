@@ -1,4 +1,3 @@
-
 export class LinterError extends Error {
   constructor(msg: string, cause: Error) {
     super(msg);
