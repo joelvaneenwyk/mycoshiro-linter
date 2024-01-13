@@ -7,6 +7,7 @@ with making this plugin better.
 
 You will want to start by forking this repository. Once that is done, you will want to clone your fork of the repository.
 The command should look something like the following:
+
 ``` sh
 git clone https://github.com/{USERNAME_HERE}/obsidian-linter/
 ```
@@ -65,6 +66,7 @@ Tests are located in `__tests__/`. File names for tests must end in `.test.ts` a
 Tests for rule other than the examples will be in the format `{RULE_ALIAS}.test.ts` which will help keep testing files manageable.
 
 A test will take the form of
+
 ```Typescript
 ruleTest({
   RuleBuilderClass: {RULE_BUILDER_CLASS},
@@ -108,9 +110,12 @@ If you are looking to update the rules list information like section, examples, 
 There are currently two documentation templates:
 
 1. [readme_template.md](docs/readme_template.md)
-  - This template is used for generating the [README](README.md) file and should be updated for changes that are not rules documentation links and their corresponding sections.
+
+- This template is used for generating the [README](README.md) file and should be updated for changes that are not rules documentation links and their corresponding sections.
+
 2. [rules_template.md](docs/rules_template.md)
-  - This template is used for generating the [rules.md](docs/rules.md) file and should be updated when you want to change the style or escaping of rule information or examples.
+
+- This template is used for generating the [rules.md](docs/rules.md) file and should be updated when you want to change the style or escaping of rule information or examples.
 
 You may also want to take a look at `docs.ts` to modify how the generated files are created.
 
@@ -136,6 +141,7 @@ If you choose to do so manually, you will need to copy the structure found in [e
 ### Adding a New Language
 
 In order to add language support for a new language, create a new file with the following contents:
+
 ``` js
 // {NAME_OF_LANGUAGE_IN_LANGUAGE_HERE}
 
@@ -189,9 +195,11 @@ In order to create a release, there are a couple of steps to go through:
 Start by updating the version number in `package.json` and `manifest.json`. Then add a new version entry into `versions.json`.
 
 A version entry in `versions.json` would like something like the following:
+
 ```JSON
 "{PLUGIN_VERSION}": "{MINIMUM_OBSIDIAN_VERSION}" // i.e. "1.3.4": "0.9.7" 
 ```
+
 If you are not sure what version to use for `{MINIMUM_OBSIDIAN_VERSION}`, use your current version of Obsidian.
 
 Now that the versions are updated, create a pull request and merge the changes into master. Once that is done go to the [releases tab](https://github.com/platers/obsidian-linter/releases/latest) and select draft a new release. Then you can type in the new tag which should be the version of the release (i.e. `1.3.4`) and have it create the tag on creation of the release. Auto fill the release using the option to "Generate release notes". Then attach the compiled `main.js` and `manifest.json` to the release before publishing the release.

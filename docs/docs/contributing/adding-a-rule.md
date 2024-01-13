@@ -196,7 +196,7 @@ The second thing that you may notice is that all of the rule options are optiona
 This is done to allow for easier testing in the unit tests and examples since you will only need to set values
 relevant to the test or example in question.
 
-The third thing you may notice is that all of the regular rule options have a default value (` = value;`). This makes
+The third thing you may notice is that all of the regular rule options have a default value (`= value;`). This makes
 sure that even if no value is provided a default is used. This makes the rule options more reliable and less prone
 to bugs when reading in the settings file or running unit tests.
 
@@ -417,7 +417,6 @@ Here are the properties of each example:
 | `before` | This is the file before changes are made by the rule or the clipboard contents before the changes made by the rule when the rule's type is `PASTE` | Y |
 | `after` | This is the file after changes are made by the rule or the clipboard contents after the changes made by the rule when the rule's type is `PASTE` | Y |
 | `options` | These are the options to use for the example. It should only be used for clarity around what options are being set or in order to set non-default values for options. | N |
-
 
 ### Rule Text
 

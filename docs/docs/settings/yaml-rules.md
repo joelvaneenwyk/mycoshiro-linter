@@ -1,6 +1,5 @@
 <!--- This file was automatically generated. See docs.ts and *_template.md files for the source. -->
 
-
 # YAML Rules
 
 These rules try their best to work with YAML values in [Obsidian.md](https://obsidian.md/). There are a couple of things to keep in mind about these rules:
@@ -9,7 +8,6 @@ These rules try their best to work with YAML values in [Obsidian.md](https://obs
 - There are certain formats of YAML that may have problems being parsed since the YAML keys have their values parsed via regex instead of a library at this time
 - Comments in the value of a key may cause problems with things like sorting or properly grabbing a key's value
 - Blank lines may be removed if you try sorting or making modifications to the order of keys in the YAML via the Linter
-
 
 ## Escape YAML Special Characters
 
@@ -22,8 +20,6 @@ Escapes colons with a space after them (: ), single quotes ('), and double quote
 | Name | Description | List Items | Default Value |
 | ---- | ----------- | ---------- | ------------- |
 | `Try to Escape Single Line Arrays` | Tries to escape array values assuming that an array starts with "[", ends with "]", and has items that are delimited by ",". | N/A | false |
-
-
 
 ### Examples
 
@@ -46,6 +42,7 @@ key: value
 otherKey: []
 ---
 ``````
+
 </details>
 <details><summary>YAML with unescaped values</summary>
 
@@ -76,6 +73,7 @@ sixthKey: colon:between characters is fine
 otherKey: []
 ---
 ``````
+
 </details>
 <details><summary>YAML with unescaped values in an expanded list with `Default Escape Character = '`</summary>
 
@@ -106,6 +104,7 @@ key:
   - colon:between characters is fine
 ---
 ``````
+
 </details>
 <details><summary>YAML with unescaped values with arrays</summary>
 
@@ -132,6 +131,7 @@ nestedArray2: [["value: with colon in the middle"], "value with ' a single quote
 
 _Note that escaped commas in a YAML array will be treated as a separator._
 ``````
+
 </details>
 
 ## Force YAML Escape
@@ -145,8 +145,6 @@ Escapes the values for the specified YAML keys.
 | Name | Description | List Items | Default Value |
 | ---- | ----------- | ---------- | ------------- |
 | `Force YAML Escape on Keys` | Uses the YAML escape character on the specified YAML keys separated by a new line character if it is not already escaped. Do not use on YAML arrays. | N/A |  |
-
-
 
 ### Examples
 
@@ -169,6 +167,7 @@ key: value
 otherKey: []
 ---
 ``````
+
 </details>
 <details><summary>Force YAML keys to be escaped with double quotes where not already escaped with `Force YAML Escape on Keys = 'key'\n'title'\n'bool'`</summary>
 
@@ -197,6 +196,7 @@ unaffected: value
 
 _Note that the force YAML key option should not be used with arrays._
 ``````
+
 </details>
 
 ## Format Tags in YAML
@@ -204,10 +204,6 @@ _Note that the force YAML key option should not be used with arrays._
 Alias: `format-tags-in-yaml`
 
 Remove Hashtags from tags in the YAML frontmatter, as they make the tags there invalid.
-
-
-
-
 
 ### Examples
 
@@ -228,6 +224,7 @@ After:
 tags: one two three nested/four/five
 ---
 ``````
+
 </details>
 <details><summary>Format tags in array</summary>
 
@@ -246,6 +243,7 @@ After:
 tags: [one two three]
 ---
 ``````
+
 </details>
 <details><summary>Format tags in array with `tag` as the tags key</summary>
 
@@ -264,6 +262,7 @@ After:
 tag: [one two three]
 ---
 ``````
+
 </details>
 <details><summary>Format tags in list</summary>
 
@@ -286,6 +285,7 @@ tags:
 - tag2
 ---
 ``````
+
 </details>
 
 ## Format YAML Array
@@ -304,8 +304,6 @@ Allows for the formatting of regular YAML arrays as either multi-line or single-
 | `Format YAML array sections` | Turns on formatting for regular YAML arrays | N/A | `true` |
 | `Force key values to be single-line arrays` | Forces the YAML array for the new line separated keys to be in single-line format (leave empty to disable this option) | N/A |  |
 | `Force key values to be multi-line arrays` | Forces the YAML array for the new line separated keys to be in multi-line format (leave empty to disable this option) | N/A |  |
-
-
 
 ### Examples
 
@@ -346,6 +344,7 @@ Nesting YAML arrays may result in unexpected results.
 
 Multi-line arrays will have empty values removed only leaving one if it is completely empty. The same is not true for single-line arrays as that is invalid YAML unless it comes as the last entry in the array.
 ``````
+
 </details>
 <details><summary>Format tags as a single string with space delimiters, ignore aliases, and format regular YAML arrays as single-line arrays</summary>
 
@@ -370,6 +369,7 @@ types: [thought provoking, peer reviewed]
 tags: computer science trajectory
 ---
 ``````
+
 </details>
 <details><summary>Arrays with dictionaries in them are ignored</summary>
 
@@ -396,6 +396,7 @@ gists:
     isPublic: true
 ---
 ``````
+
 </details>
 
 ## Insert YAML attributes
@@ -408,10 +409,8 @@ Inserts the given YAML attributes into the YAML frontmatter. Put each attribute 
 
 | Name | Description | List Items | Default Value |
 | ---- | ----------- | ---------- | ------------- |
-| `Text to insert` | Text to insert into the YAML frontmatter | N/A | `aliases: 
+| `Text to insert` | Text to insert into the YAML frontmatter | N/A | `aliases:
 tags: ` |
-
-
 
 ### Examples
 
@@ -436,6 +435,7 @@ tags: doc
 animal: cat
 ---
 ``````
+
 </details>
 
 ## Move Tags to YAML
@@ -450,8 +450,6 @@ Move all tags to YAML frontmatter of the document.
 | ---- | ----------- | ---------- | ------------- |
 | `Body tag operation` | What to do with non-ignored tags in the body of the file once they have been moved to the frontmatter | `Nothing`: Leaves tags in the body of the file alone<br/><br/>`Remove hashtag`: Removes `#` from tags in content body after moving them to the YAML frontmatter<br/><br/>`Remove whole tag`: Removes the whole tag in content body after moving them to the YAML frontmatter. _Note that this removes the first space prior to the tag as well_ | `Nothing` |
 | `Tags to ignore` | The tags that will not be moved to the tags array or removed from the body content if `Remove the hashtag from tags in content body` is enabled. Each tag should be on a new line and without the `#`. **Make sure not to include the hashtag in the tag name.** | N/A |  |
-
-
 
 ### Examples
 
@@ -491,6 +489,7 @@ This inline code `#ignored content`
 
 #ignored-tag is ignored since it is in the ignored list
 ``````
+
 </details>
 <details><summary>Move tags from body to YAML with existing tags retains the already existing ones and only adds new ones</summary>
 
@@ -511,6 +510,7 @@ tags: [test, tag2, markdown]
 ---
 Text has to do with #test and #markdown
 ``````
+
 </details>
 <details><summary>Move tags to YAML frontmatter and then remove hashtags in body content tags when `Body tag operation = 'Remove hashtag'` and `Tags to ignore = 'yet-another-ignored-tag'`.</summary>
 
@@ -535,6 +535,7 @@ Text has to do with test and markdown
 
 The tag at the end of this line stays as a tag since it is ignored #yet-another-ignored-tag
 ``````
+
 </details>
 <details><summary>Move tags to YAML frontmatter and then remove body content tags when `Body tag operation = 'Remove whole tag'`.</summary>
 
@@ -555,6 +556,7 @@ tags: [test, tag2, tags, warning]
 ---
 This document will have removed and spacing around tags is left alone except for the space prior to the hashtag
 ``````
+
 </details>
 
 ## Remove YAML Keys
@@ -568,8 +570,6 @@ Removes the YAML keys specified
 | Name | Description | List Items | Default Value |
 | ---- | ----------- | ---------- | ------------- |
 | `YAML Keys to Remove` | The YAML keys to remove from the YAML frontmatter with or without colons | N/A |  |
-
-
 
 ### Examples
 
@@ -609,6 +609,7 @@ tags: computer
 
 Text
 ``````
+
 </details>
 
 ## YAML Key Sort
@@ -624,8 +625,6 @@ Sorts the YAML keys based on the order and priority specified. **Note: may remov
 | `YAML Key Priority Sort Order` | The order in which to sort keys with one on each line where it sorts in the order found in the list | N/A |  |
 | `Priority Keys at Start of YAML` | YAML Key Priority Sort Order is placed at the start of the YAML frontmatter | N/A | `true` |
 | `YAML Sort Order for Other Keys` | The way in which to sort the keys that are not found in the YAML Key Priority Sort Order text area | `None`: No sorting other than what is in the YAML Key Priority Sort Order text area<br/><br/>`Ascending Alphabetical`: Sorts the keys based on key value from a to z<br/><br/>`Descending Alphabetical`: Sorts the keys based on key value from z to a | `None` |
-
-
 
 ### Examples
 
@@ -656,6 +655,7 @@ keywords: []
 status: WIP
 ---
 ``````
+
 </details>
 <details><summary>Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `'YAML Sort Order for Other Keys' = Ascending Alphabetical`</summary>
 
@@ -684,6 +684,7 @@ status: WIP
 tags: computer
 ---
 ``````
+
 </details>
 <details><summary>Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `'YAML Sort Order for Other Keys' = Descending Alphabetical`</summary>
 
@@ -712,6 +713,7 @@ status: WIP
 keywords: []
 ---
 ``````
+
 </details>
 <details><summary>Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `'YAML Sort Order for Other Keys' = Descending Alphabetical` and `'Priority Keys at Start of YAML' = false`</summary>
 
@@ -741,6 +743,7 @@ type: programming
 language: Typescript
 ---
 ``````
+
 </details>
 
 ## YAML Timestamp
@@ -762,7 +765,6 @@ Keep track of the date the file was last edited in the YAML front matter. Gets d
 
 ### Additional Info
 
-
 #### Date Modified Value Origin
 
 The date modified is _not_ based on the file date modified metadata. This is because the Linter only has access to the last
@@ -773,7 +775,6 @@ For example, say the date modified is January 22nd 2020. But you update the file
 the YAML frontmatter would say January 22nd 2020 despite being updated in 2021. If you did not run the Linter
 against the file a 2nd time, it could be left with a very misleading value. As such, the date modified is the time when
 Linter asks to update the file via any rule except Custom Commands. This should be within about 5 seconds of the value in the file metadata.
-
 
 ### Examples
 
@@ -794,6 +795,7 @@ date modified: Thursday, January 2nd 2020, 12:00:05 am
 ---
 # H1
 ``````
+
 </details>
 <details><summary>dateCreated option is false</summary>
 
@@ -811,6 +813,7 @@ date modified: Thursday, January 2nd 2020, 12:00:05 am
 ---
 # H1
 ``````
+
 </details>
 <details><summary>Date Created Key is set</summary>
 
@@ -828,6 +831,7 @@ created: Wednesday, January 1st 2020, 12:00:00 am
 ---
 # H1
 ``````
+
 </details>
 <details><summary>Date Modified Key is set</summary>
 
@@ -845,6 +849,7 @@ modified: Wednesday, January 1st 2020, 4:00:00 pm
 ---
 # H1
 ``````
+
 </details>
 
 ## YAML Title
@@ -859,8 +864,6 @@ Inserts the title of the file into the YAML frontmatter. Gets the title based on
 | ---- | ----------- | ---------- | ------------- |
 | `Title Key` | Which YAML key to use for title | N/A | `title` |
 | `Mode` | The method to use to get the title | `first-h1-or-filename-if-h1-missing`: Uses the first H1 in the file or the filename of the file if there is not H1<br/><br/>`filename`: Uses the filename as the title<br/><br/>`first-h1`: Uses the first H1 in the file as the title | `first-h1-or-filename-if-h1-missing` |
-
-
 
 ### Examples
 
@@ -880,6 +883,7 @@ title: Obsidian
 ---
 # Obsidian
 ``````
+
 </details>
 <details><summary>Adds a header with the title when `mode = 'First H1 or Filename if H1 Missing'`.</summary>
 
@@ -897,6 +901,7 @@ title: Filename
 ---
 
 ``````
+
 </details>
 <details><summary>Make sure that markdown links in headings are properly copied to the YAML as just the text when `mode = 'First H1 or Filename if H1 Missing'`</summary>
 
@@ -914,6 +919,7 @@ title: This is a Heading
 ---
 # This is a [Heading](test heading.md)
 ``````
+
 </details>
 <details><summary>When `mode = 'First H1'`, title does not have a value if no H1 is present</summary>
 
@@ -931,6 +937,7 @@ title: ""
 ---
 ## This is a Heading
 ``````
+
 </details>
 <details><summary>When `mode = 'Filename'`, title uses the filename ignoring all H1s. Note: the filename is "Filename" in this example.</summary>
 
@@ -948,6 +955,7 @@ title: Filename
 ---
 # This is a Heading
 ``````
+
 </details>
 
 ## YAML Title Alias
@@ -962,9 +970,7 @@ Inserts the title of the file into the YAML frontmatter's aliases section. Gets 
 | ---- | ----------- | ---------- | ------------- |
 | `Preserve existing aliases section style` | If set, the `YAML aliases section style` setting applies only to the newly created sections | N/A | `true` |
 | `Keep alias that matches the filename` | Such aliases are usually redundant | N/A | false |
-| `Use the YAML key `linter-yaml-title-alias` to help with filename and heading changes` | If set, when the first H1 heading changes or filename if first H1 is not present changes, then the old alias stored in this key will be replaced with the new value instead of just inserting a new entry in the aliases array | N/A | `true` |
-
-
+| `Use the YAML key`linter-yaml-title-alias`to help with filename and heading changes` | If set, when the first H1 heading changes or filename if first H1 is not present changes, then the old alias stored in this key will be replaced with the new value instead of just inserting a new entry in the aliases array | N/A | `true` |
 
 ### Examples
 
@@ -986,6 +992,7 @@ linter-yaml-title-alias: Obsidian
 ---
 # Obsidian
 ``````
+
 </details>
 <details><summary>Adds a header with the title from heading without YAML key when the use of the YAML key is set to false.</summary>
 
@@ -1004,6 +1011,7 @@ aliases:
 ---
 # Obsidian
 ``````
+
 </details>
 <details><summary>Adds a header with the title.</summary>
 
@@ -1023,6 +1031,7 @@ linter-yaml-title-alias: Filename
 ---
 
 ``````
+
 </details>
 <details><summary>Adds a header with the title without YAML key when the use of the YAML key is set to false.</summary>
 
@@ -1041,6 +1050,7 @@ aliases:
 ---
 
 ``````
+
 </details>
 <details><summary>Replaces old filename with new filename when no header is present and filename is different than the old one listed in `linter-yaml-title-alias`.</summary>
 
@@ -1067,6 +1077,7 @@ linter-yaml-title-alias: Filename
 ---
 
 ``````
+
 </details>
 <details><summary>Make sure that markdown and wiki links in first H1 get their values converted to text</summary>
 
@@ -1086,4 +1097,5 @@ linter-yaml-title-alias: This is a Heading
 ---
 # This is a [Heading](markdown.md)
 ``````
+
 </details>

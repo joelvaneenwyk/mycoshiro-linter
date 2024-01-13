@@ -42,7 +42,7 @@ The Linter does its best to break that apart under the hood into 3 separate math
 ###### Moving Text after Closing Math Block Indicator to Its Own Line
 
 The parser does not handle math block closing indicators on the same line as text as it will consider that text to be part of the math
-block even if it comes after the ending indicator. For example, the following is considered to be an entire math block according to 
+block even if it comes after the ending indicator. For example, the following is considered to be an entire math block according to
 the underlying parser:
 
 ``` markdown

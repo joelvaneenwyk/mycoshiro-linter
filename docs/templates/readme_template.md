@@ -51,6 +51,7 @@ More content goes here...
 ```
 
 Things to note about range ignores:
+
 - Paste rules are not affected by range ignores as that would require the copied text to have a range ignore in them.
 
 ## Rules
@@ -90,6 +91,7 @@ These rules can be useful in swapping out certain tags, words, and formatting fo
 _Note: lookbehinds do not work on iOS mobile and using them will cause linting to fail. So please **DO NOT** use them for iOS mobile._
 
 ### Paste Limitations
+
 - The plugin only works with the standard pasting (`cmd/ctrl + v`) shortcut, and not with the `p` operator in vim. (Pasting with `cmd/ctrl + v` in normal or insert mode does work though.)
 - To avoid conflicts with Plugins like [Auto Link Title](https://obsidian.md/plugins?id=obsidian-auto-link-title) or [Paste URL into Selection](https://obsidian.md/plugins?id=url-into-selection), will not be triggered when an URL is detected in the clipboard.
 - On mobile, in order to paste the URL, ensure you perform the `Tap and Hold -> Paste` action to paste into your document and use the paste rules.
@@ -112,11 +114,13 @@ Note: On some machines the `.obsidian` folder may be hidden. On MacOS you should
 Contributions are welcome and appreciated. You can help in any of the following ways:
 
 No repo setup required:
+
 - [Reporting a bug](https://github.com/platers/obsidian-linter/issues/new?assignees=&labels=bug&template=bug_report.md&title=Bug%3A+)
 - [Requesting a feature](https://github.com/platers/obsidian-linter/issues/new?assignees=&labels=rule+suggestion&template=feature_request.md&title=FR%3A+)
 - [Suggesting documentation](https://github.com/platers/obsidian-linter/issues/new?assignees=&labels=documentation&template=documentation_request.md&title=Doc%3A+)
 
 Varying repo and development setup required:
+
 - [Updating or adding documentation](https://github.com/platers/obsidian-linter/blob/master/CONTRIBUTING.md#updating-documentation)
 - [Translating the plugin into a new language](https://github.com/platers/obsidian-linter/blob/master/CONTRIBUTING.md#adding-translations-for-a-language)
 - [Fixing a bug](https://github.com/platers/obsidian-linter/blob/master/CONTRIBUTING.md#bug-fixes)

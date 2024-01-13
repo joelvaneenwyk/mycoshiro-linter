@@ -12,6 +12,7 @@ to allow users to specify folders that they do not want the linting rules to aff
 The values in the text box are expected to be folder paths from the base of the Obsidian vault.
 
 For example you could have the following as your value for folders to ignore:
+
 ``` markdown
 Assets
 General/Projects
@@ -33,6 +34,7 @@ In the YAML frontmatter of a file, there is the ability to specify a list of rul
 Valid values for rules to disable are the rule aliases to disable specific rules or `all` to disable all rules for the file.
 
 For example, the following would disable [capitalize headings](../settings/heading-rules.md#capitalize-headings) and [header increment](../settings/heading-rules.md#header-increment) for the entire file it is found in:
+
 ``` markdown
 ---
 disabled rules: [capitalize-headings, header-increment]
@@ -40,6 +42,7 @@ disabled rules: [capitalize-headings, header-increment]
 ```
 
 The following disables all Linter rules for a file:
+
 ``` markdown
 ---
 disabled rules: [all]
@@ -56,6 +59,7 @@ Leaving off the ending of a range ignore will assume you want to ignore the file
     Ranged ignores only prevent the values in the ranged ignore from being linted. It *does not* prevent whitespace or other additions around the ranged ignore.
 
 The following example shows how you would ignore just a part of a file:
+
 ``` markdown
 Here is some text
 <!-- linter-disable -->
@@ -65,6 +69,7 @@ More content goes here...
 ```
 
 Here is another example that shows a ranged ignore without an ending indicator:
+
 ``` markdown
 Here is some text
 <!-- linter-disable -->
