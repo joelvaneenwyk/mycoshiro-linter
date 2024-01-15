@@ -1,7 +1,7 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {ensureEmptyLinesAroundBlockquotes} from '../utils/mdast';
+import { ensureEmptyLinesAroundBlockquotes } from '../utils/mdast';
 
 class EmptyLineAroundBlockquotesOptions implements Options {}
 
@@ -11,7 +11,7 @@ export default class EmptyLineAroundBlockquotes extends RuleBuilder<EmptyLineAro
     super({
       nameKey: 'rules.empty-line-around-blockquotes.name',
       descriptionKey: 'rules.empty-line-around-blockquotes.description',
-      type: RuleType.SPACING,
+      type: RuleType.SPACING
     });
   }
   get OptionsClass(): new () => EmptyLineAroundBlockquotesOptions {
@@ -34,7 +34,7 @@ export default class EmptyLineAroundBlockquotes extends RuleBuilder<EmptyLineAro
           > quote content continued
           ${''}
           # Title here
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Blockquotes that end a document do not get an empty line after them.',
@@ -48,7 +48,7 @@ export default class EmptyLineAroundBlockquotes extends RuleBuilder<EmptyLineAro
           ${''}
           > Quote content here
           > quote content continued
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Blockquotes that are nested have the proper empty line added',
@@ -81,8 +81,8 @@ export default class EmptyLineAroundBlockquotes extends RuleBuilder<EmptyLineAro
           ${''}
           > > Quote content here
           > > quote content continued
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<EmptyLineAroundBlockquotesOptions>[] {

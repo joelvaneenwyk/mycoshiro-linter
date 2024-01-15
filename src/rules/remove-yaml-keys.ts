@@ -1,7 +1,7 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase, TextAreaOptionBuilder} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase, TextAreaOptionBuilder } from './rule-builder';
 import dedent from 'ts-dedent';
-import {getYAMLText, removeYamlSection} from '../utils/yaml';
+import { getYAMLText, removeYamlSection } from '../utils/yaml';
 
 class RemoveYamlKeysOptions implements Options {
   yamlKeysToRemove: string[] = [];
@@ -13,7 +13,7 @@ export default class RemoveYamlKeys extends RuleBuilder<RemoveYamlKeysOptions> {
     super({
       nameKey: 'rules.remove-yaml-keys.name',
       descriptionKey: 'rules.remove-yaml-keys.description',
-      type: RuleType.YAML,
+      type: RuleType.YAML
     });
   }
   get OptionsClass(): new () => RemoveYamlKeysOptions {
@@ -73,13 +73,9 @@ export default class RemoveYamlKeys extends RuleBuilder<RemoveYamlKeysOptions> {
           Text
         `,
         options: {
-          yamlKeysToRemove: [
-            'status:',
-            'keywords',
-            'date',
-          ],
-        },
-      }),
+          yamlKeysToRemove: ['status:', 'keywords', 'date']
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<RemoveYamlKeysOptions>[] {
@@ -88,8 +84,8 @@ export default class RemoveYamlKeys extends RuleBuilder<RemoveYamlKeysOptions> {
         OptionsClass: RemoveYamlKeysOptions,
         nameKey: 'rules.remove-yaml-keys.yaml-keys-to-remove.name',
         descriptionKey: 'rules.remove-yaml-keys.yaml-keys-to-remove.description',
-        optionsKey: 'yamlKeysToRemove',
-      }),
+        optionsKey: 'yamlKeysToRemove'
+      })
     ];
   }
 }

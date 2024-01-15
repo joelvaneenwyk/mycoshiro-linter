@@ -1,6 +1,6 @@
 import YamlTitle from '../src/rules/yaml-title';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: YamlTitle,
@@ -15,7 +15,7 @@ ruleTest({
         title: Hello world
         ---
         # Hello world
-      `,
+      `
     },
     {
       testName: 'Escapes title if it contains colon followed by space',
@@ -27,7 +27,7 @@ ruleTest({
         title: "Hello: world"
         ---
         # Hello: world
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with single quote',
@@ -39,7 +39,7 @@ ruleTest({
         title: "'Hello world"
         ---
         # 'Hello world
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with double quote',
@@ -51,7 +51,7 @@ ruleTest({
         title: '"Hello world'
         ---
         # "Hello world
-      `,
+      `
     },
     {
       testName: 'Does not insert line breaks for long title',
@@ -63,10 +63,12 @@ ruleTest({
         title: Very long title 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
         ---
         # Very long title 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
-      `,
+      `
     },
-    { // similar to https://github.com/platers/obsidian-linter/issues/449
-      testName: 'Make sure that links in headings are properly copied to the YAML when there is a link prior to the first H1',
+    {
+      // similar to https://github.com/platers/obsidian-linter/issues/449
+      testName:
+        'Make sure that links in headings are properly copied to the YAML when there is a link prior to the first H1',
       before: dedent`
         [[Link1]]
 
@@ -79,9 +81,10 @@ ruleTest({
         [[Link1]]
 
         # [[Heading]]
-      `,
+      `
     },
-    { // relates to https://github.com/platers/obsidian-linter/issues/470
+    {
+      // relates to https://github.com/platers/obsidian-linter/issues/470
       testName: 'Make sure that markdown links in title get converted to text',
       before: dedent`
         ---
@@ -94,9 +97,10 @@ ruleTest({
         title: This is a Heading
         ---
         # This is a [Heading](test heading.md)
-      `,
+      `
     },
-    { // relates to https://github.com/platers/obsidian-linter/issues/470
+    {
+      // relates to https://github.com/platers/obsidian-linter/issues/470
       testName: 'Make sure that wiki links in title get converted to text',
       before: dedent`
         ---
@@ -109,9 +113,10 @@ ruleTest({
         title: This is a Heading
         ---
         # This is a [[Heading]]
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/519
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/519
       testName: 'Make sure that the first header is captured even if another header precedes it.',
       before: dedent`
         ### not the title
@@ -125,7 +130,7 @@ ruleTest({
         ### not the title
 
         # Title
-      `,
+      `
     },
     {
       testName: 'Tag after first header is not considered as a part of the title',
@@ -139,9 +144,10 @@ ruleTest({
         ---
         # title
         #tag
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/604
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/604
       testName: 'Make sure that aliased wiki links are properly converted to just the alias in the YAML',
       before: dedent`
         # [[Broken Linter|Broken]] Linter
@@ -151,7 +157,7 @@ ruleTest({
         title: Broken Linter
         ---
         # [[Broken Linter|Broken]] Linter
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with exclamation mark',
@@ -163,7 +169,7 @@ ruleTest({
         title: "!title"
         ---
         # !title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with at sign',
@@ -175,7 +181,7 @@ ruleTest({
         title: "@title"
         ---
         # @title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it contains hash',
@@ -187,7 +193,7 @@ ruleTest({
         title: "prefix #title"
         ---
         # prefix #title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with percent',
@@ -199,7 +205,7 @@ ruleTest({
         title: "%title"
         ---
         # %title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with ampersand',
@@ -211,7 +217,7 @@ ruleTest({
         title: "&title"
         ---
         # &title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with asterisk',
@@ -223,7 +229,7 @@ ruleTest({
         title: "*title"
         ---
         # *title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with hyphen followed by space',
@@ -235,7 +241,7 @@ ruleTest({
         title: "- title"
         ---
         # - title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with left square bracket',
@@ -247,7 +253,7 @@ ruleTest({
         title: "[title"
         ---
         # [title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with right square bracket',
@@ -259,7 +265,7 @@ ruleTest({
         title: "]title"
         ---
         # ]title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with left curly bracket',
@@ -271,7 +277,7 @@ ruleTest({
         title: "{title"
         ---
         # {title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with right curly bracket',
@@ -283,7 +289,7 @@ ruleTest({
         title: "}title"
         ---
         # }title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with vertical bar',
@@ -295,7 +301,7 @@ ruleTest({
         title: "|title"
         ---
         # |title
-      `,
+      `
     },
     {
       testName: 'Escapes title if it starts with greater-than sign',
@@ -307,7 +313,7 @@ ruleTest({
         title: ">title"
         ---
         # >title
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

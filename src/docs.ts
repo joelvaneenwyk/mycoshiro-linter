@@ -1,10 +1,11 @@
-import {readFileSync, writeFileSync, existsSync} from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import dedent from 'ts-dedent';
-import {DropdownOption} from './option';
-import {rules} from './rules';
+import { DropdownOption } from './option';
+import { rules } from './rules';
 import './rules-registry';
 
-const autogen_warning = '<!--- This file was automatically generated. See docs.ts and *_template.md files for the source. -->\n';
+const autogen_warning =
+  '<!--- This file was automatically generated. See docs.ts and *_template.md files for the source. -->\n';
 
 const pathToDocsFolder = './docs';
 
@@ -38,7 +39,9 @@ function generateDocs() {
   let rules_docs = '';
   let prevSection = '';
   for (const rule of rules) {
-    const examples = rule.examples.map((test) => dedent`
+    const examples = rule.examples
+      .map(
+        (test) => dedent`
       <details><summary>${test.description}</summary>
       ${''}
       Before:
@@ -53,48 +56,52 @@ function generateDocs() {
       ${test.after}
       \`\`\`\`\`\`
       </details>
-    `).join('\n');
+    `
+      )
+      .join('\n');
 
     const additionalInfo = getRuleAdditionalInfo(rule.alias);
 
-    const options_list = rule.options.slice(1).map((option) => {
-      let listItems = '';
-      if (option instanceof DropdownOption) {
-        let listItemNumber = 0;
-        for (const record of option.options) {
-          const nameParts = record.value.split('.');
-          let name = '';
-          if (nameParts.length === 1) {
-            name = nameParts[0];
-          } else {
-            name = nameParts[nameParts.length - 1];
-          }
+    const options_list = rule.options
+      .slice(1)
+      .map((option) => {
+        let listItems = '';
+        if (option instanceof DropdownOption) {
+          let listItemNumber = 0;
+          for (const record of option.options) {
+            const nameParts = record.value.split('.');
+            let name = '';
+            if (nameParts.length === 1) {
+              name = nameParts[0];
+            } else {
+              name = nameParts[nameParts.length - 1];
+            }
 
-          // accounts for the fact that one of the rules has a period as its list value
-          if (name == '') {
-            name = '.';
-          }
+            // accounts for the fact that one of the rules has a period as its list value
+            if (name == '') {
+              name = '.';
+            }
 
-          if (listItemNumber > 0) {
-            listItems += '<br/><br/>';
+            if (listItemNumber > 0) {
+              listItems += '<br/><br/>';
+            }
+            listItems += `\`${name}\`: ${record.description}`;
+            listItemNumber++;
           }
-          listItems += `\`${name}\`: ${record.description}`;
-          listItemNumber++;
         }
-      }
-      listItems = listItems || 'N/A';
+        listItems = listItems || 'N/A';
 
-      let defaultValue = option.defaultValue;
-      if (defaultValue != '') {
-        defaultValue = `\`${defaultValue}\``;
-      }
-      const text = dedent`
+        let defaultValue = option.defaultValue;
+        if (defaultValue != '') {
+          defaultValue = `\`${defaultValue}\``;
+        }
+        const text = dedent`
         | \`${option.getName()}\` | ${option.getDescription()} | ${listItems} | ${defaultValue} |
       `;
 
-
-      return text;
-    }).join('\n');
+        return text;
+      })
+      .join('\n');
     let options = '';
     if (options_list.length > 0) {
       options = dedent`

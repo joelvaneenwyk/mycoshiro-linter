@@ -1,14 +1,14 @@
-import {App, Component, Platform, PluginSettingTab} from 'obsidian';
+import { App, Component, Platform, PluginSettingTab } from 'obsidian';
+import { getTextInLanguage } from 'src/lang/helpers';
 import LinterPlugin from 'src/main';
-import {RuleType, ruleTypeToRules} from 'src/rules';
-import {hideEl} from './helpers';
-import {SearchStatus, Tab} from './linter-components/tab-components/tab';
-import {GeneralTab} from './linter-components/tab-components/general-tab';
-import {RuleTab} from './linter-components/tab-components/rule-tab';
-import {CustomTab} from './linter-components/tab-components/custom-tab';
-import {TabSearcher} from './linter-components/tab-components/tab-searcher';
-import {DebugTab} from './linter-components/tab-components/debug-tab';
-import {getTextInLanguage} from 'src/lang/helpers';
+import { RuleType, ruleTypeToRules } from 'src/rules';
+import { hideEl } from './helpers';
+import { CustomTab } from './linter-components/tab-components/custom-tab';
+import { DebugTab } from './linter-components/tab-components/debug-tab';
+import { GeneralTab } from './linter-components/tab-components/general-tab';
+import { RuleTab } from './linter-components/tab-components/rule-tab';
+import { SearchStatus, Tab } from './linter-components/tab-components/tab';
+import { TabSearcher } from './linter-components/tab-components/tab-searcher';
 
 export class SettingTab extends PluginSettingTab {
   navContainer: HTMLElement;
@@ -20,13 +20,16 @@ export class SettingTab extends PluginSettingTab {
   private searchZeroState: HTMLDivElement;
   private tabSearcher: TabSearcher;
 
-  constructor(app: App, public plugin: LinterPlugin) {
+  constructor(
+    app: App,
+    public plugin: LinterPlugin
+  ) {
     super(app, plugin);
     this.component = new Component();
   }
 
   display(): void {
-    const {containerEl} = this;
+    const { containerEl } = this;
 
     this.component.load();
     containerEl.empty();
@@ -37,7 +40,7 @@ export class SettingTab extends PluginSettingTab {
       linterHeader.createEl('h1').setText(getTextInLanguage('linter-title'));
     }
 
-    this.navContainer = containerEl.createEl('nav', {cls: 'linter-setting-header'});
+    this.navContainer = containerEl.createEl('nav', { cls: 'linter-setting-header' });
     this.tabNavEl = this.navContainer.createDiv('linter-setting-tab-group');
     this.settingsContentEl = containerEl.createDiv('linter-setting-content');
     this.addTabs(Platform.isMobile);
@@ -54,10 +57,19 @@ export class SettingTab extends PluginSettingTab {
   }
 
   private addTabs(isMobile: boolean) {
-    this.addTab(new GeneralTab(this.tabNavEl, this.settingsContentEl, isMobile, this.plugin, this.app));
+    this.addTab(new GeneralTab(this.tabNavEl, this.settingsContentEl, isMobile, this.plugin));
 
     for (const ruleType of Object.values(RuleType)) {
-      this.addTab(new RuleTab(this.tabNavEl, this.settingsContentEl, ruleType, ruleTypeToRules.get(ruleType), isMobile, this.plugin));
+      this.addTab(
+        new RuleTab(
+          this.tabNavEl,
+          this.settingsContentEl,
+          ruleType,
+          ruleTypeToRules.get(ruleType),
+          isMobile,
+          this.plugin
+        )
+      );
     }
 
     this.addTab(new CustomTab(this.tabNavEl, this.settingsContentEl, isMobile, this.app, this.plugin));
@@ -82,7 +94,9 @@ export class SettingTab extends PluginSettingTab {
   private createSearchZeroState(isMobile: boolean) {
     this.searchZeroState = this.settingsContentEl.createDiv();
     hideEl(this.searchZeroState);
-    this.searchZeroState.createEl(isMobile ? 'h3' : 'h2', {text: getTextInLanguage('empty-search-results-text')}).style.textAlign = 'center';
+    this.searchZeroState.createEl(isMobile ? 'h3' : 'h2', {
+      text: getTextInLanguage('empty-search-results-text')
+    }).style.textAlign = 'center';
   }
 
   private addTab(tab: Tab) {

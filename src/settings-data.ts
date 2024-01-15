@@ -1,17 +1,8 @@
-import {Options} from './rules';
-import {LintCommand} from './ui/linter-components/custom-command-option';
-import {CustomReplace} from './ui/linter-components/custom-replace-option';
-import {NestedKeyOf} from './utils/nested-keyof';
-import {NormalArrayFormats, QuoteCharacter, SpecialArrayFormats, TagSpecificArrayFormats} from './utils/yaml';
-
-// CommonStyles are settings that are used in multiple places and thus need to be external to rules themselves to help facilitate their use
-export type CommonStyles = {
-  aliasArrayStyle: NormalArrayFormats | SpecialArrayFormats;
-  tagArrayStyle: TagSpecificArrayFormats | NormalArrayFormats | SpecialArrayFormats;
-  minimumNumberOfDollarSignsToBeAMathBlock: number;
-  escapeCharacter: QuoteCharacter;
-  removeUnnecessaryEscapeCharsForMultiLineArrays: boolean;
-}
+import log from 'loglevel';
+import { CommonStyles, Options } from './rules';
+import { LintCommand } from './ui/linter-components/custom-command-option';
+import { CustomReplace } from './ui/linter-components/custom-replace-option';
+import { NormalArrayFormats } from './utils/yaml';
 
 export interface LinterSettings {
   ruleConfigs: {
@@ -21,17 +12,15 @@ export interface LinterSettings {
   displayChanged: boolean;
   settingsConvertedToConfigKeyValues: boolean;
   recordLintOnSaveLogs: boolean;
-  lintOnFileChange: boolean,
-  displayLintOnFileChangeNotice: boolean,
+  lintOnFileChange: boolean;
+  displayLintOnFileChangeNotice: boolean;
   foldersToIgnore: string[];
   linterLocale: string;
-  logLevel: string;
+  logLevel: number;
   lintCommands: LintCommand[];
   customRegexes: CustomReplace[];
   commonStyles: CommonStyles;
 }
-
-export type LinterSettingsKeys = NestedKeyOf<LinterSettings>
 
 export const DEFAULT_SETTINGS: Partial<LinterSettings> = {
   ruleConfigs: {},
@@ -43,7 +32,7 @@ export const DEFAULT_SETTINGS: Partial<LinterSettings> = {
   settingsConvertedToConfigKeyValues: false,
   foldersToIgnore: [],
   linterLocale: 'system-default',
-  logLevel: 'ERROR',
+  logLevel: log.levels.ERROR,
   lintCommands: [],
   customRegexes: [],
   commonStyles: {
@@ -51,6 +40,6 @@ export const DEFAULT_SETTINGS: Partial<LinterSettings> = {
     tagArrayStyle: NormalArrayFormats.SingleLine,
     minimumNumberOfDollarSignsToBeAMathBlock: 2,
     escapeCharacter: '"',
-    removeUnnecessaryEscapeCharsForMultiLineArrays: false,
-  },
+    removeUnnecessaryEscapeCharsForMultiLineArrays: false
+  }
 };

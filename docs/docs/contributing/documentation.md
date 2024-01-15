@@ -10,13 +10,13 @@ Some examples of manually created documentation include this page and all of the
 
 ## Generated Documentation
 
-A lot of the documentation for this plugin is generated. See the [Documentation Templates](#documentation-templates) 
+A lot of the documentation for this plugin is generated. See the [Documentation Templates](#documentation-templates)
 section to see which files they are and when they should be updated.
 
 If you are looking to update the rules list information like section, examples, descriptions, or options in the README
 or rules documentation, update the rule information in the corresponding rule file located in `src/rules/`.
 
-To update how rules have their information displayed, you will want to update the logic in the `generateDocs` method in 
+To update how rules have their information displayed, you will want to update the logic in the `generateDocs` method in
 [docs.ts](https://github.com/platers/obsidian-linter/blob/master/src/docs.ts).
 
 ## Additional Information for Rules and Rule Types
@@ -40,7 +40,8 @@ when lowercased. Info added in these files generally include limitations and thi
 Currently there is 1 template file used for generating documentation with:
 
 1. [readme_template.md](https://github.com/platers/obsidian-linter/blob/master/docs/readme_template.md)
-  - This template is used for generating the [README](https://github.com/platers/obsidian-linter/blob/master/README.md) file and should be updated for changes that are not rules documentation links and their corresponding sections.
+
+- This template is used for generating the [README](https://github.com/platers/obsidian-linter/blob/master/README.md) file and should be updated for changes that are not rules documentation links and their corresponding sections.
 
 You may also want to take a look at [docs.ts](https://github.com/platers/obsidian-linter/blob/master/src/docs.ts) to modify how the generated files are created.
 

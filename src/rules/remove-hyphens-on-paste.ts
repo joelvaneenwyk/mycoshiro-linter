@@ -1,6 +1,6 @@
 // based on https://github.com/chrisgrieser/obsidian-smarter-paste/blob/master/clipboardModification.ts#L13
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
 
 class RemoveHyphensOnPasteOptions implements Options {}
@@ -11,14 +11,14 @@ export default class RemoveHyphensOnPaste extends RuleBuilder<RemoveHyphensOnPas
     super({
       nameKey: 'rules.remove-hyphens-on-paste.name',
       descriptionKey: 'rules.remove-hyphens-on-paste.description',
-      type: RuleType.PASTE,
+      type: RuleType.PASTE
     });
   }
   get OptionsClass(): new () => RemoveHyphensOnPasteOptions {
     return RemoveHyphensOnPasteOptions;
   }
   apply(text: string, options: RemoveHyphensOnPasteOptions): string {
-    return text.replace(/([^\s-])[-‐]\s+\n?(?=\w)/g, '$1');
+    return text.replace(/([^\s-])[-‐]\s+\b/g, '$1');
   }
   get exampleBuilders(): ExampleBuilder<RemoveHyphensOnPasteOptions>[] {
     return [
@@ -30,8 +30,8 @@ export default class RemoveHyphensOnPaste extends RuleBuilder<RemoveHyphensOnPas
         `,
         after: dedent`
           Text that was cool but hypertension made it uncool.
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<RemoveHyphensOnPasteOptions>[] {

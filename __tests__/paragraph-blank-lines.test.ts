@@ -1,6 +1,6 @@
 import ParagraphBlankLines from '../src/rules/paragraph-blank-lines';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: ParagraphBlankLines,
@@ -36,7 +36,7 @@ ruleTest({
         a = b
         c = d
         \`\`\`
-      `,
+      `
     },
     {
       testName: 'Handles lists',
@@ -55,7 +55,7 @@ ruleTest({
         - 1
         \t- 2
             - 3
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/250
@@ -73,7 +73,7 @@ ruleTest({
         123 foo
         ${''}
         123 bar
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/250
@@ -91,7 +91,7 @@ ruleTest({
         测试 foo
         ${''}
         测试 bar
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/250
@@ -108,7 +108,7 @@ ruleTest({
         foo
         ${''}
         bar
-      `,
+      `
     },
     {
       testName: 'Make sure blockquotes are not affected',
@@ -123,10 +123,12 @@ ruleTest({
         ${''}
         > blockquote
         > blockquote line 2
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/669
-      testName: 'Make sure blockquotes that have a value starting with the blockquote indicator and no whitespace after are not affected',
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/669
+      testName:
+        'Make sure blockquotes that have a value starting with the blockquote indicator and no whitespace after are not affected',
       before: dedent`
         # Hello world
         ${''}
@@ -138,7 +140,7 @@ ruleTest({
         ${''}
         > blockquote
         >blockquote line 2
-      `,
+      `
     },
     {
       testName: 'Make sure lists are not affected',
@@ -153,7 +155,7 @@ ruleTest({
         ${''}
         - List item 1
         - List item 2
-      `,
+      `
     },
     {
       testName: 'Make sure lines ending in a line break are not affected',
@@ -176,7 +178,7 @@ ruleTest({
         paragraph line 3 <br/>
         paragraph final line
         ${''}
-      `,
+      `
     },
     {
       testName: 'Make sure obsidian multiline comments are not affected',
@@ -198,7 +200,7 @@ ruleTest({
         It can span
         multiple lines
         %%
-      `,
+      `
     },
     {
       testName: 'Preserves trailing line break',
@@ -209,16 +211,16 @@ ruleTest({
       after: dedent`
         Line followed by line break
         ${''}
-      `,
+      `
     },
     {
-      testName: 'Doesn\'t add trailing line break',
+      testName: "Doesn't add trailing line break",
       before: dedent`
         Line not followed by line break
       `,
       after: dedent`
         Line not followed by line break
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/300
@@ -278,9 +280,10 @@ ruleTest({
         HW:: --
         T:: 0
         %%
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/517
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/517
       testName: 'Table followed by header should only have 1 line after it',
       before: dedent`
         ### 常量
@@ -309,9 +312,10 @@ ruleTest({
         |  \`dur()\`            |                                   |
         ${''}
         ### 表达式
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/704
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/704
       testName: 'Make sure that an empty list indicator does not have an extra empty line added around it',
       before: dedent`
         ## Attendees
@@ -326,9 +330,10 @@ ruleTest({
         -${' '}
         ${''}
         ## Agenda
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/787
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/787
       testName: 'Make sure that an empty list indicator does not have an extra empty line added around it',
       before: dedent`
         - reference to footnote 1 [^1]
@@ -347,7 +352,7 @@ ruleTest({
         [^1]: [github.com](https://github.com)
         [^2]: [github.com](https://github.com)
         [^3]: [github.com](https://github.com)
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

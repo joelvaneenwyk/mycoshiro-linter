@@ -1,6 +1,6 @@
 import RemoveEmptyListMarkers from '../src/rules/remove-empty-list-markers';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: RemoveEmptyListMarkers,
@@ -13,7 +13,7 @@ ruleTest({
       `,
       after: dedent`
         * Some list item 1
-      `,
+      `
     },
     {
       testName: 'Remove empty list markers that are the only line in the file',
@@ -22,25 +22,25 @@ ruleTest({
       `,
       after: dedent`
         ${''}
-      `,
+      `
     },
     {
-      testName: 'Don\'t remove number if it is the only content of the line',
+      testName: "Don't remove number if it is the only content of the line",
       before: dedent`
         42
       `,
       after: dedent`
         42
-      `,
+      `
     },
     {
-      testName: 'Don\'t remove number if not followed by `.` or `)`',
+      testName: "Don't remove number if not followed by `.` or `)`",
       before: dedent`
         42z
       `,
       after: dedent`
         42z
-      `,
+      `
     },
     {
       testName: 'Remove number followed by `.`',
@@ -49,7 +49,7 @@ ruleTest({
       `,
       after: dedent`
         ${''}
-      `,
+      `
     },
     {
       testName: 'Remove number followed by `)`',
@@ -58,7 +58,7 @@ ruleTest({
       `,
       after: dedent`
         ${''}
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

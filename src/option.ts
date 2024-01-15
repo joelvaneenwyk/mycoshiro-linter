@@ -1,24 +1,31 @@
-import {Setting} from 'obsidian';
-import {getTextInLanguage, LanguageStringKey} from './lang/helpers';
+import { Setting } from 'obsidian';
+import { getTextInLanguage, LanguageStringKey } from './lang/helpers';
 import LinterPlugin from './main';
-import {parseTextToHTMLWithoutOuterParagraph} from './ui/helpers';
-import {LinterSettings} from './settings-data';
+import { LinterSettings } from './settings-data';
+import { parseTextToHTMLWithoutOuterParagraph } from './ui/helpers';
 
-export type SearchOptionInfo = {name: string, description: string, options?: DropdownRecord[]}
+export type SearchOptionInfo = { name: string; description: string; options?: DropdownRecord[] };
+
+export type SupportedOptionTypes = string | boolean | number;
 
 /** Class representing an option of a rule */
-
-export abstract class Option {
+export abstract class Option<T extends SupportedOptionTypes = SupportedOptionTypes> {
   public ruleAlias: string;
 
   /**
    * Create an option
    * @param {LanguageStringKey} nameKey - The name key of the option
    * @param {LanguageStringKey} descriptionKey - The description key of the option
-   * @param {any} defaultValue - The default value of the option
+   * @param {T} defaultValue - The default value of the option
    * @param {string?} ruleAlias - The alias of the rule this option belongs to
    */
-  constructor(public configKey: string, public nameKey: LanguageStringKey, public descriptionKey: LanguageStringKey, public defaultValue: any, ruleAlias?: string | null) {
+  constructor(
+    public configKey: string,
+    public nameKey: LanguageStringKey,
+    public descriptionKey: LanguageStringKey,
+    public defaultValue: T,
+    ruleAlias?: string | null
+  ) {
     if (ruleAlias) {
       this.ruleAlias = ruleAlias;
     }
@@ -33,12 +40,12 @@ export abstract class Option {
   }
 
   public getSearchInfo(): SearchOptionInfo {
-    return {name: this.getName(), description: this.getDescription()};
+    return { name: this.getName(), description: this.getDescription() };
   }
 
   public abstract display(containerEl: HTMLElement, settings: LinterSettings, plugin: LinterPlugin): void;
 
-  protected setOption(value: any, settings: LinterSettings): void {
+  protected setOption(value: T, settings: LinterSettings): void {
     settings.ruleConfigs[this.ruleAlias][this.configKey] = value;
   }
 
@@ -46,78 +53,67 @@ export abstract class Option {
     parseTextToHTMLWithoutOuterParagraph(this.getName(), setting.nameEl, plugin.settingsTab.component);
     parseTextToHTMLWithoutOuterParagraph(this.getDescription(), setting.descEl, plugin.settingsTab.component);
 
-    setting.settingEl.addClass('linter-no-border');
+    // remove border around every setting item
+    setting.settingEl.style.border = 'none';
   }
 }
 
-export class BooleanOption extends Option {
-  public defaultValue: boolean;
-
+export class BooleanOption extends Option<boolean> {
   public display(containerEl: HTMLElement, settings: LinterSettings, plugin: LinterPlugin): void {
-    const setting = new Setting(containerEl)
-        .addToggle((toggle) => {
-          toggle.setValue(settings.ruleConfigs[this.ruleAlias][this.configKey]);
-          toggle.onChange((value) => {
-            this.setOption(value, settings);
-            plugin.settings = settings;
-            plugin.saveSettings();
-          });
-        });
+    const setting = new Setting(containerEl).addToggle((toggle) => {
+      toggle.setValue(settings.ruleConfigs[this.ruleAlias][this.configKey]);
+      toggle.onChange((value) => {
+        this.setOption(value, settings);
+        plugin.settings = settings;
+        plugin.saveData(plugin.settings);
+      });
+    });
 
     this.parseNameAndDescriptionAndRemoveSettingBorder(setting, plugin);
   }
 }
 
-export class TextOption extends Option {
-  public defaultValue: string;
-
+export class TextOption extends Option<string> {
   public display(containerEl: HTMLElement, settings: LinterSettings, plugin: LinterPlugin): void {
-    const setting = new Setting(containerEl)
-        .addText((textbox) => {
-          textbox.setValue(settings.ruleConfigs[this.ruleAlias][this.configKey]);
-          textbox.onChange((value) => {
-            this.setOption(value, settings);
-            plugin.settings = settings;
-            plugin.saveSettings();
-          });
-        });
+    const setting = new Setting(containerEl).addText((textbox) => {
+      textbox.setValue(settings.ruleConfigs[this.ruleAlias][this.configKey]);
+      textbox.onChange((value) => {
+        this.setOption(value, settings);
+        plugin.settings = settings;
+        plugin.saveData(plugin.settings);
+      });
+    });
 
     this.parseNameAndDescriptionAndRemoveSettingBorder(setting, plugin);
   }
 }
 
-export class TextAreaOption extends Option {
-  public defaultValue: string;
-
+export class TextAreaOption extends Option<string> {
   public display(containerEl: HTMLElement, settings: LinterSettings, plugin: LinterPlugin): void {
-    const setting = new Setting(containerEl)
-        .addTextArea((textbox) => {
-          textbox.setValue(settings.ruleConfigs[this.ruleAlias][this.configKey]);
-          textbox.onChange((value) => {
-            this.setOption(value, settings);
-            plugin.settings = settings;
-            plugin.saveSettings();
-          });
-        });
+    const setting = new Setting(containerEl).addTextArea((textbox) => {
+      textbox.setValue(settings.ruleConfigs[this.ruleAlias][this.configKey]);
+      textbox.onChange((value) => {
+        this.setOption(value, settings);
+        plugin.settings = settings;
+        plugin.saveData(plugin.settings);
+      });
+    });
 
     this.parseNameAndDescriptionAndRemoveSettingBorder(setting, plugin);
   }
 }
 
-export class MomentFormatOption extends Option {
-  public defaultValue: boolean;
-
+export class MomentFormatOption extends Option<string> {
   public display(containerEl: HTMLElement, settings: LinterSettings, plugin: LinterPlugin): void {
-    const setting = new Setting(containerEl)
-        .addMomentFormat((format) => {
-          format.setValue(settings.ruleConfigs[this.ruleAlias][this.configKey]);
-          format.setPlaceholder('dddd, MMMM Do YYYY, h:mm:ss a');
-          format.onChange((value) => {
-            this.setOption(value, settings);
-            plugin.settings = settings;
-            plugin.saveSettings();
-          });
-        });
+    const setting = new Setting(containerEl).addMomentFormat((format) => {
+      format.setValue(settings.ruleConfigs[this.ruleAlias][this.configKey]);
+      format.setPlaceholder('dddd, MMMM Do YYYY, h:mm:ss a');
+      format.onChange((value) => {
+        this.setOption(value, settings);
+        plugin.settings = settings;
+        plugin.saveData(plugin.settings);
+      });
+    });
 
     this.parseNameAndDescriptionAndRemoveSettingBorder(setting, plugin);
   }
@@ -137,36 +133,41 @@ export class DropdownRecord {
   }
 }
 
-export class DropdownOption extends Option {
-  public defaultValue: string;
+export class DropdownOption extends Option<string> {
   public options: DropdownRecord[];
 
-  constructor(configKey: string, nameKey: LanguageStringKey, descriptionKey: LanguageStringKey, defaultValue: string, options: DropdownRecord[], ruleAlias?: string | null) {
+  constructor(
+    configKey: string,
+    nameKey: LanguageStringKey,
+    descriptionKey: LanguageStringKey,
+    defaultValue: string,
+    options: DropdownRecord[],
+    ruleAlias?: string | null
+  ) {
     super(configKey, nameKey, descriptionKey, defaultValue, ruleAlias);
     this.options = options;
   }
 
   public getSearchInfo(): SearchOptionInfo {
-    return {name: this.getName(), description: this.getDescription(), options: this.options};
+    return { name: this.getName(), description: this.getDescription(), options: this.options };
   }
 
   public display(containerEl: HTMLElement, settings: LinterSettings, plugin: LinterPlugin): void {
-    const setting = new Setting(containerEl)
-        .addDropdown((dropdown) => {
-          // First, add all the available options
-          for (const option of this.options) {
-            dropdown.addOption(option.value.replace('enums.', ''), option.getDisplayValue());
-          }
+    const setting = new Setting(containerEl).addDropdown((dropdown) => {
+      // First, add all the available options
+      for (const option of this.options) {
+        dropdown.addOption(option.value.replace('enums.', ''), option.getDisplayValue());
+      }
 
-          // Set currently selected value from existing settings
-          dropdown.setValue(settings.ruleConfigs[this.ruleAlias][this.configKey]);
+      // Set currently selected value from existing settings
+      dropdown.setValue(settings.ruleConfigs[this.ruleAlias][this.configKey]);
 
-          dropdown.onChange((value) => {
-            this.setOption(value, settings);
-            plugin.settings = settings;
-            plugin.saveSettings();
-          });
-        });
+      dropdown.onChange((value) => {
+        this.setOption(value, settings);
+        plugin.settings = settings;
+        plugin.saveData(plugin.settings);
+      });
+    });
 
     this.parseNameAndDescriptionAndRemoveSettingBorder(setting, plugin);
   }

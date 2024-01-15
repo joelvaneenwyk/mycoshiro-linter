@@ -1,8 +1,8 @@
 // based on https://github.com/chrisgrieser/obsidian-smarter-paste/blob/master/clipboardModification.ts#L16
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {ellipsisRegex} from '../utils/regex';
+import { ellipsisRegex } from '../utils/regex';
 
 class ProperEllipsisOnPasteOptions implements Options {}
 
@@ -12,7 +12,7 @@ export default class ProperEllipsisOnPaste extends RuleBuilder<ProperEllipsisOnP
     super({
       nameKey: 'rules.proper-ellipsis-on-paste.name',
       descriptionKey: 'rules.proper-ellipsis-on-paste.description',
-      type: RuleType.PASTE,
+      type: RuleType.PASTE
     });
   }
   get OptionsClass(): new () => ProperEllipsisOnPasteOptions {
@@ -34,8 +34,8 @@ export default class ProperEllipsisOnPaste extends RuleBuilder<ProperEllipsisOnP
           Lorem (…) Impsum.
           Lorem (…) Impsum.
           Lorem (…) Impsum.
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<ProperEllipsisOnPasteOptions>[] {

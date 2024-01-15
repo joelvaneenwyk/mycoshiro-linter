@@ -360,7 +360,6 @@ Once a test is added, you will want to run the tests, see [Running Tests](#runni
 
 ### Running Tests
 
-
 Tests are run by jest and running them varies depending on whether you want to run all tests or one or more test suites.
 
 #### All Tests

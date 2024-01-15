@@ -1,4 +1,4 @@
-import {Rule, rules} from '../src/rules';
+import { Rule, rules } from '../src/rules';
 import '../src/rules-registry';
 
 describe('Check missing fields', () => {

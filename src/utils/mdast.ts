@@ -1,21 +1,36 @@
-import {visit} from 'unist-util-visit';
-import type {Position} from 'unist';
-import type {Root} from 'mdast';
-import {hashString53Bit, makeSureContentHasEmptyLinesAddedBeforeAndAfter, replaceTextBetweenStartAndEndWithNewValue, getStartOfLineIndex, replaceAt} from './strings';
-import {genericLinkRegex, tableRow, tableSeparator, tableStartingPipe, customIgnoreAllStartIndicator, customIgnoreAllEndIndicator, checklistBoxStartsTextRegex, footnoteDefinitionIndicatorAtStartOfLine} from './regex';
-import {gfmFootnote} from 'micromark-extension-gfm-footnote';
-import {gfmTaskListItem} from 'micromark-extension-gfm-task-list-item';
-import {combineExtensions} from 'micromark-util-combine-extensions';
-import {math} from 'micromark-extension-math';
-import {mathFromMarkdown} from 'mdast-util-math';
-import {fromMarkdown} from 'mdast-util-from-markdown';
-import {gfmFootnoteFromMarkdown} from 'mdast-util-gfm-footnote';
-import {gfmTaskListItemFromMarkdown} from 'mdast-util-gfm-task-list-item';
+import type { Root } from 'mdast';
+import { fromMarkdown } from 'mdast-util-from-markdown';
+import { gfmFootnoteFromMarkdown } from 'mdast-util-gfm-footnote';
+import { gfmTaskListItemFromMarkdown } from 'mdast-util-gfm-task-list-item';
+import { mathFromMarkdown } from 'mdast-util-math';
+import { gfmFootnote } from 'micromark-extension-gfm-footnote';
+import { gfmTaskListItem } from 'micromark-extension-gfm-task-list-item';
+import { math } from 'micromark-extension-math';
+import { combineExtensions } from 'micromark-util-combine-extensions';
 import QuickLRU from 'quick-lru';
-import {countInstances} from './strings';
-import {getTextInLanguage} from '../lang/helpers';
+import type { Position } from 'unist';
+import { visit } from 'unist-util-visit';
+import { getTextInLanguage } from '../lang/helpers';
+import {
+  checklistBoxStartsTextRegex,
+  customIgnoreAllEndIndicator,
+  customIgnoreAllStartIndicator,
+  footnoteDefinitionIndicatorAtStartOfLine,
+  genericLinkRegex,
+  tableRow,
+  tableSeparator,
+  tableStartingPipe
+} from './regex';
+import {
+  countInstances,
+  getStartOfLineIndex,
+  hashString53Bit,
+  makeSureContentHasEmptyLinesAddedBeforeAndAfter,
+  replaceAt,
+  replaceTextBetweenStartAndEndWithNewValue
+} from './strings';
 
-const LRU = new QuickLRU({maxSize: 200});
+const LRU = new QuickLRU({ maxSize: 200 });
 
 export enum MDAstTypes {
   Link = 'link',
@@ -33,24 +48,24 @@ export enum MDAstTypes {
   Html = 'html',
   // math types
   Math = 'math',
-  InlineMath = 'inlineMath',
+  InlineMath = 'inlineMath'
 }
 
 export enum OrderListItemStyles {
   Ascending = 'ascending',
-  Lazy = 'lazy',
+  Lazy = 'lazy'
 }
 
 export enum OrderListItemEndOfIndicatorStyles {
   Period = '.',
-  Parenthesis = ')',
+  Parenthesis = ')'
 }
 
 export enum UnorderedListItemStyles {
   Plus = '+',
   Dash = '-',
   Asterisk = '*',
-  Consistent = 'consistent',
+  Consistent = 'consistent'
 }
 
 function parseTextToAST(text: string): Root {
@@ -59,14 +74,9 @@ function parseTextToAST(text: string): Root {
     return LRU.get(textHash) as Root;
   }
 
-  const ast = fromMarkdown(text, {
-    extensions: [combineExtensions([gfmFootnote(), gfmTaskListItem]), math()],
-    mdastExtensions: [[
-      gfmFootnoteFromMarkdown(),
-      gfmTaskListItemFromMarkdown,
-    ],
-    mathFromMarkdown(),
-    ],
+  const ast = fromMarkdown(text, 'utf-8', {
+    extensions: [combineExtensions([gfmFootnote(), gfmTaskListItem()]), math()],
+    mdastExtensions: [[gfmFootnoteFromMarkdown(), gfmTaskListItemFromMarkdown()], mathFromMarkdown()]
   });
 
   LRU.set(textHash, ast);
@@ -131,15 +141,19 @@ export function moveFootnotesToEnd(text: string): string {
   let footnotes: string[] = [];
 
   type footnoteKeyInfo = {
-    key: string,
-    referencePositions: number[], // last instance to first instance in file
-    footnotesReferencingKey: string[], // last instance to first instance in file
+    key: string;
+    referencePositions: number[]; // last instance to first instance in file
+    footnotesReferencingKey: string[]; // last instance to first instance in file
   };
 
   const footnoteKeyToFootnoteKeyInfo = new Map<string, footnoteKeyInfo>();
   const mapOfFootnoteToFootnoteReferenceIndex = new Map<string, number>();
 
-  const getAllReferencePositionsForFootnote = function(text: string, footnote: string, startOfFootnoteReferenceSearch: number): void {
+  const getAllReferencePositionsForFootnote = function (
+    text: string,
+    footnote: string,
+    startOfFootnoteReferenceSearch: number
+  ): void {
     const footnoteReference = footnote.match(/\[\^.*?\]/)[0];
 
     if (footnoteKeyToFootnoteKeyInfo.has(footnoteReference)) {
@@ -167,7 +181,7 @@ export function moveFootnotesToEnd(text: string): string {
     const keyInfo: footnoteKeyInfo = {
       key: footnoteReference,
       referencePositions: footnoteReferenceLocations,
-      footnotesReferencingKey: [footnote],
+      footnotesReferencingKey: [footnote]
     };
 
     footnoteKeyToFootnoteKeyInfo.set(footnoteReference, keyInfo);
@@ -179,7 +193,7 @@ export function moveFootnotesToEnd(text: string): string {
     const keyInfo = footnoteData[1];
     // we need to offset the index to pull from for the footnote based on the difference in the amount of keys present, but make sure it is >= 0
     let offset = keyInfo.referencePositions.length - keyInfo.footnotesReferencingKey.length;
-    offset = offset >= 0 ? offset: 0; // this allows us to properly hit not found error messages
+    offset = offset >= 0 ? offset : 0; // this allows us to properly hit not found error messages
     let index = 0;
     for (const footnote of keyInfo.footnotesReferencingKey) {
       if (index + offset >= keyInfo.referencePositions.length) {
@@ -219,10 +233,14 @@ export function reIndexFootnotes(text: string): string {
   const mapOfFootnoteToFirstFootnoteReferenceIndex = new Map<string, number>();
   const footnoteToFootnoteKey = new Map<string, string>();
   const oldKeyToNewKey = new Map<string, string>();
-  let footnoteReferenceLocationInfo: {key: string, position: number}[] = [];
+  let footnoteReferenceLocationInfo: { key: string; position: number }[] = [];
   const footnoteKeys = new Set<string>();
 
-  const getFirstReferenceToFootnote = function(text: string, footnote: string, startOfFootnoteReferenceSearch: number): number {
+  const getFirstReferenceToFootnote = function (
+    text: string,
+    footnote: string,
+    startOfFootnoteReferenceSearch: number
+  ): number {
     const footnoteReference = footnote.match(/\[\^.*?\]/)[0];
     footnoteToFootnoteKey.set(footnote, footnoteReference);
 
@@ -230,7 +248,9 @@ export function reIndexFootnotes(text: string): string {
     if (footnoteKeyAlreadyUsed && mapOfFootnoteToFirstFootnoteReferenceIndex.has(footnote)) {
       return mapOfFootnoteToFirstFootnoteReferenceIndex.get(footnote);
     } else if (footnoteKeyAlreadyUsed) {
-      throw new Error(getTextInLanguage('logs.too-many-footnotes-error-message').replace('{FOOTNOTE_KEY}', footnoteReference));
+      throw new Error(
+        getTextInLanguage('logs.too-many-footnotes-error-message').replace('{FOOTNOTE_KEY}', footnoteReference)
+      );
     }
 
     let footnoteReferenceLocation: number;
@@ -241,7 +261,7 @@ export function reIndexFootnotes(text: string): string {
         continue;
       }
 
-      footnoteReferenceLocationInfo.push({key: footnoteReference, position: footnoteReferenceLocation});
+      footnoteReferenceLocationInfo.push({ key: footnoteReference, position: footnoteReferenceLocation });
       firstFootnoteReferenceIndex = footnoteReferenceLocation;
       startOfFootnoteReferenceSearch = footnoteReferenceLocation - 1;
     } while (footnoteReferenceLocation > 0);
@@ -251,9 +271,17 @@ export function reIndexFootnotes(text: string): string {
     return firstFootnoteReferenceIndex;
   };
 
-  text = removeFootnotesAndDoAnActionThem(positions, text, footnotes, (text: string, footnote: string, startOfFootnoteReferenceSearch: number) => {
-    mapOfFootnoteToFirstFootnoteReferenceIndex.set(footnote, getFirstReferenceToFootnote(text, footnote, startOfFootnoteReferenceSearch));
-  });
+  text = removeFootnotesAndDoAnActionThem(
+    positions,
+    text,
+    footnotes,
+    (text: string, footnote: string, startOfFootnoteReferenceSearch: number) => {
+      mapOfFootnoteToFirstFootnoteReferenceIndex.set(
+        footnote,
+        getFirstReferenceToFootnote(text, footnote, startOfFootnoteReferenceSearch)
+      );
+    }
+  );
 
   // Sort the footnotes into the order of their references in the text
   footnotes = footnotes.sort((f1: string, f2: string) => {
@@ -261,9 +289,11 @@ export function reIndexFootnotes(text: string): string {
   });
 
   // Sort the footnote references from last to first to prevent issues when replacing the footnote references down the road
-  footnoteReferenceLocationInfo = footnoteReferenceLocationInfo.sort((f1: {key: string, position: number}, f2: {key: string, position: number}) => {
-    return f2.position - f1.position;
-  });
+  footnoteReferenceLocationInfo = footnoteReferenceLocationInfo.sort(
+    (f1: { key: string; position: number }, f2: { key: string; position: number }) => {
+      return f2.position - f1.position;
+    }
+  );
 
   // Add the footnotes to the end of the document
   if (footnotes.length > 0) {
@@ -294,7 +324,12 @@ export function reIndexFootnotes(text: string): string {
   return text;
 }
 
-function removeFootnotesAndDoAnActionThem(positions: Position[], text: string, footnotes: string[], action: (text: string, footnote: string, startOfFootnoteReferenceSearch: number) => void) {
+function removeFootnotesAndDoAnActionThem(
+  positions: Position[],
+  text: string,
+  footnotes: string[],
+  action: (text: string, footnote: string, startOfFootnoteReferenceSearch: number) => void
+) {
   for (const position of positions) {
     const footnote = text.substring(position.start.offset, position.end.offset);
     footnotes.push(footnote);
@@ -333,8 +368,8 @@ export function makeEmphasisOrBoldConsistent(text: string, style: string, type: 
   } else if (style === 'asterisk') {
     indicator = '*';
   } else {
-    const firstPosition = positions[positions.length-1];
-    indicator = text.substring(firstPosition.start.offset, firstPosition.start.offset+1);
+    const firstPosition = positions[positions.length - 1];
+    indicator = text.substring(firstPosition.start.offset, firstPosition.start.offset + 1);
   }
 
   // make the size two for the indicator when the type is strong
@@ -343,7 +378,10 @@ export function makeEmphasisOrBoldConsistent(text: string, style: string, type: 
   }
 
   for (const position of positions) {
-    const newContent = indicator + text.substring(position.start.offset + indicator.length, position.end.offset - indicator.length) + indicator;
+    const newContent =
+      indicator +
+      text.substring(position.start.offset + indicator.length, position.end.offset - indicator.length) +
+      indicator;
     text = replaceTextBetweenStartAndEndWithNewValue(text, position.start.offset, position.end.offset, newContent);
   }
 
@@ -351,10 +389,10 @@ export function makeEmphasisOrBoldConsistent(text: string, style: string, type: 
 }
 
 /**
-   * Makes sure that blockquotes, paragraphs, and list items have two spaces at the end of them if the following line continues its content.
-   * @param {string} text The text to make sure that the two spaces are added to if there are consecutive lines of content
-   * @return {string} The text with two spaces at the end of lines of paragraphs, list items, and blockquotes where there were consecutive lines of content.
-   */
+ * Makes sure that blockquotes, paragraphs, and list items have two spaces at the end of them if the following line continues its content.
+ * @param {string} text The text to make sure that the two spaces are added to if there are consecutive lines of content
+ * @return {string} The text with two spaces at the end of lines of paragraphs, list items, and blockquotes where there were consecutive lines of content.
+ */
 export function addTwoSpacesAtEndOfLinesFollowedByAnotherLineOfTextContent(text: string): string {
   const positions: Position[] = getPositions(MDAstTypes.Paragraph, text);
   if (positions.length === 0) {
@@ -379,7 +417,12 @@ export function addTwoSpacesAtEndOfLinesFollowedByAnotherLineOfTextContent(text:
       paragraphLines[i] = paragraphLine + '  ';
     }
 
-    text = replaceTextBetweenStartAndEndWithNewValue(text, position.start.offset, position.end.offset, paragraphLines.join('\n'));
+    text = replaceTextBetweenStartAndEndWithNewValue(
+      text,
+      position.start.offset,
+      position.end.offset,
+      paragraphLines.join('\n')
+    );
   }
 
   return text;
@@ -413,8 +456,13 @@ export function makeSureThereIsOnlyOneBlankLineBeforeAndAfterParagraphs(text: st
 
     // exclude list items, footnote definitions, and blockquotes
     const firstLine = paragraphLines[0].trimStart();
-    if (firstLine.startsWith('>') || firstLine.startsWith('- ') || firstLine.startsWith('-\t') ||
-      firstLine.match(/^[0-9]+\.( |\t)+/) || firstLine.match(footnoteDefinitionIndicatorAtStartOfLine)) {
+    if (
+      firstLine.startsWith('>') ||
+      firstLine.startsWith('- ') ||
+      firstLine.startsWith('-\t') ||
+      firstLine.match(/^\d+\.( |\t)+/) ||
+      firstLine.match(footnoteDefinitionIndicatorAtStartOfLine)
+    ) {
       continue;
     }
 
@@ -425,18 +473,19 @@ export function makeSureThereIsOnlyOneBlankLineBeforeAndAfterParagraphs(text: st
       const paragraphLine = paragraphLines[i];
 
       if (nextLineIsSameParagraph) {
-        const lastParagraphLineAdded = newParagraphLines.length-1;
+        const lastParagraphLineAdded = newParagraphLines.length - 1;
         newParagraphLines[lastParagraphLineAdded] += '\n' + paragraphLine;
       } else {
         newParagraphLines.push(paragraphLine);
       }
 
       // make sure that lines that end in <br>, <br/>, or two or more spaces are in the same paragraph
-      nextLineIsSameParagraph = paragraphLine.endsWith('<br>') || paragraphLine.endsWith('<br/>') || paragraphLine.endsWith('  ');
+      nextLineIsSameParagraph =
+        paragraphLine.endsWith('<br>') || paragraphLine.endsWith('<br/>') || paragraphLine.endsWith('  ');
     }
 
     // remove new lines prior to paragraph
-    while (startIndex > 0 && text.charAt(startIndex-1) == '\n') {
+    while (startIndex > 0 && text.charAt(startIndex - 1) == '\n') {
       startIndex--;
     }
 
@@ -462,7 +511,12 @@ export function makeSureThereIsOnlyOneBlankLineBeforeAndAfterParagraphs(text: st
       endNewLines = '';
     }
 
-    text = replaceTextBetweenStartAndEndWithNewValue(text, startIndex, endIndex, startNewLines + newParagraphLines.join('\n\n') + endNewLines);
+    text = replaceTextBetweenStartAndEndWithNewValue(
+      text,
+      startIndex,
+      endIndex,
+      startNewLines + newParagraphLines.join('\n\n') + endNewLines
+    );
   }
 
   if (hasTrailingLineBreak && !text.endsWith('\n')) {
@@ -471,7 +525,6 @@ export function makeSureThereIsOnlyOneBlankLineBeforeAndAfterParagraphs(text: st
 
   return text;
 }
-
 
 /**
  * Removes spaces before and after markdown link text
@@ -493,42 +546,55 @@ export function removeSpacesInLinkText(text: string): string {
     }
 
     const endLinkTextPosition = regularLink.indexOf(']');
-    const newLink = regularLink.substring(0, 1) + regularLink.substring(1, endLinkTextPosition).trim() + regularLink.substring(endLinkTextPosition);
+    const newLink =
+      regularLink.substring(0, 1) +
+      regularLink.substring(1, endLinkTextPosition).trim() +
+      regularLink.substring(endLinkTextPosition);
     text = replaceTextBetweenStartAndEndWithNewValue(text, position.start.offset, position.end.offset, newLink);
   }
 
   return text;
 }
 
-export function updateItalicsText(text: string, func:(text: string) => string): string {
+export function updateItalicsText(text: string, func: (text: string) => string): string {
   const positions: Position[] = getPositions(MDAstTypes.Italics, text);
 
   for (const position of positions) {
-    let italicText = text.substring(position.start.offset+1, position.end.offset-1);
+    let italicText = text.substring(position.start.offset + 1, position.end.offset - 1);
 
     italicText = func(italicText);
 
-    text = replaceTextBetweenStartAndEndWithNewValue(text, position.start.offset+1, position.end.offset-1, italicText);
+    text = replaceTextBetweenStartAndEndWithNewValue(
+      text,
+      position.start.offset + 1,
+      position.end.offset - 1,
+      italicText
+    );
   }
 
   return text;
 }
 
-export function updateBoldText(text: string, func:(text: string) => string): string {
+export function updateBoldText(text: string, func: (text: string) => string): string {
   const positions: Position[] = getPositions(MDAstTypes.Bold, text);
 
   for (const position of positions) {
-    let boldText = text.substring(position.start.offset+2, position.end.offset-2);
+    let boldText = text.substring(position.start.offset + 2, position.end.offset - 2);
 
     boldText = func(boldText);
 
-    text = replaceTextBetweenStartAndEndWithNewValue(text, position.start.offset+2, position.end.offset-2, boldText);
+    text = replaceTextBetweenStartAndEndWithNewValue(
+      text,
+      position.start.offset + 2,
+      position.end.offset - 2,
+      boldText
+    );
   }
 
   return text;
 }
 
-export function updateListItemText(text: string, func:(text: string) => string): string {
+export function updateListItemText(text: string, func: (text: string) => string): string {
   const positions: Position[] = getListItemTextPositions(text);
 
   for (const position of positions) {
@@ -579,7 +645,11 @@ export function ensureEmptyLinesAroundMathBlock(text: string, numberOfDollarSign
 
   positions = getPositions(MDAstTypes.InlineMath, text);
   for (const position of positions) {
-    if (!text.substring(position.start.offset, position.end.offset).startsWith('$'.repeat(numberOfDollarSignsForMathBlock))) {
+    if (
+      !text
+        .substring(position.start.offset, position.end.offset)
+        .startsWith('$'.repeat(numberOfDollarSignsForMathBlock))
+    ) {
       continue;
     }
 
@@ -598,13 +668,17 @@ export function ensureEmptyLinesAroundBlockquotes(text: string): string {
       endIndex++;
     }
 
-    text = makeSureContentHasEmptyLinesAddedBeforeAndAfter(text, position.start.offset, endIndex, true);
+    text = makeSureContentHasEmptyLinesAddedBeforeAndAfter(text, position.start.offset, endIndex);
   }
 
   return text;
 }
 
-export function updateOrderedListItemIndicators(text: string, orderedListStyle: OrderListItemStyles, orderedListEndStyle: OrderListItemEndOfIndicatorStyles): string {
+export function updateOrderedListItemIndicators(
+  text: string,
+  orderedListStyle: OrderListItemStyles,
+  orderedListEndStyle: OrderListItemEndOfIndicatorStyles
+): string {
   const positions: Position[] = getPositions(MDAstTypes.List, text);
   if (!positions) {
     return text;
@@ -617,7 +691,7 @@ export function updateOrderedListItemIndicators(text: string, orderedListStyle: 
     }
     let listText = text.substring(start, position.end.offset);
 
-    const getListItemLevel = function(preListItemIndicatorContent: string): number {
+    const getListItemLevel = function (preListItemIndicatorContent: string): number {
       const lastBlockQuoteIndicator = preListItemIndicatorContent.lastIndexOf('> ');
       if (lastBlockQuoteIndicator !== -1) {
         preListItemIndicatorContent = preListItemIndicatorContent.substring(lastBlockQuoteIndicator + 2);
@@ -629,7 +703,7 @@ export function updateOrderedListItemIndicators(text: string, orderedListStyle: 
     };
 
     const preListIndicatorLevelsToIndicatorNumber = new Map<number, number>();
-    const removeListItemsItemIndicatorInfo = function(start: number, end: number) {
+    const removeListItemsItemIndicatorInfo = function (start: number, end: number) {
       let i = end;
       while (i > start) {
         preListIndicatorLevelsToIndicatorNumber.delete(i--);
@@ -637,36 +711,40 @@ export function updateOrderedListItemIndicators(text: string, orderedListStyle: 
     };
 
     let lastItemListIndicatorLevel = -1;
-    listText = listText.replace(/^(( |\t|> )*)((\d+(\.|\)))|[-*+])([^\n]*)$/gm, (listItem: string, $1: string = '', _$2: string, $3: string, _$4: string, _$5: string, $6: string) => {
-      let listItemIndicatorNumber = 1;
+    listText = listText.replace(
+      /^(( |\t|> )*)((\d+(\.|\)))|[-*+])([^\n]*)$/gm,
+      (listItem: string, $1: string = '', _$2: string, $3: string, _$4: string, _$5: string, $6: string) => {
+        let listItemIndicatorNumber = 1;
 
-      const listItemIndicatorLevel = getListItemLevel($1);
-      // when dealing with a value that is not an int reset all values greater than or equal to the current list level
-      if (!/^\d/.test($3)) {
-        const highestCurrentValue = listItemIndicatorLevel > lastItemListIndicatorLevel ? listItemIndicatorLevel: lastItemListIndicatorLevel;
-        removeListItemsItemIndicatorInfo(listItemIndicatorLevel, highestCurrentValue);
+        const listItemIndicatorLevel = getListItemLevel($1);
+        // when dealing with a value that is not an int reset all values greater than or equal to the current list level
+        if (!/^\d/.test($3)) {
+          const highestCurrentValue =
+            listItemIndicatorLevel > lastItemListIndicatorLevel ? listItemIndicatorLevel : lastItemListIndicatorLevel;
+          removeListItemsItemIndicatorInfo(listItemIndicatorLevel, highestCurrentValue);
 
-        return listItem; // skip to the next item if the current item is not an ordered list item
-      }
-
-      if (preListIndicatorLevelsToIndicatorNumber.has(listItemIndicatorLevel)) {
-        if (orderedListStyle === OrderListItemStyles.Ascending) {
-          listItemIndicatorNumber = preListIndicatorLevelsToIndicatorNumber.get(listItemIndicatorLevel) + 1;
-          preListIndicatorLevelsToIndicatorNumber.set(listItemIndicatorLevel, listItemIndicatorNumber);
+          return listItem; // skip to the next item if the current item is not an ordered list item
         }
-      } else {
-        preListIndicatorLevelsToIndicatorNumber.set(listItemIndicatorLevel, 1);
+
+        if (preListIndicatorLevelsToIndicatorNumber.has(listItemIndicatorLevel)) {
+          if (orderedListStyle === OrderListItemStyles.Ascending) {
+            listItemIndicatorNumber = preListIndicatorLevelsToIndicatorNumber.get(listItemIndicatorLevel) + 1;
+            preListIndicatorLevelsToIndicatorNumber.set(listItemIndicatorLevel, listItemIndicatorNumber);
+          }
+        } else {
+          preListIndicatorLevelsToIndicatorNumber.set(listItemIndicatorLevel, 1);
+        }
+
+        // if we have removed an indentation level then go ahead and remove the last set of sub-list info for any levels between those two levels
+        if (lastItemListIndicatorLevel > listItemIndicatorLevel) {
+          removeListItemsItemIndicatorInfo(listItemIndicatorLevel, lastItemListIndicatorLevel);
+        }
+
+        lastItemListIndicatorLevel = listItemIndicatorLevel;
+
+        return `${$1}${listItemIndicatorNumber}${orderedListEndStyle}${$6}`;
       }
-
-      // if we have removed an indentation level then go ahead and remove the last set of sublist info for any levels between those two levels
-      if (lastItemListIndicatorLevel > listItemIndicatorLevel) {
-        removeListItemsItemIndicatorInfo(listItemIndicatorLevel, lastItemListIndicatorLevel);
-      }
-
-      lastItemListIndicatorLevel = listItemIndicatorLevel;
-
-      return `${$1}${listItemIndicatorNumber}${orderedListEndStyle}${$6}`;
-    });
+    );
 
     text = replaceTextBetweenStartAndEndWithNewValue(text, start, position.end.offset, listText);
   }
@@ -717,11 +795,11 @@ export function updateUnorderedListItemIndicators(text: string, unorderedListSty
 }
 
 /**
-* Updates all blockquotes in the provided text based on the function provided.
-* @param {string} text - The text to update the blockquotes in.
-* @param {function(text: string): string} func - The operation to run on each blockquote to update them.
-* @return {string} The text with the blockquotes updated based on the provided function.
-*/
+ * Updates all blockquotes in the provided text based on the function provided.
+ * @param {string} text - The text to update the blockquotes in.
+ * @param {function(text: string): string} func - The operation to run on each blockquote to update them.
+ * @return {string} The text with the blockquotes updated based on the provided function.
+ */
 export function updateBlockquotes(text: string, func: (text: string) => string): string {
   const positions: Position[] = getPositions(MDAstTypes.Blockquote, text);
   for (const position of positions) {
@@ -740,33 +818,59 @@ export function updateBlockquotes(text: string, func: (text: string) => string):
   return text;
 }
 
-
-export function makeSureMathBlockIndicatorsAreOnTheirOwnLines(text: string, numberOfDollarSignsForMathBlock: number): string {
+export function makeSureMathBlockIndicatorsAreOnTheirOwnLines(
+  text: string,
+  numberOfDollarSignsForMathBlock: number
+): string {
   let positions: Position[] = getPositions(MDAstTypes.Math, text);
   const mathOpeningIndicatorRegex = new RegExp('^(\\${' + numberOfDollarSignsForMathBlock + ',})(\\n*)');
   const mathEndingIndicatorRegex = new RegExp('(\\n*)(\\${' + numberOfDollarSignsForMathBlock + ',})([^\\$]*)$');
   for (const position of positions) {
     const mathBlock = text.substring(position.start.offset, position.end.offset);
-    const mathBlockIndexes = breakMathBlockIntoMultipleBlocksIfNeedBe(mathBlock, numberOfDollarSignsForMathBlock, position.start.offset);
+    const mathBlockIndexes = breakMathBlockIntoMultipleBlocksIfNeedBe(
+      mathBlock,
+      numberOfDollarSignsForMathBlock,
+      position.start.offset
+    );
 
     for (const blockIndexes of mathBlockIndexes) {
-      text = addBlankLinesAroundStartAndStopMathIndicators(text, blockIndexes.startIndex, blockIndexes.endIndex, mathOpeningIndicatorRegex, mathEndingIndicatorRegex);
+      text = addBlankLinesAroundStartAndStopMathIndicators(
+        text,
+        blockIndexes.startIndex,
+        blockIndexes.endIndex,
+        mathOpeningIndicatorRegex,
+        mathEndingIndicatorRegex
+      );
     }
   }
 
   positions = getPositions(MDAstTypes.InlineMath, text);
   for (const position of positions) {
-    if (!text.substring(position.start.offset, position.end.offset).startsWith('$'.repeat(numberOfDollarSignsForMathBlock))) {
+    if (
+      !text
+        .substring(position.start.offset, position.end.offset)
+        .startsWith('$'.repeat(numberOfDollarSignsForMathBlock))
+    ) {
       continue;
     }
 
-    text = addBlankLinesAroundStartAndStopMathIndicators(text, position.start.offset, position.end.offset, mathOpeningIndicatorRegex, mathEndingIndicatorRegex);
+    text = addBlankLinesAroundStartAndStopMathIndicators(
+      text,
+      position.start.offset,
+      position.end.offset,
+      mathOpeningIndicatorRegex,
+      mathEndingIndicatorRegex
+    );
   }
 
   return text;
 }
 
-function breakMathBlockIntoMultipleBlocksIfNeedBe(mathBlock: string, numberOfDollarSignsForMathBlock: number, startIndexOfMathBlock: number): {startIndex: number, endIndex: number}[] {
+function breakMathBlockIntoMultipleBlocksIfNeedBe(
+  mathBlock: string,
+  numberOfDollarSignsForMathBlock: number,
+  startIndexOfMathBlock: number
+): { startIndex: number; endIndex: number }[] {
   let mathBlockIndicator = '$'.repeat(numberOfDollarSignsForMathBlock);
   let endOfOpeningIndicator = numberOfDollarSignsForMathBlock;
   while (mathBlock.charAt(endOfOpeningIndicator) === '$') {
@@ -774,23 +878,16 @@ function breakMathBlockIntoMultipleBlocksIfNeedBe(mathBlock: string, numberOfDol
     endOfOpeningIndicator++;
   }
 
-  const mathBlockIndexes = [] as {startIndex: number, endIndex: number}[];
+  const mathBlockIndexes = [] as { startIndex: number; endIndex: number }[];
 
   let matchCount = countInstances(mathBlock, mathBlockIndicator);
-  if (matchCount <= 1) {
-    return [];
-  } else if (matchCount === 2) {
+  if (matchCount <= 3) {
     mathBlockIndexes.unshift({
       startIndex: startIndexOfMathBlock,
-      endIndex: startIndexOfMathBlock + mathBlock.length,
+      endIndex: startIndexOfMathBlock + mathBlock.length
     });
 
     return mathBlockIndexes;
-  } else if (matchCount === 3) {
-    mathBlockIndexes.unshift({
-      startIndex: startIndexOfMathBlock,
-      endIndex: startIndexOfMathBlock + mathBlock.indexOf(mathBlockIndicator, mathBlockIndicator.length) + mathBlockIndicator.length,
-    });
   }
 
   // if there is an odd amount of matches, remove one from the list so it is even
@@ -805,7 +902,7 @@ function breakMathBlockIntoMultipleBlocksIfNeedBe(mathBlock: string, numberOfDol
     const endOfIndex = mathBlock.indexOf(mathBlockIndicator, startSearch) + mathBlockIndicator.length;
     mathBlockIndexes.unshift({
       startIndex: startIndex,
-      endIndex: startIndexOfMathBlock + endOfIndex,
+      endIndex: startIndexOfMathBlock + endOfIndex
     });
 
     startIndex = startIndexOfMathBlock + endOfIndex + 1;
@@ -815,16 +912,21 @@ function breakMathBlockIntoMultipleBlocksIfNeedBe(mathBlock: string, numberOfDol
 
   mathBlockIndexes.unshift({
     startIndex: startIndexOfMathBlock + mathBlock.indexOf(mathBlockIndicator, startSearch),
-    endIndex: startIndexOfMathBlock + mathBlock.length,
+    endIndex: startIndexOfMathBlock + mathBlock.length
   });
 
   return mathBlockIndexes;
 }
 
-function addBlankLinesAroundStartAndStopMathIndicators(text: string, mathBlockStartIndex: number, mathBlockEndIndex: number, mathOpeningIndicatorRegex: RegExp, mathEndingIndicatorRegex: RegExp): string {
+function addBlankLinesAroundStartAndStopMathIndicators(
+  text: string,
+  mathBlockStartIndex: number,
+  mathBlockEndIndex: number,
+  mathOpeningIndicatorRegex: RegExp,
+  mathEndingIndicatorRegex: RegExp
+): string {
   const startOfLine = text.substring(getStartOfLineIndex(text, mathBlockStartIndex), mathBlockStartIndex) ?? '';
   const startOfEndingLine = text.substring(getStartOfLineIndex(text, mathBlockEndIndex), mathBlockEndIndex) ?? '';
-  const emptyLineBlockquoteRegex = /^(>( |\t)*)+\$+$/m;
   let mathBlock = text.substring(mathBlockStartIndex, mathBlockEndIndex);
   mathBlock = mathBlock.replace(mathOpeningIndicatorRegex, (_: string, $1: string, $2: string = '') => {
     // a new line is being added
@@ -834,13 +936,15 @@ function addBlankLinesAroundStartAndStopMathIndicators(text: string, mathBlockSt
 
     return $1 + '\n';
   });
-  mathBlock= mathBlock.replace(mathEndingIndicatorRegex, (match: string, $1: string = '', $2: string, $3: string) => {
+  mathBlock = mathBlock.replace(mathEndingIndicatorRegex, (match: string, $1: string = '', $2: string, $3: string) => {
     const groupOneIsEmpty = $1 === '';
 
     // make sure that a blank blockquote line is checked for in order to determine if a change needs to happen just for blockquotes
+    const emptyLineBlockquoteRegex = /^(?:>(?: |\t)*)+\$+$/m;
     if (groupOneIsEmpty && emptyLineBlockquoteRegex.test(startOfEndingLine.trim())) {
       return match;
-    } else if (groupOneIsEmpty) { // a new line is being added
+    } else if (groupOneIsEmpty) {
+      // a new line is being added
       return '\n' + startOfLine + $2 + $3;
     }
 
@@ -856,9 +960,9 @@ function addBlankLinesAroundStartAndStopMathIndicators(text: string, mathBlockSt
  * @param {string} text - The text to get the list of table locations from.
  * @return {{startIndex: number, endIndex: number}[]} An array of start and end indexes of each table found from last to earliest.
  */
-export function getAllTablesInText(text: string): {startIndex: number, endIndex: number}[] {
+export function getAllTablesInText(text: string): { startIndex: number; endIndex: number }[] {
   const regexMatches = [...text.matchAll(tableSeparator)];
-  const positions: {startIndex: number, endIndex: number}[] = [];
+  const positions: { startIndex: number; endIndex: number }[] = [];
   for (const match of regexMatches) {
     const startOfCurrentLine = getStartOfLineIndex(text, match.index);
     if (startOfCurrentLine === 0) {
@@ -880,7 +984,7 @@ export function getAllTablesInText(text: string): {startIndex: number, endIndex:
       continue;
     }
 
-    firstLine = firstLine.replace(tableStartingPipe, (match: string)=> {
+    firstLine = firstLine.replace(tableStartingPipe, (match: string) => {
       // do nothing if the table only has whitespace or a pipe before it
       const trimmedMatch = match.trim();
       if (trimmedMatch === '' || trimmedMatch === '|') {
@@ -911,7 +1015,7 @@ export function getAllTablesInText(text: string): {startIndex: number, endIndex:
     if (end >= text.length - 1) {
       positions.push({
         startIndex: start,
-        endIndex: text.length,
+        endIndex: text.length
       });
 
       continue;
@@ -927,7 +1031,7 @@ export function getAllTablesInText(text: string): {startIndex: number, endIndex:
 
     positions.push({
       startIndex: start,
-      endIndex: end,
+      endIndex: end
     });
   }
 
@@ -951,10 +1055,10 @@ function isInvalidTableSeparatorRow(fullRow: string, separatorMatch: string): bo
   return /[^\s>]/.test(nonSeparatorContent);
 }
 
-export function getAllCustomIgnoreSectionsInText(text: string): {startIndex: number, endIndex: number}[] {
+export function getAllCustomIgnoreSectionsInText(text: string): { startIndex: number; endIndex: number }[] {
   let iteratorIndex = 0;
 
-  const positions: {startIndex: number, endIndex: number}[] = [];
+  const positions: { startIndex: number; endIndex: number }[] = [];
   const startMatches = [...text.matchAll(customIgnoreAllStartIndicator)];
   if (!startMatches || startMatches.length === 0) {
     return positions;
@@ -981,7 +1085,7 @@ export function getAllCustomIgnoreSectionsInText(text: string): {startIndex: num
 
     positions.push({
       startIndex: iteratorIndex,
-      endIndex: endingPosition,
+      endIndex: endingPosition
     });
 
     if (!endMatches || endMatches.length === 0) {

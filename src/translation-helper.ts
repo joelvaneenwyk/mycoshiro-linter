@@ -1,11 +1,11 @@
-import * as readline from 'readline';
-import {stdout, stdin, exit} from 'process';
-import {LanguageStringKey, setLanguage, getTextInLanguage, localeHasKey, localeMap} from './lang/helpers';
 import * as fs from 'fs';
+import { exit, stdin, stdout } from 'process';
+import * as readline from 'readline';
+import { LanguageStringKey, getTextInLanguage, localeHasKey, localeMap, setLanguage } from './lang/helpers';
 
 const rl = readline.createInterface({
   input: stdin,
-  output: stdout,
+  output: stdout
 });
 
 const availableLanguages = Object.keys(localeMap).join(', ');
@@ -16,6 +16,7 @@ setLanguage('en');
 selectTranslationModeAndKickOffTheAssociatedLogic();
 
 function selectTranslationModeAndKickOffTheAssociatedLogic() {
+  // cspell:ignore eplace ranslate
   console.log('=========================================================================');
   console.log('Select a translation mode to use:');
   console.log('[A]dd a translation value for a specific language.');
@@ -74,7 +75,9 @@ function addANewValueToALanguage() {
         });
       });
     } else {
-      console.log('"' + language + '" is not in the language list. Please try rerun the program and enter another language.');
+      console.log(
+        '"' + language + '" is not in the language list. Please try rerun the program and enter another language.'
+      );
       endProgram(true);
     }
   });
@@ -105,7 +108,9 @@ function replaceLanguageKeyWithANewValue() {
         });
       });
     } else {
-      console.log('"' + language + '" is not in the language list. Please try rerun the program and enter another language.');
+      console.log(
+        '"' + language + '" is not in the language list. Please try rerun the program and enter another language.'
+      );
       endProgram(true);
     }
   });
@@ -124,13 +129,15 @@ function listUntranslatedKeysInALanguage() {
         const keyText = missingKeys.length > 1 ? 'keys' : 'key';
         console.log('"' + language + `" is missing ${missingKeys.length} ${keyText}:`);
         missingKeys.forEach((element) => {
-          console.log(`${element}: ` + getTextInLanguage(element as LanguageStringKey) );
+          console.log(`${element}: ` + getTextInLanguage(element as LanguageStringKey));
         });
       }
 
       endProgram();
     } else {
-      console.log('"' + language + '" is not in the language list. Please try rerun the program and enter another language.');
+      console.log(
+        '"' + language + '" is not in the language list. Please try rerun the program and enter another language.'
+      );
       endProgram(true);
     }
   });
@@ -153,50 +160,55 @@ function translateAllKeysInALanguage() {
         getNextTranslation(missingKeys, firstElement, language);
       }
     } else {
-      console.log('"' + language + '" is not in the language list. Please try rerun the program and enter another language.');
+      console.log(
+        '"' + language + '" is not in the language list. Please try rerun the program and enter another language.'
+      );
       endProgram(true);
     }
   });
 }
 
 function getNextTranslation(missingKeys: string[], element: string, language: string) {
-  getUserInput(`Enter 'q' for quit, 's' for skip, or a translation for '${getTextInLanguage(element as LanguageStringKey)}':`, (translatedValue: string) => {
-    switch (translatedValue) {
-      case 'q':
-        console.log(`Stopping the translation of values for language '${language}'.`);
+  getUserInput(
+    `Enter 'q' for quit, 's' for skip, or a translation for '${getTextInLanguage(element as LanguageStringKey)}':`,
+    (translatedValue: string) => {
+      switch (translatedValue) {
+        case 'q':
+          console.log(`Stopping the translation of values for language '${language}'.`);
+          replaceTranslationValuesInFile(language);
+          endProgram();
+          return;
+        case 's':
+          break;
+        default:
+          setValueInLanguage(language, element, translatedValue);
+      }
+
+      const nextKey = missingKeys.shift();
+      getNextTranslation(missingKeys, nextKey, language);
+      if (missingKeys.length === 0) {
         replaceTranslationValuesInFile(language);
         endProgram();
-        return;
-      case 's':
-        break;
-      default:
-        setValueInLanguage(language, element, translatedValue);
+      }
     }
-
-    const nextKey = missingKeys.shift();
-    getNextTranslation(missingKeys, nextKey, language);
-    if (missingKeys.length === 0) {
-      replaceTranslationValuesInFile(language);
-      endProgram();
-    }
-  });
+  );
 }
 
 function setValueInLanguage(language: string, key: string, value: string) {
-  let object = localeMap[language] as object;
-  const keyParts = key.split('.');
-  keyParts.forEach((keyPart: string, index: number) => {
-    if (keyParts.length -1 === index) {
-      object[keyPart] = value;
+  let localeSettings = localeMap[language] as Record<string | number | symbol, unknown>;
 
+  const keyParts: string[] = key.split('.');
+  key.split('.').forEach((keyPart: string, index: number) => {
+    if (keyParts.length - 1 === index) {
+      localeSettings[keyPart] = value;
       return;
     }
 
-    if (object[keyPart] == undefined) {
-      object[keyPart] = {};
+    if (localeSettings[keyPart] == undefined) {
+      localeSettings[keyPart] = {};
     }
 
-    object = object[keyPart];
+    localeSettings = localeSettings[keyPart] as Record<string | number | symbol, unknown>;
   });
 }
 
@@ -204,7 +216,10 @@ function getMissingKeysInLanguage(language: string): string[] {
   const indicatedLanguage = localeMap[language];
   const missingKeys = [] as string[];
   for (const nestedKey of englishKeys) {
-    if (!localeHasKey(indicatedLanguage, nestedKey as LanguageStringKey) && localeHasKey(localeMap['en'], nestedKey as LanguageStringKey)) {
+    if (
+      !localeHasKey(indicatedLanguage, nestedKey as LanguageStringKey) &&
+      localeHasKey(localeMap['en'], nestedKey as LanguageStringKey)
+    ) {
       missingKeys.push(nestedKey);
     }
   }
@@ -212,7 +227,7 @@ function getMissingKeysInLanguage(language: string): string[] {
   return missingKeys;
 }
 
-function getObjectKeys(obj: any, prefix: string = ''): string[] {
+function getObjectKeys(obj: object, prefix: string = ''): string[] {
   return Object.entries(obj).reduce((collector, [key, val]) => {
     const newKeys = [...collector, prefix ? `${prefix}.${key}` : key];
     if (Object.prototype.toString.call(val) === '[object Object]') {
@@ -229,7 +244,11 @@ function replaceTranslationValuesInFile(language: string) {
   try {
     const originalData = fs.readFileSync(filePath, 'utf8');
 
-    const newData = originalData.substring(0, originalData.indexOf('export') - 1) + '\nexport default ' + JSON.stringify(localeMap[language], null, 2) + ';';
+    const newData =
+      originalData.substring(0, originalData.indexOf('export') - 1) +
+      '\nexport default ' +
+      JSON.stringify(localeMap[language], null, 2) +
+      ';';
 
     try {
       fs.writeFileSync(filePath, newData);

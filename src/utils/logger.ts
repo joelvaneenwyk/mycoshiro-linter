@@ -1,18 +1,9 @@
 import log from 'loglevel';
-import {getTextInLanguage} from '../lang/helpers';
+import { getTextInLanguage } from '../lang/helpers';
 
 const logPrefix: string = '[Obsidian Linter]';
 const timingInfo = new Map<string, number>();
 let collectLogs = false;
-
-export enum LogLevels {
-  Info = 'INFO',
-  Trace = 'TRACE',
-  Debug = 'DEBUG',
-  Silent ='SILENT',
-  Warn = 'WARN',
-  Error = 'ERROR',
-}
 
 export let logsFromLastRun: string[] = [];
 
@@ -31,7 +22,7 @@ export function logError(labelForError: string, error: Error) {
   log.error(message);
 
   if (collectLogs) {
-    addLogInfo(message.substring(message.indexOf(']')+2), log.levels.TRACE);
+    addLogInfo(message.substring(message.indexOf(']') + 2), log.levels.TRACE);
   }
 }
 
@@ -120,60 +111,35 @@ export function setCollectLogs(enabled: boolean) {
   collectLogs = enabled;
 }
 
-
 /**
  * Allows the user to set the minimum logging level to display messages for
- * @param {string} logLevel The minimum log level to display in the console
+ * @param {number} logLevel The minimum log level to display in the console
  */
-export function setLogLevel(logLevel: string) {
+export function setLogLevel(logLevel: number) {
   switch (logLevel) {
-    case LogLevels.Info: {
+    case log.levels.INFO: {
       log.setLevel('info');
       break;
     }
-    case LogLevels.Trace: {
+    case log.levels.TRACE: {
       log.setLevel('trace');
       break;
     }
-    case LogLevels.Debug: {
+    case log.levels.DEBUG: {
       log.setLevel('debug');
       break;
     }
-    case LogLevels.Silent: {
+    case log.levels.SILENT: {
       log.setLevel('silent');
       break;
     }
-    case LogLevels.Error: {
+    case log.levels.ERROR: {
       log.setLevel('error');
       break;
     }
-    case LogLevels.Warn: {
+    case log.levels.WARN: {
       log.setLevel('warn');
       break;
     }
   }
 }
-
-export function convertNumberToLogLevel(logLevel: number): string {
-  switch (logLevel) {
-    case log.levels.INFO: {
-      return LogLevels.Info;
-    }
-    case log.levels.TRACE: {
-      return LogLevels.Trace;
-    }
-    case log.levels.DEBUG: {
-      return LogLevels.Debug;
-    }
-    case log.levels.SILENT: {
-      return LogLevels.Silent;
-    }
-    case log.levels.ERROR: {
-      return LogLevels.Error;
-    }
-    case log.levels.WARN: {
-      return LogLevels.Warn;
-    }
-  }
-}
-

@@ -1,11 +1,11 @@
 // based on https://github.com/chrisgrieser/obsidian-smarter-paste/blob/master/clipboardModification.ts#L20-L36
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
 import dedent from 'ts-dedent';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 
 class BlockquotifyOnPasteOptions implements Options {
   @RuleBuilder.noSettingControl()
-    lineContent: string;
+  lineContent: string;
 }
 
 @RuleBuilder.register
@@ -14,7 +14,7 @@ export default class BlockquotifyOnPaste extends RuleBuilder<BlockquotifyOnPaste
     super({
       nameKey: 'rules.add-blockquote-indentation-on-paste.name',
       descriptionKey: 'rules.add-blockquote-indentation-on-paste.description',
-      type: RuleType.PASTE,
+      type: RuleType.PASTE
     });
   }
   get OptionsClass(): new () => BlockquotifyOnPasteOptions {
@@ -28,12 +28,13 @@ export default class BlockquotifyOnPaste extends RuleBuilder<BlockquotifyOnPaste
     const indentation = blockquoteMatch[1] ?? '';
     const blockquoteLevel = blockquoteMatch[2] ?? '';
 
-    return text.trim().replace(/\n/gm, `\n${indentation}${blockquoteLevel} `);
+    return text.trim().replace(/\n/g, `\n${indentation}${blockquoteLevel} `);
   }
   get exampleBuilders(): ExampleBuilder<BlockquotifyOnPasteOptions>[] {
     return [
       new ExampleBuilder({
-        description: 'Line being pasted into regular text does not get blockquotified with current line being `Part 1 of the sentence`',
+        description:
+          'Line being pasted into regular text does not get blockquotified with current line being `Part 1 of the sentence`',
         before: dedent`
           was much less likely to succeed, but they tried it anyway.
           Part 2 was much more interesting.
@@ -43,8 +44,8 @@ export default class BlockquotifyOnPaste extends RuleBuilder<BlockquotifyOnPaste
           Part 2 was much more interesting.
         `,
         options: {
-          lineContent: 'Part 1 of the sentence',
-        },
+          lineContent: 'Part 1 of the sentence'
+        }
       }),
       new ExampleBuilder({
         description: 'Line being pasted into a blockquote gets blockquotified with current line being `> > `',
@@ -59,10 +60,9 @@ export default class BlockquotifyOnPaste extends RuleBuilder<BlockquotifyOnPaste
           > > Note that the second line is indented and the surrounding blank lines were trimmed
         `,
         options: {
-          lineContent: '> > ',
-        },
-      }),
-
+          lineContent: '> > '
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<BlockquotifyOnPasteOptions>[] {

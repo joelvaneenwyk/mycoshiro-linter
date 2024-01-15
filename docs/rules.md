@@ -1,6 +1,5 @@
 <!--- This file was automatically generated. See docs.ts and *_template.md files for the source. -->
 
-
 # Rules
 
 ## General Settings
@@ -24,9 +23,8 @@ The style of the YAML aliases section
 - `single string to single-line`: Aliases will be formatted as a string if there is 1 or fewer elements like so ```aliases: Title```. If there is more than 1 element, it will be formatted like a single-line array.
 - `single string to multi-line`: Aliases will be formatted as a string if there is 1 or fewer elements like so ```aliases: Title```. If there is more than 1 element, it will be formatted like a multi-line array.
 
-
-
 ## YAML
+
 ### Escape YAML Special Characters
 
 Alias: `escape-yaml-special-characters`
@@ -34,8 +32,9 @@ Alias: `escape-yaml-special-characters`
 Escapes colons with a space after them (: ), single quotes ('), and double quotes (") in YAML.
 
 Options:
+
 - Try to Escape Single Line Arrays: Tries to escape array values assuming that an array starts with "[", ends with "]", and has items that are delimited by ",".
-	- Default: `false`
+ 	- Default: `false`
 
 Example: YAML without anything to escape
 
@@ -56,6 +55,7 @@ key: value
 otherKey: []
 ---
 ``````
+
 Example: YAML with unescaped values
 
 Before:
@@ -85,6 +85,7 @@ sixthKey: colon:between characters is fine
 otherKey: []
 ---
 ``````
+
 Example: YAML with unescaped values in an expanded list with `Default Escape Character = '`
 
 Before:
@@ -114,6 +115,7 @@ key:
   - colon:between characters is fine
 ---
 ``````
+
 Example: YAML with unescaped values with arrays
 
 Before:
@@ -147,8 +149,9 @@ Alias: `force-yaml-escape`
 Escapes the values for the specified YAML keys.
 
 Options:
+
 - Force YAML Escape on Keys: Uses the YAML escape character on the specified YAML keys separated by a new line character if it is not already escaped. Do not use on YAML arrays.
-	- Default: ``
+ 	- Default: ``
 
 Example: YAML without anything to escape
 
@@ -169,6 +172,7 @@ key: value
 otherKey: []
 ---
 ``````
+
 Example: Force YAML keys to be escaped with double quotes where not already escaped with `Force Yaml Escape on Keys = 'key'\n'title'\n'bool'`
 
 Before:
@@ -203,8 +207,6 @@ Alias: `format-tags-in-yaml`
 
 Remove Hashtags from tags in the YAML frontmatter, as they make the tags there invalid.
 
-
-
 Example: Format Tags in YAML frontmatter
 
 Before:
@@ -222,6 +224,7 @@ After:
 tags: one two three nested/four/five
 ---
 ``````
+
 Example: Format tags in array
 
 Before:
@@ -239,6 +242,7 @@ After:
 tags: [one two three]
 ---
 ``````
+
 Example: Format tags in array with `tag` as the tags key
 
 Before:
@@ -256,6 +260,7 @@ After:
 tag: [one two three]
 ---
 ``````
+
 Example: Format tags in list
 
 Before:
@@ -285,20 +290,21 @@ Alias: `format-yaml-array`
 Allows for the formatting of regular yaml arrays as either multi-line or single-line and `tags` and `aliases` are allowed to have some Obsidian specific yaml formats. Note that single string to single-line goes from a single string entry to a single-line array if more than 1 entry is present. The same is true for single string to multi-line except it becomes a multi-line array.
 
 Options:
+
 - Format yaml aliases section: Turns on formatting for the yaml aliases section. You should not enable this option alongside the rule `YAML Title Alias` as they may not work well together or they may have different format styles selected causing unexpected results.
-	- Default: `true`
+ 	- Default: `true`
 - Format yaml tags section: Turns on formatting for the yaml tags section.
-	- Default: `true`
+ 	- Default: `true`
 - Default yaml array section style: The style of other yaml arrays that are not `tags`, `aliases` or  in `Force key values to be single-line arrays` and `Force key values to be multi-line arrays`
-	- Default: `single-line`
-	- `multi-line`: ```key:\n  - value```
-	- `single-line`: ```key: [value]```
+ 	- Default: `single-line`
+ 	- `multi-line`: ```key:\n  - value```
+ 	- `single-line`: ```key: [value]```
 - Format yaml array sections: Turns on formatting for regular yaml arrays
-	- Default: `true`
+ 	- Default: `true`
 - Force key values to be single-line arrays: Forces the yaml array for the new line separated keys to be in single-line format (leave empty to disable this option)
-	- Default: ``
+ 	- Default: ``
 - Force key values to be multi-line arrays: Forces the yaml array for the new line separated keys to be in multi-line format (leave empty to disable this option)
-	- Default: ``
+ 	- Default: ``
 
 Example: Format tags as a single-line array delimited by spaces and aliases as a multi-line array and format the key `test` to be a single-line array
 
@@ -337,6 +343,7 @@ Nesting yaml arrays may result in unexpected results.
 
 Multi-line arrays will have empty values removed only leaving one if it is completely empty. The same is not true for single-line arrays as that is invalid yaml unless it comes as the last entry in the array.
 ``````
+
 Example: Format tags as a single string with space delimiters, ignore aliases, and format regular yaml arrays as single-line arrays
 
 Before:
@@ -360,6 +367,7 @@ types: [thought provoking, peer reviewed]
 tags: computer science trajectory
 ---
 ``````
+
 Example: Arrays with dictionaries in them are ignored
 
 Before:
@@ -393,9 +401,10 @@ Alias: `insert-yaml-attributes`
 Inserts the given YAML attributes into the YAML frontmatter. Put each attribute on a single line.
 
 Options:
+
 - Text to insert: Text to insert into the YAML frontmatter
-	- Default: `aliases: 
-tags: `
+ 	- Default: `aliases:
+tags:`
 
 Example: Insert static lines into YAML frontmatter. Text to insert: `aliases:
 tags: doc
@@ -426,13 +435,14 @@ Alias: `move-tags-to-yaml`
 Move all tags to Yaml frontmatter of the document.
 
 Options:
+
 - Body tag operation: What to do with non-ignored tags in the body of the file once they have been moved to the frontmatter
-	- Default: `Nothing`
-	- `Nothing`: Leaves tags in the body of the file alone
-	- `Remove hashtag`: Removes `#` from tags in content body after moving them to the YAML frontmatter
-	- `Remove whole tag`: Removes the whole tag in content body after moving them to the YAML frontmatter. _Note that this removes the first space prior to the tag as well_
+ 	- Default: `Nothing`
+ 	- `Nothing`: Leaves tags in the body of the file alone
+ 	- `Remove hashtag`: Removes `#` from tags in content body after moving them to the YAML frontmatter
+ 	- `Remove whole tag`: Removes the whole tag in content body after moving them to the YAML frontmatter. _Note that this removes the first space prior to the tag as well_
 - Tags to ignore: The tags that will not be moved to the tags array or removed from the body content if `Remove the hashtag from tags in content body` is enabled. Each tag should be on a new line and without the `#`. **Make sure not to include the hashtag in the tag name.**
-	- Default: ``
+ 	- Default: ``
 
 Example: Move tags from body to Yaml with `Tags to ignore = 'ignored-tag'`
 
@@ -470,6 +480,7 @@ This inline code `#ignored content`
 
 #ignored-tag is ignored since it is in the ignored list
 ``````
+
 Example: Move tags from body to YAML with existing tags retains the already existing ones and only adds new ones
 
 Before:
@@ -489,6 +500,7 @@ tags: [test, tag2, markdown]
 ---
 Text has to do with #test and #markdown
 ``````
+
 Example: Move tags to YAML frontmatter and then remove hashtags in body content tags when `Body tag operation = 'Remove hashtag'` and `Tags to ignore = 'yet-another-ignored-tag'`.
 
 Before:
@@ -512,6 +524,7 @@ Text has to do with test and markdown
 
 The tag at the end of this line stays as a tag since it is ignored #yet-another-ignored-tag
 ``````
+
 Example: Move tags to YAML frontmatter and then remove body content tags when `Body tag operation = 'Remove whole tag'`.
 
 Before:
@@ -539,8 +552,9 @@ Alias: `remove-yaml-keys`
 Removes the YAML keys specified
 
 Options:
+
 - YAML Keys to Remove: The yaml keys to remove from the yaml frontmatter with or without colons
-	- Default: ``
+ 	- Default: ``
 
 Example: Removes the values specified in `YAML Keys to Remove` = "status:
 keywords
@@ -586,15 +600,16 @@ Alias: `yaml-key-sort`
 Sorts the YAML keys based on the order and priority specified. Note: may remove blank lines as well.
 
 Options:
+
 - YAML Key Priority Sort Order: The order in which to sort keys with one on each line where it sorts in the order found in the list
-	- Default: ``
+ 	- Default: ``
 - Priority Keys at Start of YAML: YAML Key Priority Sort Order is placed at the start of the YAML frontmatter
-	- Default: `true`
+ 	- Default: `true`
 - YAML Sort Order for Other Keys: The way in which to sort the keys that are not found in the YAML Key Priority Sort Order text area
-	- Default: `None`
-	- `None`: No sorting other than what is in the YAML Key Priority Sort Order text area
-	- `Ascending Alphabetical`: Sorts the keys based on key value from a to z
-	- `Descending Alphabetical`: Sorts the keys based on key value from z to a
+ 	- Default: `None`
+ 	- `None`: No sorting other than what is in the YAML Key Priority Sort Order text area
+ 	- `Ascending Alphabetical`: Sorts the keys based on key value from a to z
+ 	- `Descending Alphabetical`: Sorts the keys based on key value from z to a
 
 Example: Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language`
 
@@ -623,6 +638,7 @@ keywords: []
 status: WIP
 ---
 ``````
+
 Example: Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `'YAML Sort Order for Other Keys' = Ascending Alphabetical`
 
 Before:
@@ -650,6 +666,7 @@ status: WIP
 tags: computer
 ---
 ``````
+
 Example: Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `'YAML Sort Order for Other Keys' = Descending Alphabetical`
 
 Before:
@@ -677,6 +694,7 @@ status: WIP
 keywords: []
 ---
 ``````
+
 Example: Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `'YAML Sort Order for Other Keys' = Descending Alphabetical` and `'Priority Keys at Start of YAML' = false`
 
 Before:
@@ -713,18 +731,19 @@ Alias: `yaml-timestamp`
 Keep track of the date the file was last edited in the YAML front matter. Gets dates from file metadata.
 
 Options:
+
 - Date Created: Insert the file creation date
-	- Default: `true`
+ 	- Default: `true`
 - Date Created Key: Which YAML key to use for creation date
-	- Default: `date created`
+ 	- Default: `date created`
 - Force Date Created Key Value Retention: Reuses the value in the YAML frontmatter for date created instead of the file metadata which is useful for preventing file metadata changes from causing the value to change to a different value.
-	- Default: `false`
+ 	- Default: `false`
 - Date Modified: Insert the date the file was last modified
-	- Default: `true`
+ 	- Default: `true`
 - Date Modified Key: Which YAML key to use for modification date
-	- Default: `date modified`
+ 	- Default: `date modified`
 - Format: Moment date format to use (see [Moment format options](https://momentjscom.readthedocs.io/en/latest/moment/04-displaying/01-format/))
-	- Default: `dddd, MMMM Do YYYY, h:mm:ss a`
+ 	- Default: `dddd, MMMM Do YYYY, h:mm:ss a`
 
 Example: Adds a header with the date.
 
@@ -743,6 +762,7 @@ date modified: Thursday, January 2nd 2020, 12:00:05 am
 ---
 # H1
 ``````
+
 Example: dateCreated option is false
 
 Before:
@@ -759,6 +779,7 @@ date modified: Thursday, January 2nd 2020, 12:00:05 am
 ---
 # H1
 ``````
+
 Example: Date Created Key is set
 
 Before:
@@ -775,6 +796,7 @@ created: Wednesday, January 1st 2020, 12:00:00 am
 ---
 # H1
 ``````
+
 Example: Date Modified Key is set
 
 Before:
@@ -799,13 +821,14 @@ Alias: `yaml-title`
 Inserts the title of the file into the YAML frontmatter. Gets the title based on the selected mode.
 
 Options:
+
 - Title Key: Which YAML key to use for title
-	- Default: `title`
+ 	- Default: `title`
 - Mode: The method to use to get the title
-	- Default: `first-h1-or-filename-if-h1-missing`
-	- `first-h1-or-filename-if-h1-missing`: Uses the first H1 in the file or the filename of the file if there is not H1
-	- `filename`: Uses the filename as the title
-	- `first-h1`: Uses the first H1 in the file as the title
+ 	- Default: `first-h1-or-filename-if-h1-missing`
+ 	- `first-h1-or-filename-if-h1-missing`: Uses the first H1 in the file or the filename of the file if there is not H1
+ 	- `filename`: Uses the filename as the title
+ 	- `first-h1`: Uses the first H1 in the file as the title
 
 Example: Adds a header with the title from heading when `mode = 'First H1 or Filename if H1 Missing'`.
 
@@ -823,6 +846,7 @@ title: Obsidian
 ---
 # Obsidian
 ``````
+
 Example: Adds a header with the title when `mode = 'First H1 or Filename if H1 Missing'`.
 
 Before:
@@ -839,6 +863,7 @@ title: Filename
 ---
 
 ``````
+
 Example: Make sure that markdown links in headings are properly copied to the YAML as just the text when `mode = 'First H1 or Filename if H1 Missing'`
 
 Before:
@@ -855,6 +880,7 @@ title: This is a Heading
 ---
 # This is a [Heading](test heading.md)
 ``````
+
 Example: When `mode = 'First H1'`, title does not have a value if no H1 is present
 
 Before:
@@ -871,6 +897,7 @@ title: ""
 ---
 ## This is a Heading
 ``````
+
 Example: When `mode = 'Filename'`, title uses the filename ignoring all H1s. Note: the filename is "Filename" in this example.
 
 Before:
@@ -895,12 +922,13 @@ Alias: `yaml-title-alias`
 Inserts the title of the file into the YAML frontmatter's aliases section. Gets the title from the first H1 or filename.
 
 Options:
+
 - Preserve existing aliases section style: If set, the `YAML aliases section style` setting applies only to the newly created sections
-	- Default: `true`
+ 	- Default: `true`
 - Keep alias that matches the filename: Such aliases are usually redundant
-	- Default: `false`
+ 	- Default: `false`
 - Use the YAML key `linter-yaml-title-alias` to help with filename and heading changes: If set, when the first H1 heading changes or filename if first H1 is not present changes, then the old alias stored in this key will be replaced with the new value instead of just inserting a new entry in the aliases array
-	- Default: `true`
+ 	- Default: `true`
 
 Example: Adds a header with the title from heading.
 
@@ -920,6 +948,7 @@ linter-yaml-title-alias: Obsidian
 ---
 # Obsidian
 ``````
+
 Example: Adds a header with the title from heading without YAML key when the use of the YAML key is set to false.
 
 Before:
@@ -937,6 +966,7 @@ aliases:
 ---
 # Obsidian
 ``````
+
 Example: Adds a header with the title.
 
 Before:
@@ -955,6 +985,7 @@ linter-yaml-title-alias: Filename
 ---
 
 ``````
+
 Example: Adds a header with the title without YAML key when the use of the YAML key is set to false.
 
 Before:
@@ -972,6 +1003,7 @@ aliases:
 ---
 
 ``````
+
 Example: Replaces old filename with new filename when no header is present and filename is different than the old one listed in `linter-yaml-title-alias`.
 
 Before:
@@ -997,6 +1029,7 @@ linter-yaml-title-alias: Filename
 ---
 
 ``````
+
 Example: Make sure that markdown and wiki links in first H1 get their values converted to text
 
 Before:
@@ -1017,6 +1050,7 @@ linter-yaml-title-alias: This is a Heading
 ``````
 
 ## Heading
+
 ### Capitalize Headings
 
 Alias: `capitalize-headings`
@@ -1024,17 +1058,18 @@ Alias: `capitalize-headings`
 Headings should be formatted with capitalization
 
 Options:
+
 - Style: The style of capitalization to use
-	- Default: `Title Case`
-	- `Title Case`: Capitalize Using Title Case Rules
-	- `ALL CAPS`: CAPITALIZE THE WHOLE TITLE
-	- `First letter`: Only capitalize the first letter
+ 	- Default: `Title Case`
+ 	- `Title Case`: Capitalize Using Title Case Rules
+ 	- `ALL CAPS`: CAPITALIZE THE WHOLE TITLE
+ 	- `First letter`: Only capitalize the first letter
 - Ignore Cased Words: Only apply title case style to words that are all lowercase
-	- Default: `true`
+ 	- Default: `true`
 - Ignore Words: A comma separated list of words to ignore when capitalizing
-	- Default: `macOS, iOS, iPhone, iPad, JavaScript, TypeScript, AppleScript, I`
+ 	- Default: `macOS, iOS, iPhone, iPad, JavaScript, TypeScript, AppleScript, I`
 - Lowercase Words: A comma separated list of words to keep lowercase
-	- Default: `a, an, the, aboard, about, abt., above, abreast, absent, across, after, against, along, aloft, alongside, amid, amidst, mid, midst, among, amongst, anti, apropos, around, round, as, aslant, astride, at, atop, ontop, bar, barring, before, B4, behind, below, beneath, neath, beside, besides, between, 'tween, beyond, but, by, chez, circa, c., ca., come, concerning, contra, counting, cum, despite, spite, down, during, effective, ere, except, excepting, excluding, failing, following, for, from, in, including, inside, into, less, like, minus, modulo, mod, near, nearer, nearest, next, notwithstanding, of, o', off, offshore, on, onto, opposite, out, outside, over, o'er, pace, past, pending, per, plus, post, pre, pro, qua, re, regarding, respecting, sans, save, saving, short, since, sub, than, through, thru, throughout, thruout, till, times, to, t', touching, toward, towards, under, underneath, unlike, until, unto, up, upon, versus, vs., v., via, vice, vis-à-vis, wanting, with, w/, w., c̄, within, w/i, without, 'thout, w/o, abroad, adrift, aft, afterward, afterwards, ahead, apart, ashore, aside, away, back, backward, backwards, beforehand, downhill, downstage, downstairs, downstream, downward, downwards, downwind, east, eastward, eastwards, forth, forward, forwards, heavenward, heavenwards, hence, henceforth, here, hereby, herein, hereof, hereto, herewith, home, homeward, homewards, indoors, inward, inwards, leftward, leftwards, north, northeast, northward, northwards, northwest, now, onward, onwards, outdoors, outward, outwards, overboard, overhead, overland, overseas, rightward, rightwards, seaward, seawards, skywards, skyward, south, southeast, southwards, southward, southwest, then, thence, thenceforth, there, thereby, therein, thereof, thereto, therewith, together, underfoot, underground, uphill, upstage, upstairs, upstream, upward, upwards, upwind, west, westward, westwards, when, whence, where, whereby, wherein, whereto, wherewith, although, because, considering, given, granted, if, lest, once, provided, providing, seeing, so, supposing, though, unless, whenever, whereas, wherever, while, whilst, ago, according to, as regards, counter to, instead of, owing to, pertaining to, at the behest of, at the expense of, at the hands of, at risk of, at the risk of, at variance with, by dint of, by means of, by virtue of, by way of, for the sake of, for sake of, for lack of, for want of, from want of, in accordance with, in addition to, in case of, in charge of, in compliance with, in conformity with, in contact with, in exchange for, in favor of, in front of, in lieu of, in light of, in the light of, in line with, in place of, in point of, in quest of, in relation to, in regard to, with regard to, in respect to, with respect to, in return for, in search of, in step with, in touch with, in terms of, in the name of, in view of, on account of, on behalf of, on grounds of, on the grounds of, on the part of, on top of, with a view to, with the exception of, à la, a la, as soon as, as well as, close to, due to, far from, in case, other than, prior to, pursuant to, regardless of, subsequent to, as long as, as much as, as far as, by the time, in as much as, inasmuch, in order to, in order that, even, provide that, if only, whether, whose, whoever, why, how, or not, whatever, what, both, and, or, not only, but also, either, neither, nor, just, rather, no sooner, such, that, yet, is, it`
+ 	- Default: `a, an, the, aboard, about, abt., above, abreast, absent, across, after, against, along, aloft, alongside, amid, amidst, mid, midst, among, amongst, anti, apropos, around, round, as, aslant, astride, at, atop, ontop, bar, barring, before, B4, behind, below, beneath, neath, beside, besides, between, 'tween, beyond, but, by, chez, circa, c., ca., come, concerning, contra, counting, cum, despite, spite, down, during, effective, ere, except, excepting, excluding, failing, following, for, from, in, including, inside, into, less, like, minus, modulo, mod, near, nearer, nearest, next, notwithstanding, of, o', off, offshore, on, onto, opposite, out, outside, over, o'er, pace, past, pending, per, plus, post, pre, pro, qua, re, regarding, respecting, sans, save, saving, short, since, sub, than, through, thru, throughout, thruout, till, times, to, t', touching, toward, towards, under, underneath, unlike, until, unto, up, upon, versus, vs., v., via, vice, vis-à-vis, wanting, with, w/, w., c̄, within, w/i, without, 'thout, w/o, abroad, adrift, aft, afterward, afterwards, ahead, apart, ashore, aside, away, back, backward, backwards, beforehand, downhill, downstage, downstairs, downstream, downward, downwards, downwind, east, eastward, eastwards, forth, forward, forwards, heavenward, heavenwards, hence, henceforth, here, hereby, herein, hereof, hereto, herewith, home, homeward, homewards, indoors, inward, inwards, leftward, leftwards, north, northeast, northward, northwards, northwest, now, onward, onwards, outdoors, outward, outwards, overboard, overhead, overland, overseas, rightward, rightwards, seaward, seawards, skywards, skyward, south, southeast, southwards, southward, southwest, then, thence, thenceforth, there, thereby, therein, thereof, thereto, therewith, together, underfoot, underground, uphill, upstage, upstairs, upstream, upward, upwards, upwind, west, westward, westwards, when, whence, where, whereby, wherein, whereto, wherewith, although, because, considering, given, granted, if, lest, once, provided, providing, seeing, so, supposing, though, unless, whenever, whereas, wherever, while, whilst, ago, according to, as regards, counter to, instead of, owing to, pertaining to, at the behest of, at the expense of, at the hands of, at risk of, at the risk of, at variance with, by dint of, by means of, by virtue of, by way of, for the sake of, for sake of, for lack of, for want of, from want of, in accordance with, in addition to, in case of, in charge of, in compliance with, in conformity with, in contact with, in exchange for, in favor of, in front of, in lieu of, in light of, in the light of, in line with, in place of, in point of, in quest of, in relation to, in regard to, with regard to, in respect to, with respect to, in return for, in search of, in step with, in touch with, in terms of, in the name of, in view of, on account of, on behalf of, on grounds of, on the grounds of, on the part of, on top of, with a view to, with the exception of, à la, a la, as soon as, as well as, close to, due to, far from, in case, other than, prior to, pursuant to, regardless of, subsequent to, as long as, as much as, as far as, by the time, in as much as, inasmuch, in order to, in order that, even, provide that, if only, whether, whose, whoever, why, how, or not, whatever, what, both, and, or, not only, but also, either, neither, nor, just, rather, no sooner, such, that, yet, is, it`
 
 Example: With `Title Case=true`, `Ignore Cased Words=false`
 
@@ -1053,6 +1088,7 @@ After:
 ## This is a Heading 2
 ### A Heading 3
 ``````
+
 Example: With `Title Case=true`, `Ignore Cased Words=true`
 
 Before:
@@ -1070,6 +1106,7 @@ After:
 ## THIS IS A HEADING 2
 ### A hEaDiNg 3
 ``````
+
 Example: With `First letter=true`
 
 Before:
@@ -1085,6 +1122,7 @@ After:
 # This is a heading 1
 ## This is a heading 2
 ``````
+
 Example: With `ALL CAPS=true`
 
 Before:
@@ -1107,8 +1145,6 @@ Alias: `file-name-heading`
 
 Inserts the file name as a H1 heading if no H1 heading exists.
 
-
-
 Example: Inserts an H1 heading
 
 Before:
@@ -1123,6 +1159,7 @@ After:
 # File Name
 This is a line of text
 ``````
+
 Example: Inserts heading after YAML front matter
 
 Before:
@@ -1151,10 +1188,11 @@ Alias: `header-increment`
 Heading levels should only increment by one level at a time
 
 Options:
-- Start Header Increment at Heading Level 2: Makes heading level 2 the minimum heading level in a file for header increment and shifts all headings accordingly so they increment starting with a level 2 heading.
-	- Default: `false`
 
-Example: 
+- Start Header Increment at Heading Level 2: Makes heading level 2 the minimum heading level in a file for header increment and shifts all headings accordingly so they increment starting with a level 2 heading.
+ 	- Default: `false`
+
+Example:
 
 Before:
 
@@ -1179,6 +1217,7 @@ After:
 
 We skipped a 2nd level heading
 ``````
+
 Example: Skipped headings in sections that would be decremented will result in those headings not having the same meaning
 
 Before:
@@ -1226,6 +1265,7 @@ This resets the decrement section so the H6 below is decremented to an H3
 
 ## H6
 ``````
+
 Example: When `Start Header Increment at Heading Level 2 = true`, H1s become H2s and the other headers are incremented accordingly
 
 Before:
@@ -1258,8 +1298,6 @@ Alias: `headings-start-line`
 
 Headings that do not start a line will have their preceding whitespace removed to make sure they get recognized as headers.
 
-
-
 Example: Removes spaces prior to a heading
 
 Before:
@@ -1275,6 +1313,7 @@ After:
 ## Other heading preceded by 2 spaces ##
 _Note that if the spacing is enough for the header to be considered to be part of a codeblock it will not be affected by this rule._
 ``````
+
 Example: Tags are not affected by this
 
 Before:
@@ -1298,8 +1337,9 @@ Alias: `remove-trailing-punctuation-in-heading`
 Removes the specified punctuation from the end of headings making sure to ignore the semicolon at the end of [HTML entity references](https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references).
 
 Options:
+
 - Trailing Punctuation: The trailing punctuation to remove from the headings in the file.
-	- Default: `.,;:!。，；：！`
+ 	- Default: `.,;:!。，；：！`
 
 Example: Removes punctuation from the end of a heading
 
@@ -1316,6 +1356,7 @@ After:
 # Heading ends in a period
 ## Other heading ends in an exclamation mark ##
 ``````
+
 Example: HTML Entities at the end of a heading is ignored
 
 Before:
@@ -1333,13 +1374,12 @@ After:
 ``````
 
 ## Footnote
+
 ### Footnote after Punctuation
 
 Alias: `footnote-after-punctuation`
 
 Ensures that footnote references are placed after punctuation, not before.
-
-
 
 Example: Placing footnotes after punctuation.
 
@@ -1354,6 +1394,7 @@ After:
 ``````markdown
 Lorem.[^1] Ipsum,[^2] doletes.
 ``````
+
 Example: A footnote at the start of a task is not moved to after the punctuation
 
 Before:
@@ -1377,8 +1418,6 @@ After:
 Alias: `move-footnotes-to-the-bottom`
 
 Move all footnotes to the bottom of the document.
-
-
 
 Example: Moving footnotes to the bottom
 
@@ -1411,9 +1450,7 @@ Maecenas malesuada dignissim purus ac volutpat.
 
 Alias: `re-index-footnotes`
 
-Re-indexes footnote keys and footnote, based on the order of occurrence (NOTE: This rule does *not* work if there is more than one footnote for a key.)
-
-
+Re-indexes footnote keys and footnote, based on the order of occurrence (NOTE: This rule does _not_ work if there is more than one footnote for a key.)
 
 Example: Re-indexing footnotes after having deleted previous footnotes
 
@@ -1434,6 +1471,7 @@ Lorem ipsum at aliquet felis.[^1] Donec dictum turpis quis pellentesque,[^2] et 
 [^1]: first footnote
 [^2]: second footnote
 ``````
+
 Example: Re-indexing footnotes after inserting a footnote between
 
 Before:
@@ -1455,6 +1493,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.[^1] Aenean at aliquet f
 [^2]: third footnote, inserted later
 [^3]: second footnotes
 ``````
+
 Example: Re-indexing footnotes preserves multiple references to the same footnote index
 
 Before:
@@ -1476,6 +1515,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.[^1] Aenean at aliquet f
 [^2]: third footnote, inserted later
 [^3]: second footnotes
 ``````
+
 Example: Re-indexing footnotes condense duplicate footnotes into 1 when key and footnote are the same
 
 Before:
@@ -1497,6 +1537,7 @@ bla[^1], bla[^1], bla[^2]
 ``````
 
 ## Content
+
 ### Auto-correct Common Misspellings
 
 Alias: `auto-correct-common-misspellings`
@@ -1504,8 +1545,9 @@ Alias: `auto-correct-common-misspellings`
 Uses a dictionary of common misspellings to automatically convert them to their proper spellings. See [auto-correct map](https://github.com/platers/obsidian-linter/tree/master/src/utils/auto-correct-misspellings.ts) for the full list of auto-corrected words.
 
 Options:
+
 - Ignore Words: A comma separated list of lowercased words to ignore when auto-correcting
-	- Default: ``
+ 	- Default: ``
 
 Example: Auto-correct misspellings in regular text, but not code blocks, math blocks, YAML, or tags
 
@@ -1556,6 +1598,7 @@ The same $ defenately $ applies to inline math.
 
 #defenately stays the same
 ``````
+
 Example: Auto-correct misspellings keeps first letter's case
 
 Before:
@@ -1569,6 +1612,7 @@ After:
 ``````markdown
 Accordingly we made sure to update logic to make sure it would handle case sensitivity.
 ``````
+
 Example: Links should not be auto-corrected
 
 Before:
@@ -1590,10 +1634,11 @@ Alias: `blockquote-style`
 Makes sure the blockquote style is consistent.
 
 Options:
+
 - Style: The style used on blockquote indicators
-	- Default: `space`
-	- `space`: > indicator is followed by a space
-	- `no space`: >indicator is not followed by a space
+ 	- Default: `space`
+ 	- `space`: > indicator is followed by a space
+ 	- `no space`: >indicator is not followed by a space
 
 Example: When style = `space`, a space is added to blockquotes missing a space after the indicator
 
@@ -1628,6 +1673,7 @@ After:
 
 > <strong>Note that html is not affected in blockquotes</strong>
 ``````
+
 Example: When style = `no space`, spaces are removed after a blockquote indicator
 
 Before:
@@ -1654,8 +1700,6 @@ Alias: `convert-bullet-list-markers`
 
 Converts common bullet list marker symbols to markdown list markers.
 
-
-
 Example: Converts •
 
 Before:
@@ -1671,6 +1715,7 @@ After:
 - item 1
 - item 2
 ``````
+
 Example: Converts §
 
 Before:
@@ -1696,11 +1741,12 @@ Alias: `emphasis-style`
 Makes sure the emphasis style is consistent.
 
 Options:
+
 - Style: The style used to denote emphasized content
-	- Default: `consistent`
-	- `consistent`: Makes sure the first instance of emphasis is the style that will be used throughout the document
-	- `asterisk`: Makes sure * is the emphasis indicator
-	- `underscore`: Makes sure _ is the emphasis indicator
+ 	- Default: `consistent`
+ 	- `consistent`: Makes sure the first instance of emphasis is the style that will be used throughout the document
+ 	- `asterisk`: Makes sure * is the emphasis indicator
+ 	- `underscore`: Makes sure _ is the emphasis indicator
 
 Example: Emphasis indicators should use underscores when style is set to 'underscore'
 
@@ -1741,6 +1787,7 @@ This is **_nested emphasis_ and ending bold**
 * List Item1 with _emphasized text_
 * List Item2
 ``````
+
 Example: Emphasis indicators should use asterisks when style is set to 'asterisk'
 
 Before:
@@ -1774,6 +1821,7 @@ This is __*nested emphasis* and ending bold__
 
 __Test bold__
 ``````
+
 Example: Emphasis indicators should use consistent style based on first emphasis indicator in a file when style is set to 'consistent'
 
 Before:
@@ -1805,6 +1853,7 @@ This is ***nested emphasis* and ending bold**
 
 __Test bold__
 ``````
+
 Example: Emphasis indicators should use consistent style based on first emphasis indicator in a file when style is set to 'consistent'
 
 Before:
@@ -1843,8 +1892,6 @@ Alias: `no-bare-urls`
 
 Encloses bare URLs with angle brackets except when enclosed in back ticks, square braces, or single or double quotes.
 
-
-
 Example: Make sure that links are inside of angle brackets when not in single quotes('), double quotes("), or backticks(`)
 
 Before:
@@ -1874,6 +1921,7 @@ Links mid-sentence should be updated like <https://google.com> will be.
 links should stay the same: [](https://github.com)
 <https://gitlab.com>
 ``````
+
 Example: Angle brackets are added if the url is not the only text in the single quotes(') or double quotes(")
 
 Before:
@@ -1893,6 +1941,7 @@ backticks around a url should stay the same: `https://github.com some text here`
 single quotes around a url should stay the same, but only if the contents of the single quotes is the url: '<https://github.com> some text here'
 double quotes around a url should stay the same, but only if the contents of the double quotes is the url: "<https://github.com> some text here"
 ``````
+
 Example: Multiple angle brackets at the start and or end of a url will be reduced down to 1
 
 Before:
@@ -1918,14 +1967,15 @@ Alias: `ordered-list-style`
 Makes sure that ordered lists follow the style specified. Note that 2 spaces or 1 tab is considered to be an indentation level.
 
 Options:
+
 - Number Style: The number style used in ordered list indicators
-	- Default: `ascending`
-	- `ascending`: Makes sure ordered list items are ascending (i.e. 1, 2, 3, etc.)
-	- `lazy`: Makes sure ordered list item indicators all are the number 1
+ 	- Default: `ascending`
+ 	- `ascending`: Makes sure ordered list items are ascending (i.e. 1, 2, 3, etc.)
+ 	- `lazy`: Makes sure ordered list item indicators all are the number 1
 - Ordered List Indicator End Style: The ending character of an ordered list indicator
-	- Default: `.`
-	- `.`: Makes sure ordered list items indicators end in '.' (i.e `1.`)
-	- `)`: Makes sure ordered list item indicators end in ')' (i.e. `1)`)
+ 	- Default: `.`
+ 	- `.`: Makes sure ordered list items indicators end in '.' (i.e `1.`)
+ 	- `)`: Makes sure ordered list item indicators end in ')' (i.e. `1)`)
 
 Example: Ordered lists have list items set to ascending numerical order when Number Style is `ascending`.
 
@@ -1956,6 +2006,7 @@ Some text here
 2. Item 2
 3. Item 3
 ``````
+
 Example: Nested ordered lists have list items set to ascending numerical order when Number Style is `ascending`.
 
 Before:
@@ -1979,6 +2030,7 @@ After:
   3. Subitem 3
 3. Item 3
 ``````
+
 Example: Ordered list in blockquote has list items set to '1.' when Number Style is `lazy`.
 
 Before:
@@ -2000,6 +2052,7 @@ After:
 > > 1. Subitem 2
 > > 1. Subitem 3
 ``````
+
 Example: Ordered list in blockquote has list items set to ascending numerical order when Number Style is `ascending`.
 
 Before:
@@ -2021,6 +2074,7 @@ After:
 > > 2. Subitem 2
 > > 3. Subitem 3
 ``````
+
 Example: Nested ordered list has list items set to '1)' when Number Style is `lazy` and Ordered List Indicator End Style is `)`.
 
 Before:
@@ -2051,8 +2105,6 @@ Alias: `proper-ellipsis`
 
 Replaces three consecutive dots with an ellipsis.
 
-
-
 Example: Replacing three consecutive dots with an ellipsis.
 
 Before:
@@ -2074,18 +2126,19 @@ Alias: `quote-style`
 Updates the quotes in the body content to be updated to the specified single and double quote styles.
 
 Options:
+
 - Enable `Single Quote Style`: Specifies that the selected single quote style should be used.
-	- Default: `true`
+ 	- Default: `true`
 - Single Quote Style: The style of single quotes to use.
-	- Default: `''`
-	- `''`: Uses "'" instead of smart single quotes
-	- `‘’`: Uses "‘" and "’" instead of straight single quotes
+ 	- Default: `''`
+ 	- `''`: Uses "'" instead of smart single quotes
+ 	- `‘’`: Uses "‘" and "’" instead of straight single quotes
 - Enable `Double Quote Style`: Specifies that the selected double quote style should be used.
-	- Default: `true`
+ 	- Default: `true`
 - Double Quote Style: The style of double quotes to use.
-	- Default: `""`
-	- `""`: Uses '"' instead of smart double quotes
-	- `“”`: Uses '“' and '”' instead of straight double quotes
+ 	- Default: `""`
+ 	- `""`: Uses '"' instead of smart double quotes
+ 	- `“”`: Uses '“' and '”' instead of straight double quotes
 
 Example: Smart quotes used in file are converted to straight quotes when styles are set to `Straight`
 
@@ -2114,6 +2167,7 @@ After:
 'Another single style smart quote also gets replaced'
 'Even this style of single smart quotes is replaced'
 ``````
+
 Example: Straight quotes used in file are converted to smart quotes when styles are set to `Smart`
 
 Before:
@@ -2124,7 +2178,7 @@ Before:
 "Nesting a quote in a quote like so: 'here I am' is handled correctly"
 'Single quotes by themselves are handled correctly'
 Possessives are handled correctly: Pam's dog is really cool!
-Templater commands are ignored: <% tp.date.now("YYYY-MM-DD", 7) %>
+Templater commands are ignored: 2023-08-08
 
 Be careful as converting straight quotes to smart quotes requires you to have an even amount of quotes
 once possessives and common contractions have been dealt with. If not, it will throw an error.
@@ -2138,7 +2192,7 @@ After:
 “Nesting a quote in a quote like so: ‘here I am’ is handled correctly”
 ‘Single quotes by themselves are handled correctly’
 Possessives are handled correctly: Pam’s dog is really cool!
-Templater commands are ignored: <% tp.date.now("YYYY-MM-DD", 7) %>
+Templater commands are ignored: 2023-08-08
 
 Be careful as converting straight quotes to smart quotes requires you to have an even amount of quotes
 once possessives and common contractions have been dealt with. If not, it will throw an error.
@@ -2149,8 +2203,6 @@ once possessives and common contractions have been dealt with. If not, it will t
 Alias: `remove-consecutive-list-markers`
 
 Removes consecutive list markers. Useful when copy-pasting list items.
-
-
 
 Example: Removing consecutive list markers.
 
@@ -2179,8 +2231,6 @@ After:
 Alias: `remove-empty-list-markers`
 
 Removes empty list markers, i.e. list items without content.
-
-
 
 Example: Removes empty list markers.
 
@@ -2212,6 +2262,7 @@ After:
 + list 3 item 1
 + list 3 item 2
 ``````
+
 Example: Removes empty ordered list markers.
 
 Before:
@@ -2239,6 +2290,7 @@ After:
 
 _Note that this rule does not make sure that the ordered list is sequential after removal_
 ``````
+
 Example: Removes empty checklist markers.
 
 Before:
@@ -2260,6 +2312,7 @@ After:
 
 _Note that this will affect checked and uncheck checked list items_
 ``````
+
 Example: Removes empty list, checklist, and ordered list markers in callouts/blockquotes
 
 Before:
@@ -2329,8 +2382,6 @@ Alias: `remove-hyphenated-line-breaks`
 
 Removes hyphenated line breaks. Useful when pasting text from textbooks.
 
-
-
 Example: Removing hyphenated line breaks.
 
 Before:
@@ -2349,9 +2400,7 @@ This text has a linebreak.
 
 Alias: `remove-multiple-spaces`
 
-Removes two or more consecutive spaces. Ignores spaces at the beginning and ending of the line. 
-
-
+Removes two or more consecutive spaces. Ignores spaces at the beginning and ending of the line.
 
 Example: Removing double and triple space.
 
@@ -2374,11 +2423,12 @@ Alias: `strong-style`
 Makes sure the strong style is consistent.
 
 Options:
+
 - Style: The style used to denote strong/bolded content
-	- Default: `consistent`
-	- `consistent`: Makes sure the first instance of strong is the style that will be used throughout the document
-	- `asterisk`: Makes sure ** is the strong indicator
-	- `underscore`: Makes sure __ is the strong indicator
+ 	- Default: `consistent`
+ 	- `consistent`: Makes sure the first instance of strong is the style that will be used throughout the document
+ 	- `asterisk`: Makes sure ** is the strong indicator
+ 	- `underscore`: Makes sure __ is the strong indicator
 
 Example: Strong indicators should use underscores when style is set to 'underscore'
 
@@ -2419,6 +2469,7 @@ This is __*nested emphasis* and ending bold__
 * List Item1 with __bold text__
 * List Item2
 ``````
+
 Example: Strong indicators should use asterisks when style is set to 'asterisk'
 
 Before:
@@ -2452,6 +2503,7 @@ This is **_nested emphasis_ and ending bold**
 
 _Test emphasis_
 ``````
+
 Example: Strong indicators should use consistent style based on first strong indicator in a file when style is set to 'consistent'
 
 Before:
@@ -2483,6 +2535,7 @@ This is **_nested emphasis_ and ending bold**
 
 **Test bold**
 ``````
+
 Example: Strong indicators should use consistent style based on first strong indicator in a file when style is set to 'consistent'
 
 Before:
@@ -2520,8 +2573,6 @@ __Test bold__
 Alias: `two-spaces-between-lines-with-content`
 
 Makes sure that two spaces are added to the ends of lines with content continued on the next line for paragraphs, blockquotes, and list items
-
-
 
 Example: Make sure two spaces are added to the ends of lines that have content on it and the next line for lists, blockquotes, and paragraphs
 
@@ -2618,12 +2669,13 @@ Alias: `unordered-list-style`
 Makes sure that unordered lists follow the style specified.
 
 Options:
+
 - List item style: The list item style to use in unordered lists
-	- Default: `consistent`
-	- `consistent`: Makes sure unordered list items use a consistent list item indicator in the file which will be based on the first list item found
-	- `-`: Makes sure unordered list items use `-` as their indicator
-	- `*`: Makes sure unordered list items use `*` as their indicator
-	- `+`: Makes sure unordered list items use `+` as their indicator
+ 	- Default: `consistent`
+ 	- `consistent`: Makes sure unordered list items use a consistent list item indicator in the file which will be based on the first list item found
+ 	- `-`: Makes sure unordered list items use `-` as their indicator
+ 	- `*`: Makes sure unordered list items use `*` as their indicator
+ 	- `+`: Makes sure unordered list items use `+` as their indicator
 
 Example: Unordered lists have their indicator updated to `*` when `List item style = 'consistent'` and `*` is the first unordered list indicator
 
@@ -2670,6 +2722,7 @@ Checklists should be ignored
   * Sublist 3 item 2
 
 ``````
+
 Example: Unordered lists have their indicator updated to `-` when `List item style = '-'`
 
 Before:
@@ -2717,6 +2770,7 @@ See that the ordered list is ignored, but its sublist is not
 1. Item 3
   - Sub item 3
 ``````
+
 Example: Unordered lists have their indicator updated to `*` when `List item style = '*'`
 
 Before:
@@ -2748,6 +2802,7 @@ After:
   * Sublist 3 item 2
 
 ``````
+
 Example: Unordered list in blockquote has list item indicators set to `+` when `List item style = '-'`
 
 Before:
@@ -2773,6 +2828,7 @@ After:
 ``````
 
 ## Spacing
+
 ### Compact YAML
 
 Alias: `compact-yaml`
@@ -2780,8 +2836,9 @@ Alias: `compact-yaml`
 Removes leading and trailing blank lines in the YAML front matter.
 
 Options:
+
 - Inner New Lines: Remove new lines that are not at the start or the end of the YAML
-	- Default: `false`
+ 	- Default: `false`
 
 Example: Remove blank lines at the start and end of the YAML
 
@@ -2806,6 +2863,7 @@ date: today
 title: unchanged without inner new lines turned on
 ---
 ``````
+
 Example: Remove blank lines anywhere in YAML with inner new lines set to true
 
 Before:
@@ -2846,9 +2904,7 @@ Alias: `consecutive-blank-lines`
 
 There should be at most one consecutive blank line.
 
-
-
-Example: 
+Example:
 
 Before:
 
@@ -2874,8 +2930,9 @@ Alias: `convert-spaces-to-tabs`
 Converts leading spaces to tabs.
 
 Options:
+
 - Tabsize: Number of spaces that will be converted to a tab
-	- Default: `4`
+ 	- Default: `4`
 
 Example: Converting spaces to tabs with `tabsize = 3`
 
@@ -2892,9 +2949,9 @@ After:
 
 ``````markdown
 - text with no indention
-	- text indented with 3 spaces
+ - text indented with 3 spaces
 - text with no indention
-		- text indented with 6 spaces
+  - text indented with 6 spaces
 ``````
 
 ### Empty Line Around Blockquotes
@@ -2902,8 +2959,6 @@ After:
 Alias: `empty-line-around-blockquotes`
 
 Ensures that there is an empty line around blockquotes unless they start or end a document. **Note that an empty line is either one less level of nesting for blockquotes or a newline character.**
-
-
 
 Example: Blockquotes that start a document do not get an empty line before them.
 
@@ -2923,6 +2978,7 @@ After:
 
 # Title here
 ``````
+
 Example: Blockquotes that end a document do not get an empty line after them.
 
 Before:
@@ -2941,6 +2997,7 @@ After:
 > Quote content here
 > quote content continued
 ``````
+
 Example: Blockquotes that are nested have the proper empty line added
 
 Before:
@@ -2985,8 +3042,6 @@ Alias: `empty-line-around-code-fences`
 
 Ensures that there is an empty line around code fences unless they start or end a document.
 
-
-
 Example: Fenced code blocks that start a document do not get an empty line before them.
 
 Before:
@@ -3009,6 +3064,7 @@ var temp = 'text';
 
 Text after code block.
 ``````
+
 Example: Fenced code blocks that end a document do not get an empty line after them.
 
 Before:
@@ -3029,6 +3085,7 @@ After:
 Here is a code block
 ```
 ``````
+
 Example: Fenced code blocks that are in a blockquote have the proper empty line added
 
 Before:
@@ -3073,6 +3130,7 @@ After:
 > > var other text = 'this is more text';
 > > ```
 ``````
+
 Example: Nested fenced code blocks get empty lines added around them
 
 Before:
@@ -3106,8 +3164,6 @@ Alias: `empty-line-around-math-blocks`
 
 Ensures that there is an empty line around math blocks using `Number of Dollar Signs to Indicate a Math Block` to determine how many dollar signs indicates a math block for single-line math.
 
-
-
 Example: Math blocks that start a document do not get an empty line before them.
 
 Before:
@@ -3128,6 +3184,7 @@ $$
 
 some more text
 ``````
+
 Example: Math blocks that are singe-line are updated based on the value of `Number of Dollar Signs to Indicate a Math Block` (in this case its value is 2)
 
 Before:
@@ -3144,6 +3201,7 @@ $$\boldsymbol{a}=\begin{bmatrix}a_x \\ a_y\end{bmatrix}$$
 
 some more text
 ``````
+
 Example: Math blocks that end a document do not get an empty line after them.
 
 Before:
@@ -3164,6 +3222,7 @@ $$
 \boldsymbol{a}=\begin{bmatrix}a_x \\ a_y\end{bmatrix}
 $$
 ``````
+
 Example: Math blocks that are not at the start or the end of the document will have an empty line added before and after them
 
 Before:
@@ -3187,6 +3246,7 @@ $$
 
 some more text
 ``````
+
 Example: Math blocks in callouts or blockquotes have the appropriately formatted blank lines added
 
 Before:
@@ -3229,8 +3289,6 @@ Alias: `empty-line-around-tables`
 
 Ensures that there is an empty line around github flavored tables unless they start or end a document.
 
-
-
 Example: Tables that start a document do not get an empty line before them.
 
 Before:
@@ -3261,6 +3319,7 @@ More text.
 
 **Note that text directly following a table is considered part of a table according to github markdown**
 ``````
+
 Example: Tables that end a document do not get an empty line after them.
 
 Before:
@@ -3285,6 +3344,7 @@ After:
 | baz      | qux      |
 | quux     | quuz     |
 ``````
+
 Example: Tables that are not at the start or the end of the document will have an empty line added before and after them
 
 Before:
@@ -3326,6 +3386,7 @@ foo | bar
 # Header for more content
 New paragraph.
 ``````
+
 Example: Tables in callouts or blockquotes have the appropriately formatted blank lines added
 
 Before:
@@ -3377,10 +3438,11 @@ Alias: `heading-blank-lines`
 All headings have a blank line both before and after (except where the heading is at the beginning or end of the document).
 
 Options:
+
 - Bottom: Insert a blank line after headings
-	- Default: `true`
+ 	- Default: `true`
 - Empty Line Between Yaml and Header: Keep the empty line between the Yaml frontmatter and header
-	- Default: `true`
+ 	- Default: `true`
 
 Example: Headings should be surrounded by blank lines
 
@@ -3410,6 +3472,7 @@ line
 
 ## H2
 ``````
+
 Example: With `Bottom=false`
 
 Before:
@@ -3433,6 +3496,7 @@ line
 # H1
 line
 ``````
+
 Example: Empty line before header and after Yaml is removed with `Empty Line Between Yaml and Header=false`
 
 Before:
@@ -3463,8 +3527,6 @@ Alias: `line-break-at-document-end`
 
 Ensures that there is exactly one line break at the end of a document.
 
-
-
 Example: Appending a line break to the end of the document.
 
 Before:
@@ -3479,6 +3541,7 @@ After:
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 ``````
+
 Example: Removing trailing line breaks to the end of the document, except one.
 
 Before:
@@ -3502,8 +3565,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Alias: `move-math-block-indicators-to-their-own-line`
 
 Move all starting and ending math block indicators to their own lines using `Number of Dollar Signs to Indicate a Math Block` to determine how many dollar signs indicates a math block for single-line math.
-
-
 
 Example: Moving math block indicator to its own line when `Number of Dollar Signs to Indicate a Math Block` = 2
 
@@ -3530,6 +3591,7 @@ $$
 L = \frac{1}{2} \rho v^2 S C_L
 $$
 ``````
+
 Example: Moving math block indicator to its own line when `Number of Dollar Signs to Indicate a Math Block` = 3 and opening indicator is on the same line as the start of the content
 
 Before:
@@ -3546,6 +3608,7 @@ $$$
 \boldsymbol{a}=\begin{bmatrix}a_x \\ a_y\end{bmatrix}
 $$$
 ``````
+
 Example: Moving math block indicator to its own line when `Number of Dollar Signs to Indicate a Math Block` = 2 and ending indicator is on the same line as the ending line of the content
 
 Before:
@@ -3569,8 +3632,6 @@ Alias: `paragraph-blank-lines`
 
 All paragraphs should have exactly one blank line both before and after.
 
-
-
 Example: Paragraphs should be surrounded by blank lines
 
 Before:
@@ -3590,6 +3651,7 @@ Newlines are inserted.
 
 A paragraph is a line that starts with a letter.
 ``````
+
 Example: Paragraphs can be extended via the use of 2 or more spaces at the end of a line or line break html
 
 Before:
@@ -3625,8 +3687,6 @@ Alias: `remove-empty-lines-between-list-markers-and-checklists`
 
 There should not be any empty lines between list markers and checklists.
 
-
-
 Example: Blank lines are removed between ordered list items
 
 Before:
@@ -3643,6 +3703,7 @@ After:
 1. Item 1
 2. Item 2
 ``````
+
 Example: Blank lines are removed between list items when the list indicator is '-'
 
 Before:
@@ -3650,7 +3711,7 @@ Before:
 ``````markdown
 - Item 1
 
-	- Subitem 1
+ - Subitem 1
 
 - Item 2
 ``````
@@ -3659,9 +3720,10 @@ After:
 
 ``````markdown
 - Item 1
-	- Subitem 1
+ - Subitem 1
 - Item 2
 ``````
+
 Example: Blank lines are removed between checklist items
 
 Before:
@@ -3669,7 +3731,7 @@ Before:
 ``````markdown
 - [x] Item 1
 
-	- [!] Subitem 1
+ - [!] Subitem 1
 
 - [ ] Item 2
 ``````
@@ -3678,9 +3740,10 @@ After:
 
 ``````markdown
 - [x] Item 1
-	- [!] Subitem 1
+ - [!] Subitem 1
 - [ ] Item 2
 ``````
+
 Example: Blank lines are removed between list items when the list indicator is '+'
 
 Before:
@@ -3688,7 +3751,7 @@ Before:
 ``````markdown
 + Item 1
 
-	+ Subitem 1
+ + Subitem 1
 
 + Item 2
 ``````
@@ -3697,9 +3760,10 @@ After:
 
 ``````markdown
 + Item 1
-	+ Subitem 1
+ + Subitem 1
 + Item 2
 ``````
+
 Example: Blank lines are removed between list items when the list indicator is '*'
 
 Before:
@@ -3707,7 +3771,7 @@ Before:
 ``````markdown
 * Item 1
 
-	* Subitem 1
+ * Subitem 1
 
 * Item 2
 ``````
@@ -3716,9 +3780,10 @@ After:
 
 ``````markdown
 * Item 1
-	* Subitem 1
+ * Subitem 1
 * Item 2
 ``````
+
 Example: Blanks lines are removed between like list types (ordered, specific list item indicators, and checklists) while blanks are left between different kinds of list item indicators
 
 Before:
@@ -3730,25 +3795,25 @@ Before:
 
 - Item 1
 
-	- Subitem 1
+ - Subitem 1
 
 - Item 2
 
 - [x] Item 1
 
-	- [f] Subitem 1
+ - [f] Subitem 1
 
 - [ ] Item 2
 
 + Item 1
 
-	+ Subitem 1
+ + Subitem 1
 
 + Item 2
 
 * Item 1
 
-	* Subitem 1
+ * Subitem 1
 
 * Item 2
 ``````
@@ -3760,19 +3825,19 @@ After:
 2. Item 2
 
 - Item 1
-	- Subitem 1
+ - Subitem 1
 - Item 2
 
 - [x] Item 1
-	- [f] Subitem 1
+ - [f] Subitem 1
 - [ ] Item 2
 
 + Item 1
-	+ Subitem 1
+ + Subitem 1
 + Item 2
 
 * Item 1
-	* Subitem 1
+ * Subitem 1
 * Item 2
 ``````
 
@@ -3781,8 +3846,6 @@ After:
 Alias: `remove-link-spacing`
 
 Removes spacing around link text.
-
-
 
 Example: Space in regular markdown link text
 
@@ -3793,10 +3856,10 @@ Before:
 [ here is link text2](link_here)
 [here is link text3 ](link_here)
 [here is link text4](link_here)
-[	here is link text5	](link_here)
+[ here is link text5 ](link_here)
 [](link_here)
 **Note that image markdown syntax does not get affected even if it is transclusion:**
-![	here is link text6 ](link_here)
+![ here is link text6 ](link_here)
 ``````
 
 After:
@@ -3809,8 +3872,9 @@ After:
 [here is link text5](link_here)
 [](link_here)
 **Note that image markdown syntax does not get affected even if it is transclusion:**
-![	here is link text6 ](link_here)
+![ here is link text6 ](link_here)
 ``````
+
 Example: Space in wiki link text
 
 Before:
@@ -3820,8 +3884,8 @@ Before:
 [[link_here|here is link text2 ]]
 [[link_here| here is link text3]]
 [[link_here|here is link text4]]
-[[link_here|	here is link text5	]]
-![[link_here|	here is link text6	]]
+[[link_here| here is link text5 ]]
+![[link_here| here is link text6 ]]
 [[link_here]]
 ``````
 
@@ -3844,14 +3908,15 @@ Alias: `remove-space-around-characters`
 Ensures that certain characters are not surrounded by whitespace (either single spaces or a tab). Note that this may causes issues with markdown format in some cases.
 
 Options:
+
 - Include Fullwidth Forms: Include <a href="https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)">Fullwidth Forms Unicode block</a>
-	- Default: `true`
+ 	- Default: `true`
 - Include CJK Symbols and Punctuation: Include <a href="https://en.wikipedia.org/wiki/CJK_Symbols_and_Punctuation">CJK Symbols and Punctuation Unicode block</a>
-	- Default: `true`
+ 	- Default: `true`
 - Include Dashes: Include en dash (–) and em dash (—)
-	- Default: `true`
+ 	- Default: `true`
 - Other symbols: Other symbols to include
-	- Default: ``
+ 	- Default: ``
 
 Example: Remove Spaces and Tabs around Fullwidth Characters
 
@@ -3859,9 +3924,9 @@ Before:
 
 ``````markdown
 Full list of affected characters: ０１２３４５６７８９ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ，．：；！？＂＇｀＾～￣＿＆＠＃％＋－＊＝＜＞（）［］｛｝｟｠｜￤／＼￢＄￡￠￦￥。、「」『』〔〕【】—…–《》〈〉
-This is a fullwidth period	 。 with text after it.
-This is a fullwidth comma	，  with text after it.
-This is a fullwidth left parenthesis （ 	with text after it.
+This is a fullwidth period  。 with text after it.
+This is a fullwidth comma ，  with text after it.
+This is a fullwidth left parenthesis （  with text after it.
 This is a fullwidth right parenthesis ）  with text after it.
 This is a fullwidth colon ：  with text after it.
 This is a fullwidth semicolon ；  with text after it.
@@ -3880,6 +3945,7 @@ This is a fullwidth colon：with text after it.
 This is a fullwidth semicolon；with text after it.
 Ｒemoves space at start of line
 ``````
+
 Example: Fullwidth Characters in List Do not Affect List Markdown Syntax
 
 Before:
@@ -3941,17 +4007,18 @@ Alias: `remove-space-before-or-after-characters`
 Removes space before the specified characters and after the specified characters. Note that this may causes issues with markdown format in some cases.
 
 Options:
+
 - Remove Space Before Characters: Removes space before the specified characters. **Note: using `{` or `}` in the list of characters will unexpectedly affect files as it is used in the ignore syntax behind the scenes.**
-	- Default: `,!?;:).’”]`
+ 	- Default: `,!?;:).’”]`
 - Remove Space After Characters: Removes space after the specified characters. **Note: using `{` or `}` in the list of characters will unexpectedly affect files as it is used in the ignore syntax behind the scenes.**
-	- Default: `¿¡‘“([`
+ 	- Default: `¿¡‘“([`
 
 Example: Remove Spaces and Tabs Before and After Default Symbol Set
 
 Before:
 
 ``````markdown
-In the end , the space gets removed	 .
+In the end , the space gets removed  .
 The space before the question mark was removed right ?
 The space before the exclamation point gets removed !
 A semicolon ; and colon : have spaces removed before them
@@ -3980,9 +4047,7 @@ Alias: `space-after-list-markers`
 
 There should be a single space after list markers and checkboxes.
 
-
-
-Example: 
+Example:
 
 Before:
 
@@ -3992,7 +4057,7 @@ Before:
 
 -   [ ] Item 1
 - [x]    Item 2
-	-  [ ] Item 3
+ -  [ ] Item 3
 ``````
 
 After:
@@ -4003,7 +4068,7 @@ After:
 
 - [ ] Item 1
 - [x] Item 2
-	- [ ] Item 3
+ - [ ] Item 3
 ``````
 
 ### Space between Chinese Japanese or Korean and English or numbers
@@ -4011,8 +4076,6 @@ After:
 Alias: `space-between-chinese-japanese-or-korean-and-english-or-numbers`
 
 Ensures that Chinese, Japanese, or Korean and English or numbers are separated by a single space. Follows these [guidelines](https://github.com/sparanoid/chinese-copywriting-guidelines)
-
-
 
 Example: Space between Chinese and English
 
@@ -4027,6 +4090,7 @@ After:
 ``````markdown
 中文字符串 english 中文字符串。
 ``````
+
 Example: Space between Chinese and link
 
 Before:
@@ -4040,6 +4104,7 @@ After:
 ``````markdown
 中文字符串 [english](http://example.com) 中文字符串。
 ``````
+
 Example: Space between Chinese and inline code block
 
 Before:
@@ -4053,6 +4118,7 @@ After:
 ``````markdown
 中文字符串 `code` 中文字符串。
 ``````
+
 Example: No space between Chinese and English in tag
 
 Before:
@@ -4066,6 +4132,7 @@ After:
 ``````markdown
 #标签A #标签2标签
 ``````
+
 Example: Make sure that spaces are not added between italics and chinese characters to preserve markdown syntax
 
 Before:
@@ -4091,6 +4158,7 @@ _这是一个数学公式_
 **_ 这是一 _ 个数学公式**
 *这是一 hello__ 个数学 world 公式 __*
 ``````
+
 Example: Images and links are ignored
 
 Before:
@@ -4110,6 +4178,7 @@ After:
 [这是一个数学公式english](这是一个数学公式english.md)
 ![这是一个数学公式english](这是一个数学公式english.jpg)
 ``````
+
 Example: Space between CJK and English
 
 Before:
@@ -4137,8 +4206,9 @@ Alias: `trailing-spaces`
 Removes extra spaces after every line.
 
 Options:
+
 - Two Space Linebreak: Ignore two spaces followed by a line break ("Two Space Rule").
-	- Default: `false`
+ 	- Default: `false`
 
 Example: Removes trailing spaces and tabs.
 
@@ -4146,7 +4216,7 @@ Before:
 
 ``````markdown
 # H1
-Line with trailing spaces and tabs.	        
+Line with trailing spaces and tabs.         
 ``````
 
 After:
@@ -4155,6 +4225,7 @@ After:
 # H1
 Line with trailing spaces and tabs.
 ``````
+
 Example: With `Two Space Linebreak = true`
 
 Before:
@@ -4172,13 +4243,12 @@ Line with trailing spaces and tabs.
 ``````
 
 ## Paste
+
 ### Add Blockquote Indentation on Paste
 
 Alias: `add-blockquote-indentation-on-paste`
 
 Adds blockquotes to all but the first line, when the cursor is in a blockquote/callout line during pasting
-
-
 
 Example: Line being pasted into regular text does not get blockquotified with current line being `Part 1 of the sentence`
 
@@ -4195,7 +4265,8 @@ After:
 was much less likely to succeed, but they tried it anyway.
 Part 2 was much more interesting.
 ``````
-Example: Line being pasted into a blockquote gets blockquotified with current line being `> > `
+
+Example: Line being pasted into a blockquote gets blockquotified with current line being `> >`
 
 Before:
 
@@ -4219,8 +4290,6 @@ Alias: `prevent-double-checklist-indicator-on-paste`
 
 Removes starting checklist indicator from the text to paste if the line the cursor is on in the file has a checklist indicator
 
-
-
 Example: Line being pasted is left alone when current line has no checklist indicator in it: `Regular text here`
 
 Before:
@@ -4234,7 +4303,8 @@ After:
 ``````markdown
 - [ ] Checklist item being pasted
 ``````
-Example: Line being pasted into a blockquote without a checklist indicator is left alone when it lacks a checklist indicator: `> > `
+
+Example: Line being pasted into a blockquote without a checklist indicator is left alone when it lacks a checklist indicator: `> >`
 
 Before:
 
@@ -4249,7 +4319,8 @@ After:
 - [ ] Checklist item contents here
 More content here
 ``````
-Example: Line being pasted into a blockquote with a checklist indicator has its checklist indicator removed when current line is: `> - [x] `
+
+Example: Line being pasted into a blockquote with a checklist indicator has its checklist indicator removed when current line is: `> - [x]`
 
 Before:
 
@@ -4264,7 +4335,8 @@ After:
 Checklist item contents here
 More content here
 ``````
-Example: Line being pasted with a checklist indicator has its checklist indicator removed when current line is: `- [ ] `
+
+Example: Line being pasted with a checklist indicator has its checklist indicator removed when current line is: `- [ ]`
 
 Before:
 
@@ -4279,7 +4351,8 @@ After:
 Checklist item 1
 - [ ] Checklist item 2
 ``````
-Example: Line being pasted as a checklist indicator has its checklist indicator removed when current line is: `- [!] `
+
+Example: Line being pasted as a checklist indicator has its checklist indicator removed when current line is: `- [!]`
 
 Before:
 
@@ -4301,8 +4374,6 @@ Alias: `prevent-double-list-item-indicator-on-paste`
 
 Removes starting list indicator from the text to paste if the line the cursor is on in the file has a list indicator
 
-
-
 Example: Line being pasted is left alone when current line has no list indicator in it: `Regular text here`
 
 Before:
@@ -4316,7 +4387,8 @@ After:
 ``````markdown
 - List item being pasted
 ``````
-Example: Line being pasted into a blockquote without a list indicator is left alone when it lacks a list indicator: `> > `
+
+Example: Line being pasted into a blockquote without a list indicator is left alone when it lacks a list indicator: `> >`
 
 Before:
 
@@ -4331,7 +4403,8 @@ After:
 * List item contents here
 More content here
 ``````
-Example: Line being pasted into a blockquote with a list indicator is has its list indicator removed when current line is: `> * `
+
+Example: Line being pasted into a blockquote with a list indicator is has its list indicator removed when current line is: `> *`
 
 Before:
 
@@ -4346,7 +4419,8 @@ After:
 List item contents here
 More content here
 ``````
-Example: Line being pasted with a list indicator is has its list indicator removed when current line is: `+ `
+
+Example: Line being pasted with a list indicator is has its list indicator removed when current line is: `+`
 
 Before:
 
@@ -4367,8 +4441,6 @@ List item 1
 Alias: `proper-ellipsis-on-paste`
 
 Replaces three consecutive dots with an ellipsis even if they have a space between them in the text to paste
-
-
 
 Example: Replacing three consecutive dots with an ellipsis even if spaces are present
 
@@ -4394,8 +4466,6 @@ Alias: `remove-hyphens-on-paste`
 
 Removes hyphens from the text to paste
 
-
-
 Example: Remove hyphen in content to paste
 
 Before:
@@ -4417,8 +4487,6 @@ Alias: `remove-leading-or-trailing-whitespace-on-paste`
 
 Removes any leading non-tab whitespace and all trailing whitespace for the text to paste
 
-
-
 Example: Removes leading spaces and newline characters
 
 Before:
@@ -4435,6 +4503,7 @@ After:
 ``````markdown
 This text was really indented
 ``````
+
 Example: Leaves leading tabs alone
 
 Before:
@@ -4442,14 +4511,14 @@ Before:
 ``````markdown
 
 
-		This text is really indented
+  This text is really indented
 
 ``````
 
 After:
 
 ``````markdown
-		This text is really indented
+  This text is really indented
 ``````
 
 ### Remove Leftover Footnotes from Quote on Paste
@@ -4457,8 +4526,6 @@ After:
 Alias: `remove-leftover-footnotes-from-quote-on-paste`
 
 Removes any leftover footnote references for the text to paste
-
-
 
 Example: Footnote reference removed
 
@@ -4484,8 +4551,6 @@ Alias: `remove-multiple-blank-lines-on-paste`
 
 Condenses multiple blank lines down into one blank line for the text to paste
 
-
-
 Example: Multiple blanks lines condensed down to one
 
 Before:
@@ -4506,6 +4571,7 @@ Here is the first line.
 
 Here is some more text.
 ``````
+
 Example: Text with only one blank line in a row is left alone
 
 Before:

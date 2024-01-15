@@ -1,4 +1,4 @@
-import {Command} from 'obsidian';
+import { Command } from 'obsidian';
 
 export interface ObsidianCommandInterface {
   executeCommandById(id: string): void;
@@ -24,13 +24,12 @@ declare module 'obsidian' {
   }
 }
 
-
 declare global {
   interface Window {
     CodeMirrorAdapter: {
       commands: {
         save(): void;
-      }
+      };
     };
   }
 }

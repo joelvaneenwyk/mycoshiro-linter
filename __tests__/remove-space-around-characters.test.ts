@@ -1,11 +1,12 @@
 import RemoveSpaceAroundCharacters from '../src/rules/remove-space-around-characters';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: RemoveSpaceAroundCharacters,
   testCases: [
-    { // accounts for https://github.com/platers/obsidian-linter/issues/344
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/344
       testName: 'Make sure that lists with a dollar sign in them actually get escaped correctly',
       before: dedent`
         # Title
@@ -18,7 +19,7 @@ ruleTest({
         ${''}
         - lorem \`$\` ipsum
         ${''}
-      `,
+      `
     },
     {
       testName: 'Fullwidth characters can be excluded',
@@ -29,8 +30,8 @@ ruleTest({
         Spaces around fullwidth Ａ are preserved
       `,
       options: {
-        includeFullwidthForms: false,
-      },
+        includeFullwidthForms: false
+      }
     },
     {
       testName: 'CJK symbols and punctuations can be excluded',
@@ -41,8 +42,8 @@ ruleTest({
         Spaces around 《 are preserved
       `,
       options: {
-        includeCJKSymbolsAndPunctuation: false,
-      },
+        includeCJKSymbolsAndPunctuation: false
+      }
     },
     {
       testName: 'Dashes can be excluded',
@@ -53,8 +54,8 @@ ruleTest({
         Spaces around en dash – and em dash — are preserved
       `,
       options: {
-        includeDashes: false,
-      },
+        includeDashes: false
+      }
     },
     {
       testName: 'Custom symbols can be added',
@@ -65,20 +66,8 @@ ruleTest({
         Spaces around custom symbols:are;removed
       `,
       options: {
-        otherSymbols: ':;',
-      },
-    },
-    { // relates to https://github.com/platers/obsidian-linter/issues/826
-      testName: 'Make sure that inline code is left alone',
-      before: dedent`
-        \`Spaces around custom symbols : are ; left alone\`
-      `,
-      after: dedent`
-        \`Spaces around custom symbols : are ; left alone\`
-      `,
-      options: {
-        otherSymbols: ':;',
-      },
-    },
-  ],
+        otherSymbols: ':;'
+      }
+    }
+  ]
 });

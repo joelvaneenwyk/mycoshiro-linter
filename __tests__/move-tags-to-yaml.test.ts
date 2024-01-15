@@ -1,7 +1,7 @@
 import MoveTagsToYaml from '../src/rules/move-tags-to-yaml';
-import {NormalArrayFormats, SpecialArrayFormats, TagSpecificArrayFormats} from '../src/utils/yaml';
+import { NormalArrayFormats, SpecialArrayFormats, TagSpecificArrayFormats } from '../src/utils/yaml';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: MoveTagsToYaml,
@@ -13,7 +13,7 @@ ruleTest({
       `,
       after: dedent`
         # Title
-      `,
+      `
     },
     {
       testName: 'Creates multi-line array tag when missing',
@@ -28,8 +28,8 @@ ruleTest({
         #test
       `,
       options: {
-        tagArrayStyle: NormalArrayFormats.MultiLine,
-      },
+        tagArrayStyle: NormalArrayFormats.MultiLine
+      }
     },
     {
       testName: 'Creates single-line array tags when missing',
@@ -41,7 +41,7 @@ ruleTest({
         tags: [test]
         ---
         #test
-      `,
+      `
     },
     {
       testName: 'Creates single string tag when missing',
@@ -55,8 +55,8 @@ ruleTest({
         #test
       `,
       options: {
-        tagArrayStyle: SpecialArrayFormats.SingleStringToMultiLine,
-      },
+        tagArrayStyle: SpecialArrayFormats.SingleStringToMultiLine
+      }
     },
     {
       testName: 'Creates multi-line array tags when empty',
@@ -74,8 +74,8 @@ ruleTest({
         #test
       `,
       options: {
-        tagArrayStyle: NormalArrayFormats.MultiLine,
-      },
+        tagArrayStyle: NormalArrayFormats.MultiLine
+      }
     },
     {
       testName: 'Creates single-line array tags when empty',
@@ -90,7 +90,7 @@ ruleTest({
         tags: [test]
         ---
         #test
-      `,
+      `
     },
     {
       testName: 'Nothing happens when the tags in the body are covered by the tags in the YAML already',
@@ -107,10 +107,11 @@ ruleTest({
         #test
       `,
       options: {
-        tagArrayStyle: SpecialArrayFormats.SingleStringToSingleLine,
-      },
+        tagArrayStyle: SpecialArrayFormats.SingleStringToSingleLine
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/472
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/472
       testName: 'If YAML tag has space after or before the tag, it should not affect the tag comparison',
       before: dedent`
         ---
@@ -129,10 +130,11 @@ ruleTest({
         #test
       `,
       options: {
-        tagArrayStyle: SpecialArrayFormats.SingleStringToSingleLine,
-      },
+        tagArrayStyle: SpecialArrayFormats.SingleStringToSingleLine
+      }
     },
-    { // relates to https://github.com/platers/obsidian-linter/issues/441
+    {
+      // relates to https://github.com/platers/obsidian-linter/issues/441
       testName: 'Creates single-line array tags when empty and the existing tags key is `tag`',
       before: dedent`
         ---
@@ -145,9 +147,10 @@ ruleTest({
         tag: [test]
         ---
         #test
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/489
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/489
       testName: 'CSS styles are not included in tags',
       before: dedent`
         ---
@@ -160,9 +163,10 @@ ruleTest({
         tag: ${''}
         ---
         <mark style="background: #FFB8EBA6;">some text</mark>
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/521
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/521
       testName: 'Make sure that removing tags respects ignore list',
       before: dedent`
         #tag1
@@ -180,10 +184,11 @@ ruleTest({
       options: {
         tagArrayStyle: TagSpecificArrayFormats.SingleStringSpaceDelimited,
         howToHandleExistingTags: 'Remove whole tag',
-        tagsToIgnore: ['ignored-tag', 'ignored-tag/nested-tag'],
-      },
+        tagsToIgnore: ['ignored-tag', 'ignored-tag/nested-tag']
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/579
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/579
       testName: 'Make sure wiki link and markdown link text is ignored for this',
       before: dedent`
         [Issue #152 on Github](some_link.md)
@@ -194,11 +199,13 @@ ruleTest({
         [[some_link|Issue #152 on Github]]]
       `,
       options: {
-        tagArrayStyle: TagSpecificArrayFormats.SingleStringSpaceDelimited,
-      },
+        tagArrayStyle: TagSpecificArrayFormats.SingleStringSpaceDelimited
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/573
-      testName: 'Make sure that removing a tag after the YAML frontmatter does not leave whitespace on the same line as the frontmatter',
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/573
+      testName:
+        'Make sure that removing a tag after the YAML frontmatter does not leave whitespace on the same line as the frontmatter',
       before: dedent`
         ---
         title: Move Tags to YAML Duplicates YAML
@@ -217,10 +224,11 @@ ruleTest({
       `,
       options: {
         tagArrayStyle: TagSpecificArrayFormats.SingleStringSpaceDelimited,
-        howToHandleExistingTags: 'Remove whole tag',
-      },
+        howToHandleExistingTags: 'Remove whole tag'
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/661
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/661
       testName: 'Make sure that moving tags to YAML does not affect values in the YAML beyond the tag values',
       before: dedent`
         ---
@@ -244,9 +252,8 @@ ruleTest({
       `,
       options: {
         tagArrayStyle: TagSpecificArrayFormats.SingleStringSpaceDelimited,
-        howToHandleExistingTags: 'Remove whole tag',
-      },
-    },
-
-  ],
+        howToHandleExistingTags: 'Remove whole tag'
+      }
+    }
+  ]
 });

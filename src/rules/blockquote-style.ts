@@ -1,8 +1,8 @@
-import {updateBlockquotes} from '../utils/mdast';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase} from './rule-builder';
 import dedent from 'ts-dedent';
-import {IgnoreTypes} from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { updateBlockquotes } from '../utils/mdast';
+import RuleBuilder, { DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase } from './rule-builder';
 
 type BlockquoteStyleValues = 'no space' | 'space';
 
@@ -18,7 +18,7 @@ export default class BlockquoteStyle extends RuleBuilder<BlockquoteStyleOptions>
       descriptionKey: 'rules.blockquote-style.description',
       type: RuleType.CONTENT,
       hasSpecialExecutionOrder: true, // to make sure we run after the other rules to make sure all blockquotes are affected and follow the same style
-      ruleIgnoreTypes: [IgnoreTypes.html],
+      ruleIgnoreTypes: [IgnoreTypes.html]
     });
   }
   get OptionsClass(): new () => BlockquoteStyleOptions {
@@ -68,7 +68,7 @@ export default class BlockquoteStyle extends RuleBuilder<BlockquoteStyleOptions>
           > > > > > As well
           ${''}
           > <strong>Note that html is not affected in blockquotes</strong>
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'When style = `no space`, spaces are removed after a blockquote indicator',
@@ -85,10 +85,9 @@ export default class BlockquoteStyle extends RuleBuilder<BlockquoteStyleOptions>
           >>>>>Even when partially correct already, it is handled
         `,
         options: {
-          style: 'no space',
-        },
-      }),
-
+          style: 'no space'
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<BlockquoteStyleOptions>[] {
@@ -101,15 +100,14 @@ export default class BlockquoteStyle extends RuleBuilder<BlockquoteStyleOptions>
         records: [
           {
             value: 'space',
-            description: '> indicator is followed by a space',
+            description: '> indicator is followed by a space'
           },
           {
             value: 'no space',
-            description: '>indicator is not followed by a space',
-          },
-        ],
-      }),
-
+            description: '>indicator is not followed by a space'
+          }
+        ]
+      })
     ];
   }
 }

@@ -1,6 +1,6 @@
 import ConsecutiveBlankLines from '../src/rules/consecutive-blank-lines';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: ConsecutiveBlankLines,
@@ -25,9 +25,10 @@ ruleTest({
         ${''}
         ${''}
         \`\`\`
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/529
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/529
       testName: 'Removes multiple empty lines when one of the lines just has spaces in it',
       before: dedent`
         Line 1
@@ -39,9 +40,10 @@ ruleTest({
         Line 1
         ${''}
         Line 2
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/529
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/529
       testName: 'Removes multiple empty lines when one of the lines just has a tab in it',
       before: dedent`
         Line 1
@@ -53,9 +55,10 @@ ruleTest({
         Line 1
         ${''}
         Line 2
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/529
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/529
       testName: 'Removes multiple empty lines when one of the lines just has a carriage return in it',
       before: dedent`
         Line 1
@@ -68,9 +71,10 @@ ruleTest({
         Line 1
         ${''}
         Line 2
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/529
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/529
       testName: 'Removes multiple empty lines when one of the lines just has a vertical tab in it',
       before: dedent`
         Line 1
@@ -82,9 +86,10 @@ ruleTest({
         Line 1
         ${''}
         Line 2
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/529
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/529
       testName: 'Removes multiple empty lines when one of the lines just has a page break in it',
       before: dedent`
         Line 1
@@ -96,9 +101,10 @@ ruleTest({
         Line 1
         ${''}
         Line 2
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/529
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/529
       testName: 'Removes multiple empty lines when one of the lines just has a page break in it',
       before: dedent`
         Line 1
@@ -110,9 +116,10 @@ ruleTest({
         Line 1
         ${''}
         Line 2
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/529
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/529
       testName: 'Removes multiple empty lines when one of the lines just has multiple kinds of whitespace in it in it',
       before: dedent`
         Line 1
@@ -124,10 +131,12 @@ ruleTest({
         Line 1
         ${''}
         Line 2
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/538
-      testName: 'Make sure that lists with a blank line between them are not affected since there are not 2 or more blank lines',
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/538
+      testName:
+        'Make sure that lists with a blank line between them are not affected since there are not 2 or more blank lines',
       before: dedent`
         - Item 1
         ${''}
@@ -149,10 +158,12 @@ ruleTest({
             - Sub sub item 1
         ${''}
             - Sub sub item 2
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/543
-      testName: 'Make sure that nested code blocks with a blank line between them are not affected since there are not 2 or more blank lines',
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/543
+      testName:
+        'Make sure that nested code blocks with a blank line between them are not affected since there are not 2 or more blank lines',
       before: dedent`
         1. \`aaa\` bbbb,
         3. xxxxxxxxxxxxxxx
@@ -178,7 +189,7 @@ ruleTest({
             \`\`\`
 
         4. ccccccc,
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

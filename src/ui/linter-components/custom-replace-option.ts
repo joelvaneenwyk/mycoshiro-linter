@@ -1,26 +1,34 @@
-import {Setting, Component} from 'obsidian';
-import {getTextInLanguage} from 'src/lang/helpers';
-import {AddCustomRow} from '../components/add-custom-row';
-export type CustomReplace = {label: string, find: string, replace: string, flags: string};
+import { Setting, Component } from 'obsidian';
+import { getTextInLanguage } from 'src/lang/helpers';
+import { AddCustomRow } from '../components/add-custom-row';
+export type CustomReplace = { label: string; find: string; replace: string; flags: string };
 
 const defaultFlags = 'gm';
 
 export class CustomReplaceOption extends AddCustomRow {
-  constructor(containerEl: HTMLElement, parentComponent: Component, public regexes: CustomReplace[], saveSettings: () => void) {
+  constructor(
+    containerEl: HTMLElement,
+    parentComponent: Component,
+    public regexes: CustomReplace[],
+    isMobile: boolean,
+    saveSettings: () => void
+  ) {
     super(
-        containerEl,
-        parentComponent,
-        getTextInLanguage('options.custom-replace.name'),
-        getTextInLanguage('options.custom-replace.description'),
-        getTextInLanguage('options.custom-replace.warning'),
-        getTextInLanguage('options.custom-replace.add-input-button-text'),
-        saveSettings,
-        ()=>{
-          const newRegex = {label: '', find: '', replace: '', flags: defaultFlags};
-          this.regexes.push(newRegex);
-          this.saveSettings();
-          this.addRegex(newRegex, this.regexes.length - 1, true);
-        });
+      containerEl,
+      parentComponent,
+      getTextInLanguage('options.custom-replace.name'),
+      getTextInLanguage('options.custom-replace.description'),
+      getTextInLanguage('options.custom-replace.warning'),
+      getTextInLanguage('options.custom-replace.add-input-button-text'),
+      isMobile,
+      saveSettings,
+      () => {
+        const newRegex = { label: '', find: '', replace: '', flags: defaultFlags };
+        this.regexes.push(newRegex);
+        this.saveSettings();
+        this.addRegex(newRegex, this.regexes.length - 1, true);
+      }
+    );
     this.display();
     this.inputElDiv.addClass('linter-custom-regex-replacement-container');
   }
@@ -32,15 +40,15 @@ export class CustomReplaceOption extends AddCustomRow {
   }
 
   private addRegex(regex: CustomReplace, index: number, focusOnCommand: boolean = false) {
-    const newRegexDiv = this.inputElDiv.createDiv({cls: 'linter-custom-regex-replacement'});
+    const newRegexDiv = this.inputElDiv.createDiv({ cls: 'linter-custom-regex-replacement' });
     const row1 = newRegexDiv.createDiv();
     const labelSetting = new Setting(row1).addText((cb) => {
       cb.setPlaceholder(getTextInLanguage('options.custom-replace.label-placeholder-text'))
-          .setValue(regex.label)
-          .onChange((value) => {
-            this.regexes[index].label = value;
-            this.saveSettings();
-          });
+        .setValue(regex.label)
+        .onChange((value) => {
+          this.regexes[index].label = value;
+          this.saveSettings();
+        });
 
       cb.inputEl.setAttr('inputIndex', index);
       cb.inputEl.addClass('linter-custom-regex-replacement-label-input');
@@ -57,58 +65,64 @@ export class CustomReplaceOption extends AddCustomRow {
 
     const row2 = newRegexDiv.createDiv();
 
-    const setting = new Setting(row2).addText((cb) => {
-      cb.setPlaceholder(getTextInLanguage('options.custom-replace.regex-to-find-placeholder-text'))
+    const setting = new Setting(row2)
+      .addText((cb) => {
+        cb.setPlaceholder(getTextInLanguage('options.custom-replace.regex-to-find-placeholder-text'))
           .setValue(regex.find)
           .onChange((value) => {
             this.regexes[index].find = value;
             this.saveSettings();
           });
 
-      cb.inputEl.addClass('linter-custom-regex-replacement-normal-input');
-    }).addText((cb) => {
-      cb.setPlaceholder(getTextInLanguage('options.custom-replace.flags-placeholder-text'))
+        cb.inputEl.addClass('linter-custom-regex-replacement-normal-input');
+      })
+      .addText((cb) => {
+        cb.setPlaceholder(getTextInLanguage('options.custom-replace.flags-placeholder-text'))
           .setValue(regex.flags)
           .onChange((value) => {
             this.regexes[index].flags = value;
             this.saveSettings();
           });
 
-      cb.inputEl.addClass('linter-custom-regex-replacement-flags');
-    }).addText((cb) => {
-      cb.setPlaceholder(getTextInLanguage('options.custom-replace.regex-to-replace-placeholder-text'))
+        cb.inputEl.addClass('linter-custom-regex-replacement-flags');
+      })
+      .addText((cb) => {
+        cb.setPlaceholder(getTextInLanguage('options.custom-replace.regex-to-replace-placeholder-text'))
           .setValue(regex.replace)
           .onChange((value) => {
             this.regexes[index].replace = value;
             this.saveSettings();
           });
 
-      cb.inputEl.addClass('linter-custom-regex-replacement-normal-input');
-    }).addExtraButton((cb) => {
-      cb.setIcon('up-chevron-glyph')
+        cb.inputEl.addClass('linter-custom-regex-replacement-normal-input');
+      })
+      .addExtraButton((cb) => {
+        cb.setIcon('up-chevron-glyph')
           .setTooltip(getTextInLanguage('options.custom-replace.move-up-tooltip'))
           .onClick(() => {
             this.arrayMove(index, index - 1);
             this.saveSettings();
             this.resetInputEls();
           });
-    }).addExtraButton((cb) => {
-      cb.setIcon('down-chevron-glyph')
+      })
+      .addExtraButton((cb) => {
+        cb.setIcon('down-chevron-glyph')
           .setTooltip(getTextInLanguage('options.custom-replace.move-down-tooltip'))
           .onClick(() => {
             this.arrayMove(index, index + 1);
             this.saveSettings();
             this.resetInputEls();
           });
-    }).addExtraButton((cb)=>{
-      cb.setIcon('cross')
+      })
+      .addExtraButton((cb) => {
+        cb.setIcon('cross')
           .setTooltip(getTextInLanguage('options.custom-replace.delete-tooltip'))
-          .onClick(()=>{
+          .onClick(() => {
             this.regexes.splice(index, 1);
             this.saveSettings();
             this.resetInputEls();
           });
-    });
+      });
 
     setting.settingEl.addClass('linter-custom-regex-replacement-row2');
   }

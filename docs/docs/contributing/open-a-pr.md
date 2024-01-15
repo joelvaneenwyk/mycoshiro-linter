@@ -18,6 +18,7 @@ style and formats the files as needed. The linter can be run by `npm run lint` o
       previous line is completely blank
     `;
     ```
+
 ## Run Unit Tests
 
 The next thing to do is to make sure that all tests are passing by running `npm run test`. If any tests fail, please get them

@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "outDir": "./dist",
     "inlineSourceMap": true,
     "inlineSources": true,
-    "module": "esnext",
-    "target": "es6",
+    "module": "ESNext",
+    "target": "ES2017",
     "allowJs": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
@@ -15,12 +16,13 @@
     "lib": [
       "dom",
       "es5",
+      "es6",
       "scripthost",
       "ESNext"
     ]
   },
   "include": [
-    "**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules/**/*",

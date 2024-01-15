@@ -1,9 +1,9 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase, TextAreaOptionBuilder} from './rule-builder';
 import dedent from 'ts-dedent';
-import {misspellingToCorrection} from '../utils/auto-correct-misspellings';
-import {wordRegex, wordSplitterRegex} from '../utils/regex';
+import { Options, RuleType } from '../rules';
+import { misspellingToCorrection } from '../utils/auto-correct-misspellings';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { wordRegex, wordSplitterRegex } from '../utils/regex';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase, TextAreaOptionBuilder } from './rule-builder';
 
 class AutoCorrectCommonMisspellingsOptions implements Options {
   ignoreWords?: string[] = [];
@@ -16,7 +16,18 @@ export default class AutoCorrectCommonMisspellings extends RuleBuilder<AutoCorre
       nameKey: 'rules.auto-correct-common-misspellings.name',
       descriptionKey: 'rules.auto-correct-common-misspellings.description',
       type: RuleType.CONTENT,
-      ruleIgnoreTypes: [IgnoreTypes.yaml, IgnoreTypes.code, IgnoreTypes.inlineCode, IgnoreTypes.math, IgnoreTypes.inlineMath, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag, IgnoreTypes.image, IgnoreTypes.url],
+      ruleIgnoreTypes: [
+        IgnoreTypes.yaml,
+        IgnoreTypes.code,
+        IgnoreTypes.inlineCode,
+        IgnoreTypes.math,
+        IgnoreTypes.inlineMath,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag,
+        IgnoreTypes.image,
+        IgnoreTypes.url
+      ]
     });
   }
   get OptionsClass(): new () => AutoCorrectCommonMisspellingsOptions {
@@ -53,7 +64,7 @@ export default class AutoCorrectCommonMisspellings extends RuleBuilder<AutoCorre
           # comments absoltely can be helpful, but they can also be misleading
           \`\`\`
           ${''}
-          Note that inline code also has the applicable spelling errors ignored: \`absoltely\` 
+          Note that inline code also has the applicable spelling errors ignored: \`absoltely\`
           ${''}
           $$
           Math block absoltely does not get auto-corrected.
@@ -74,7 +85,7 @@ export default class AutoCorrectCommonMisspellings extends RuleBuilder<AutoCorre
           # comments absoltely can be helpful, but they can also be misleading
           \`\`\`
           ${''}
-          Note that inline code also has the applicable spelling errors ignored: \`absoltely\` 
+          Note that inline code also has the applicable spelling errors ignored: \`absoltely\`
           ${''}
           $$
           Math block absoltely does not get auto-corrected.
@@ -83,16 +94,16 @@ export default class AutoCorrectCommonMisspellings extends RuleBuilder<AutoCorre
           The same $ defenately $ applies to inline math.
           ${''}
           #defenately stays the same
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Auto-correct misspellings keeps first letter\'s case',
+        description: "Auto-correct misspellings keeps first letter's case",
         before: dedent`
           Accodringly we made sure to update logic to make sure it would handle case sensitivity.
         `,
         after: dedent`
           Accordingly we made sure to update logic to make sure it would handle case sensitivity.
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Links should not be auto-corrected',
@@ -101,8 +112,8 @@ export default class AutoCorrectCommonMisspellings extends RuleBuilder<AutoCorre
         `,
         after: dedent`
           http://www.Absoltely.com should not be corrected
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<AutoCorrectCommonMisspellingsOptions>[] {
@@ -113,8 +124,8 @@ export default class AutoCorrectCommonMisspellings extends RuleBuilder<AutoCorre
         descriptionKey: 'rules.auto-correct-common-misspellings.ignore-words.description',
         optionsKey: 'ignoreWords',
         splitter: wordSplitterRegex,
-        separator: ', ',
-      }),
+        separator: ', '
+      })
     ];
   }
 }

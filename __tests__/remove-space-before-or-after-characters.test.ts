@@ -1,6 +1,6 @@
 import RemoveSpaceBeforeOrAfterCharacters from '../src/rules/remove-space-before-or-after-characters';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: RemoveSpaceBeforeOrAfterCharacters,
@@ -24,10 +24,11 @@ ruleTest({
         - [x] Task 3
         - [ ] Task 4.
         ${''}
-      `,
+      `
     },
     {
-      testName: 'Make sure that checklists completion indicator does not get affected by the rule when there is a sublist',
+      testName:
+        'Make sure that checklists completion indicator does not get affected by the rule when there is a sublist',
       before: dedent`
         # Title
         ${''}
@@ -45,7 +46,7 @@ ruleTest({
           - [x] Task 3,
         - [ ] Task 4.
         ${''}
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

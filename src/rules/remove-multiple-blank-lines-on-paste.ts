@@ -1,6 +1,6 @@
 // based on https://github.com/chrisgrieser/obsidian-smarter-paste/blob/master/clipboardModification.ts#L14
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
 
 class RemoveMultipleBlankLinesOnPasteOptions implements Options {}
@@ -11,7 +11,7 @@ export default class RemoveMultipleBlankLinesOnPaste extends RuleBuilder<RemoveM
     super({
       nameKey: 'rules.remove-multiple-blank-lines-on-paste.name',
       descriptionKey: 'rules.remove-multiple-blank-lines-on-paste.description',
-      type: RuleType.PASTE,
+      type: RuleType.PASTE
     });
   }
   get OptionsClass(): new () => RemoveMultipleBlankLinesOnPasteOptions {
@@ -36,7 +36,7 @@ export default class RemoveMultipleBlankLinesOnPaste extends RuleBuilder<RemoveM
           Here is the first line.
           ${''}
           Here is some more text.
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Text with only one blank line in a row is left alone',
@@ -49,8 +49,8 @@ export default class RemoveMultipleBlankLinesOnPaste extends RuleBuilder<RemoveM
           First line.
           ${''}
           Last line.
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<RemoveMultipleBlankLinesOnPasteOptions>[] {

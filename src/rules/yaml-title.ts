@@ -1,19 +1,24 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase, TextOptionBuilder, DropdownOptionBuilder} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, {
+  ExampleBuilder,
+  OptionBuilderBase,
+  TextOptionBuilder,
+  DropdownOptionBuilder
+} from './rule-builder';
 import dedent from 'ts-dedent';
-import {escapeStringIfNecessaryAndPossible, formatYAML, initYAML, QuoteCharacter} from '../utils/yaml';
-import {ignoreListOfTypes, IgnoreTypes} from '../utils/ignore-types';
-import {escapeDollarSigns, getFirstHeaderOneText} from '../utils/regex';
-import {insert} from '../utils/strings';
+import { escapeStringIfNecessaryAndPossible, formatYAML, initYAML, QuoteCharacter } from '../utils/yaml';
+import { ignoreListOfTypes, IgnoreTypes } from '../utils/ignore-types';
+import { escapeDollarSigns, getFirstHeaderOneText } from '../utils/regex';
+import { insert } from '../utils/strings';
 
 type YamlTitleModeValues = 'first-h1-or-filename-if-h1-missing' | 'filename' | 'first-h1';
 
 class YamlTitleOptions implements Options {
   @RuleBuilder.noSettingControl()
-    fileName: string;
+  fileName: string;
 
   @RuleBuilder.noSettingControl()
-    defaultEscapeCharacter?: QuoteCharacter = '"';
+  defaultEscapeCharacter?: QuoteCharacter = '"';
 
   titleKey?: string = 'title';
 
@@ -26,7 +31,7 @@ export default class YamlTitle extends RuleBuilder<YamlTitleOptions> {
     super({
       nameKey: 'rules.yaml-title.name',
       descriptionKey: 'rules.yaml-title.description',
-      type: RuleType.YAML,
+      type: RuleType.YAML
     });
   }
   get OptionsClass(): new () => YamlTitleOptions {
@@ -53,10 +58,7 @@ export default class YamlTitle extends RuleBuilder<YamlTitleOptions> {
       const title_match_str = `\n${options.titleKey}.*\n`;
       const title_match = new RegExp(title_match_str);
       if (title_match.test(text)) {
-        text = text.replace(
-            title_match,
-            escapeDollarSigns(`\n${options.titleKey}: ${title}\n`),
-        );
+        text = text.replace(title_match, escapeDollarSigns(`\n${options.titleKey}: ${title}\n`));
       } else {
         const yaml_end = text.indexOf('\n---');
         text = insert(text, yaml_end, `\n${options.titleKey}: ${title}`);
@@ -66,12 +68,16 @@ export default class YamlTitle extends RuleBuilder<YamlTitleOptions> {
     });
   }
   getFirstH1Header(text: string): string {
-    return ignoreListOfTypes([IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.tag], text, getFirstHeaderOneText);
+    return ignoreListOfTypes(
+      [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.tag],
+      text,
+      getFirstHeaderOneText
+    );
   }
   get exampleBuilders(): ExampleBuilder<YamlTitleOptions>[] {
     return [
       new ExampleBuilder({
-        description: 'Adds a header with the title from heading when `mode = \'First H1 or Filename if H1 Missing\'`.',
+        description: "Adds a header with the title from heading when `mode = 'First H1 or Filename if H1 Missing'`.",
         before: dedent`
           # Obsidian
         `,
@@ -82,11 +88,11 @@ export default class YamlTitle extends RuleBuilder<YamlTitleOptions> {
           # Obsidian
         `,
         options: {
-          fileName: 'Filename',
-        },
+          fileName: 'Filename'
+        }
       }),
       new ExampleBuilder({
-        description: 'Adds a header with the title when `mode = \'First H1 or Filename if H1 Missing\'`.',
+        description: "Adds a header with the title when `mode = 'First H1 or Filename if H1 Missing'`.",
         before: dedent`
           ${''}
         `,
@@ -97,11 +103,13 @@ export default class YamlTitle extends RuleBuilder<YamlTitleOptions> {
           ${''}
         `,
         options: {
-          fileName: 'Filename',
-        },
+          fileName: 'Filename'
+        }
       }),
-      new ExampleBuilder({ // accounts for https://github.com/platers/obsidian-linter/issues/470
-        description: 'Make sure that markdown links in headings are properly copied to the YAML as just the text when `mode = \'First H1 or Filename if H1 Missing\'`',
+      new ExampleBuilder({
+        // accounts for https://github.com/platers/obsidian-linter/issues/470
+        description:
+          "Make sure that markdown links in headings are properly copied to the YAML as just the text when `mode = 'First H1 or Filename if H1 Missing'`",
         before: dedent`
           # This is a [Heading](test heading.md)
         `,
@@ -110,10 +118,10 @@ export default class YamlTitle extends RuleBuilder<YamlTitleOptions> {
           title: This is a Heading
           ---
           # This is a [Heading](test heading.md)
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'When `mode = \'First H1\'`, title does not have a value if no H1 is present',
+        description: "When `mode = 'First H1'`, title does not have a value if no H1 is present",
         before: dedent`
           ## This is a Heading
         `,
@@ -125,11 +133,12 @@ export default class YamlTitle extends RuleBuilder<YamlTitleOptions> {
         `,
         options: {
           mode: 'first-h1',
-          fileName: 'Filename',
-        },
+          fileName: 'Filename'
+        }
       }),
       new ExampleBuilder({
-        description: 'When `mode = \'Filename\'`, title uses the filename ignoring all H1s. Note: the filename is "Filename" in this example.',
+        description:
+          'When `mode = \'Filename\'`, title uses the filename ignoring all H1s. Note: the filename is "Filename" in this example.',
         before: dedent`
           # This is a Heading
         `,
@@ -141,9 +150,9 @@ export default class YamlTitle extends RuleBuilder<YamlTitleOptions> {
         `,
         options: {
           mode: 'filename',
-          fileName: 'Filename',
-        },
-      }),
+          fileName: 'Filename'
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<YamlTitleOptions>[] {
@@ -152,7 +161,7 @@ export default class YamlTitle extends RuleBuilder<YamlTitleOptions> {
         OptionsClass: YamlTitleOptions,
         nameKey: 'rules.yaml-title.title-key.name',
         descriptionKey: 'rules.yaml-title.title-key.description',
-        optionsKey: 'titleKey',
+        optionsKey: 'titleKey'
       }),
       new DropdownOptionBuilder<YamlTitleOptions, YamlTitleModeValues>({
         OptionsClass: YamlTitleOptions,
@@ -162,18 +171,18 @@ export default class YamlTitle extends RuleBuilder<YamlTitleOptions> {
         records: [
           {
             value: 'first-h1-or-filename-if-h1-missing',
-            description: 'Uses the first H1 in the file or the filename of the file if there is not H1',
+            description: 'Uses the first H1 in the file or the filename of the file if there is not H1'
           },
           {
             value: 'filename',
-            description: 'Uses the filename as the title',
+            description: 'Uses the filename as the title'
           },
           {
             value: 'first-h1',
-            description: 'Uses the first H1 in the file as the title',
-          },
-        ],
-      }),
+            description: 'Uses the first H1 in the file as the title'
+          }
+        ]
+      })
     ];
   }
 }

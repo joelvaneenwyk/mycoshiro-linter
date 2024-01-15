@@ -1,7 +1,13 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {BooleanOptionBuilder, DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase, TextAreaOptionBuilder} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, {
+  BooleanOptionBuilder,
+  DropdownOptionBuilder,
+  ExampleBuilder,
+  OptionBuilderBase,
+  TextAreaOptionBuilder
+} from './rule-builder';
 import dedent from 'ts-dedent';
-import {getYAMLText, getYamlSectionValue, loadYAML, removeYamlSection, setYamlSection} from '../utils/yaml';
+import { getYAMLText, getYamlSectionValue, loadYAML, removeYamlSection, setYamlSection } from '../utils/yaml';
 
 type YamlSortOrderForOtherKeys = 'None' | 'Ascending Alphabetical' | 'Descending Alphabetical';
 
@@ -9,13 +15,13 @@ class YamlKeySortOptions implements Options {
   priorityKeysAtStartOfYaml?: boolean = true;
 
   @RuleBuilder.noSettingControl()
-    dateModifiedKey?: string;
+  dateModifiedKey?: string;
 
   @RuleBuilder.noSettingControl()
-    currentTimeFormatted?: string;
+  currentTimeFormatted?: string;
 
   @RuleBuilder.noSettingControl()
-    yamlTimestampDateModifiedEnabled?: boolean;
+  yamlTimestampDateModifiedEnabled?: boolean;
 
   yamlKeyPrioritySortOrder?: string[] = [];
   yamlSortOrderForOtherKeys?: YamlSortOrderForOtherKeys = 'None';
@@ -28,7 +34,7 @@ export default class YamlKeySort extends RuleBuilder<YamlKeySortOptions> {
       nameKey: 'rules.yaml-key-sort.name',
       descriptionKey: 'rules.yaml-key-sort.description',
       type: RuleType.YAML,
-      hasSpecialExecutionOrder: true,
+      hasSpecialExecutionOrder: true
     });
   }
   get OptionsClass(): new () => YamlKeySortOptions {
@@ -60,7 +66,16 @@ export default class YamlKeySort extends RuleBuilder<YamlKeySortOptions> {
     const sortOrder = options.yamlSortOrderForOtherKeys;
     const yamlObject = loadYAML(yamlText);
     if (yamlObject == null) {
-      return this.getTextWithNewYamlFrontmatter(text, oldYaml, priorityKeysSorted, yamlText, priorityAtStartOfYaml, options.dateModifiedKey, options.currentTimeFormatted, options.yamlTimestampDateModifiedEnabled);
+      return this.getTextWithNewYamlFrontmatter(
+        text,
+        oldYaml,
+        priorityKeysSorted,
+        yamlText,
+        priorityAtStartOfYaml,
+        options.dateModifiedKey,
+        options.currentTimeFormatted,
+        options.yamlTimestampDateModifiedEnabled
+      );
     }
 
     let remainingKeys = Object.keys(yamlObject);
@@ -70,15 +85,33 @@ export default class YamlKeySort extends RuleBuilder<YamlKeySortOptions> {
     } else if (sortOrder === 'Descending Alphabetical') {
       sortMethod = this.sortAlphabeticallyDesc;
     } else {
-      return this.getTextWithNewYamlFrontmatter(text, oldYaml, priorityKeysSorted, yamlText, priorityAtStartOfYaml, options.dateModifiedKey, options.currentTimeFormatted, options.yamlTimestampDateModifiedEnabled);
+      return this.getTextWithNewYamlFrontmatter(
+        text,
+        oldYaml,
+        priorityKeysSorted,
+        yamlText,
+        priorityAtStartOfYaml,
+        options.dateModifiedKey,
+        options.currentTimeFormatted,
+        options.yamlTimestampDateModifiedEnabled
+      );
     }
 
     remainingKeys = remainingKeys.sort(sortMethod);
     const remainingKeysSortResult = this.getYAMLKeysSorted(yamlText, remainingKeys);
 
-    return this.getTextWithNewYamlFrontmatter(text, oldYaml, priorityKeysSorted, remainingKeysSortResult.sortedYamlKeyValues, priorityAtStartOfYaml, options.dateModifiedKey, options.currentTimeFormatted, options.yamlTimestampDateModifiedEnabled);
+    return this.getTextWithNewYamlFrontmatter(
+      text,
+      oldYaml,
+      priorityKeysSorted,
+      remainingKeysSortResult.sortedYamlKeyValues,
+      priorityAtStartOfYaml,
+      options.dateModifiedKey,
+      options.currentTimeFormatted,
+      options.yamlTimestampDateModifiedEnabled
+    );
   }
-  getYAMLKeysSorted(yaml: string, keys: string[]): {remainingYaml: string, sortedYamlKeyValues: string} {
+  getYAMLKeysSorted(yaml: string, keys: string[]): { remainingYaml: string; sortedYamlKeyValues: string } {
     let specifiedYamlKeysSorted = '';
     for (const key of keys) {
       const value = getYamlSectionValue(yaml, key);
@@ -96,17 +129,31 @@ export default class YamlKeySort extends RuleBuilder<YamlKeySortOptions> {
 
     return {
       remainingYaml: yaml,
-      sortedYamlKeyValues: specifiedYamlKeysSorted,
+      sortedYamlKeyValues: specifiedYamlKeysSorted
     };
   }
-  updateDateModifiedIfYamlChanged(oldYaml: string, newYaml: string, dateModifiedKey: string, currentTimeFormatted: string): string {
+  updateDateModifiedIfYamlChanged(
+    oldYaml: string,
+    newYaml: string,
+    dateModifiedKey: string,
+    currentTimeFormatted: string
+  ): string {
     if (oldYaml == newYaml) {
       return newYaml;
     }
 
     return setYamlSection(newYaml, dateModifiedKey, ' ' + currentTimeFormatted);
   }
-  getTextWithNewYamlFrontmatter(text: string, oldYaml: string, priorityKeysSorted: string, remainingKeys: string, priorityAtStart: boolean, dateModifiedKey: string, currentTimeFormatted: string, yamlTimestampDateModifiedEnabled: boolean): string {
+  getTextWithNewYamlFrontmatter(
+    text: string,
+    oldYaml: string,
+    priorityKeysSorted: string,
+    remainingKeys: string,
+    priorityAtStart: boolean,
+    dateModifiedKey: string,
+    currentTimeFormatted: string,
+    yamlTimestampDateModifiedEnabled: boolean
+  ): string {
     let newYaml = `${remainingKeys}${priorityKeysSorted}`;
     if (priorityAtStart) {
       newYaml = `${priorityKeysSorted}${remainingKeys}`;
@@ -133,7 +180,8 @@ export default class YamlKeySort extends RuleBuilder<YamlKeySortOptions> {
   get exampleBuilders(): ExampleBuilder<YamlKeySortOptions>[] {
     return [
       new ExampleBuilder({
-        description: 'Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language`',
+        description:
+          'Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language`',
         before: dedent`
           ---
           language: Typescript
@@ -155,17 +203,14 @@ export default class YamlKeySort extends RuleBuilder<YamlKeySortOptions> {
           ---
         `,
         options: {
-          yamlKeyPrioritySortOrder: [
-            'date',
-            'type',
-            'language',
-          ],
+          yamlKeyPrioritySortOrder: ['date', 'type', 'language'],
           yamlSortOrderForOtherKeys: 'None',
-          priorityKeysAtStartOfYaml: true,
-        },
+          priorityKeysAtStartOfYaml: true
+        }
       }),
       new ExampleBuilder({
-        description: 'Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `\'YAML Sort Order for Other Keys\' = Ascending Alphabetical`',
+        description:
+          "Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `'YAML Sort Order for Other Keys' = Ascending Alphabetical`",
         before: dedent`
           ---
           language: Typescript
@@ -187,16 +232,13 @@ export default class YamlKeySort extends RuleBuilder<YamlKeySortOptions> {
           ---
         `,
         options: {
-          yamlKeyPrioritySortOrder: [
-            'date',
-            'type',
-            'language',
-          ],
-          yamlSortOrderForOtherKeys: 'Ascending Alphabetical',
-        },
+          yamlKeyPrioritySortOrder: ['date', 'type', 'language'],
+          yamlSortOrderForOtherKeys: 'Ascending Alphabetical'
+        }
       }),
       new ExampleBuilder({
-        description: 'Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `\'YAML Sort Order for Other Keys\' = Descending Alphabetical`',
+        description:
+          "Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `'YAML Sort Order for Other Keys' = Descending Alphabetical`",
         before: dedent`
           ---
           language: Typescript
@@ -218,17 +260,14 @@ export default class YamlKeySort extends RuleBuilder<YamlKeySortOptions> {
           ---
         `,
         options: {
-          yamlKeyPrioritySortOrder: [
-            'date',
-            'type',
-            'language',
-          ],
+          yamlKeyPrioritySortOrder: ['date', 'type', 'language'],
           yamlSortOrderForOtherKeys: 'Descending Alphabetical',
-          priorityKeysAtStartOfYaml: true,
-        },
+          priorityKeysAtStartOfYaml: true
+        }
       }),
       new ExampleBuilder({
-        description: 'Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `\'YAML Sort Order for Other Keys\' = Descending Alphabetical` and `\'Priority Keys at Start of YAML\' = false`',
+        description:
+          "Sorts YAML keys in order specified by `YAML Key Priority Sort Order` has a sort order of `date type language` with `'YAML Sort Order for Other Keys' = Descending Alphabetical` and `'Priority Keys at Start of YAML' = false`",
         before: dedent`
           ---
           language: Typescript
@@ -251,15 +290,11 @@ export default class YamlKeySort extends RuleBuilder<YamlKeySortOptions> {
           ---
         `,
         options: {
-          yamlKeyPrioritySortOrder: [
-            'date',
-            'type',
-            'language',
-          ],
+          yamlKeyPrioritySortOrder: ['date', 'type', 'language'],
           yamlSortOrderForOtherKeys: 'Descending Alphabetical',
-          priorityKeysAtStartOfYaml: false,
-        },
-      }),
+          priorityKeysAtStartOfYaml: false
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<YamlKeySortOptions>[] {
@@ -268,13 +303,13 @@ export default class YamlKeySort extends RuleBuilder<YamlKeySortOptions> {
         OptionsClass: YamlKeySortOptions,
         nameKey: 'rules.yaml-key-sort.yaml-key-priority-sort-order.name',
         descriptionKey: 'rules.yaml-key-sort.yaml-key-priority-sort-order.description',
-        optionsKey: 'yamlKeyPrioritySortOrder',
+        optionsKey: 'yamlKeyPrioritySortOrder'
       }),
       new BooleanOptionBuilder({
         OptionsClass: YamlKeySortOptions,
         nameKey: 'rules.yaml-key-sort.priority-keys-at-start-of-yaml.name',
         descriptionKey: 'rules.yaml-key-sort.priority-keys-at-start-of-yaml.description',
-        optionsKey: 'priorityKeysAtStartOfYaml',
+        optionsKey: 'priorityKeysAtStartOfYaml'
       }),
       new DropdownOptionBuilder<YamlKeySortOptions, YamlSortOrderForOtherKeys>({
         OptionsClass: YamlKeySortOptions,
@@ -284,18 +319,18 @@ export default class YamlKeySort extends RuleBuilder<YamlKeySortOptions> {
         records: [
           {
             value: 'None',
-            description: 'No sorting other than what is in the YAML Key Priority Sort Order text area',
+            description: 'No sorting other than what is in the YAML Key Priority Sort Order text area'
           },
           {
             value: 'Ascending Alphabetical',
-            description: 'Sorts the keys based on key value from a to z',
+            description: 'Sorts the keys based on key value from a to z'
           },
           {
             value: 'Descending Alphabetical',
-            description: 'Sorts the keys based on key value from z to a',
-          },
-        ],
-      }),
+            description: 'Sorts the keys based on key value from z to a'
+          }
+        ]
+      })
     ];
   }
 }

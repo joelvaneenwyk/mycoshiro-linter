@@ -1,6 +1,6 @@
 import FileNameHeading from '../src/rules/file-name-heading';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: FileNameHeading,
@@ -23,11 +23,13 @@ ruleTest({
         Text 2
       `,
       options: {
-        fileName: 'File Name',
-      },
+        fileName: 'File Name'
+      }
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/513
-      testName: 'Inserts the heading on the line after the frontmatter of the file when it is the only thing in the file',
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/513
+      testName:
+        'Inserts the heading on the line after the frontmatter of the file when it is the only thing in the file',
       before: dedent`
         ---
         hello: test
@@ -41,8 +43,8 @@ ruleTest({
         ${''}
       `,
       options: {
-        fileName: 'Test note',
-      },
-    },
-  ],
+        fileName: 'Test note'
+      }
+    }
+  ]
 });

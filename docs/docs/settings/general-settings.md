@@ -9,7 +9,6 @@ The default character to use to escape YAML values when a single quote and doubl
 | `"` | Use a double quote to escape if no single or double quote is present | `true` |
 | `'` | Use a single quote to escape if no single or double quote is present | `false` |
 
-
 ## Yaml aliases section style
 
 The style of the YAML aliases section

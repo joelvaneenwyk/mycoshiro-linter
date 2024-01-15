@@ -1,8 +1,10 @@
-import {load, dump} from 'js-yaml';
-import {getTextInLanguage} from '../lang/helpers';
-import {escapeDollarSigns, yamlRegex} from './regex';
-import {isNumeric} from './strings';
+import { dump, load } from 'js-yaml';
+import { getTextInLanguage } from '../lang/helpers';
+import { escapeDollarSigns, yamlRegex } from './regex';
+import { isNumeric } from './strings';
 
+export type YamlObject = Record<string | number | symbol, object>;
+export type NullableYamlObject = YamlObject | null;
 
 export const OBSIDIAN_TAG_KEY_SINGULAR = 'tag';
 export const OBSIDIAN_TAG_KEY_PLURAL = 'tags';
@@ -12,6 +14,8 @@ export const OBSIDIAN_ALIAS_KEY_PLURAL = 'aliases';
 export const OBSIDIAN_ALIASES_KEYS = [OBSIDIAN_ALIAS_KEY_SINGULAR, OBSIDIAN_ALIAS_KEY_PLURAL];
 export const LINTER_ALIASES_HELPER_KEY = 'linter-yaml-title-alias';
 export const DISABLED_RULES_KEY = 'disabled rules';
+
+export const YAML_OBJECT_DEFAULT: YamlObject = {};
 
 /**
  * Adds an empty YAML block to the text if it doesn't already have one.
@@ -47,7 +51,10 @@ export function formatYAML(text: string, func: (text: string) => string): string
 }
 
 function getYamlSectionRegExp(rawKey: string): RegExp {
-  return new RegExp(`^([\\t ]*)${rawKey}:[ \\t]*(\\S.*|(?:(?:\\n *- \\S.*)|((?:\\n *- *))*|(\\n([ \\t]+[^\\n]*))*)*)\\n`, 'm');
+  return new RegExp(
+    `^([\\t ]*)${rawKey}:[ \\t]*(\\S.*|(?:(?:\\n *- \\S.*)|((?:\\n *- *))*|(\\n([ \\t]+[^\\n]*))*)*)\\n`,
+    'm'
+  );
 }
 
 export function setYamlSection(yaml: string, rawKey: string, rawValue: string): string {
@@ -74,16 +81,16 @@ export function removeYamlSection(yaml: string, rawKey: string): string {
   return result;
 }
 
-export function loadYAML(yaml_text: string): any {
+export function loadYAML(yaml_text: string): NullableYamlObject {
   if (yaml_text == null) {
     return null;
   }
 
   // replacing tabs at the beginning of new lines with 2 spaces fixes loading YAML that has tabs at the start of a line
   // https://github.com/platers/obsidian-linter/issues/157
-  const parsed_yaml = load(yaml_text.replace(/\n(\t)+/g, '\n  ')) as {};
+  const parsed_yaml = load(yaml_text.replace(/\n(\t)+/g, '\n  ')) as YamlObject;
   if (parsed_yaml == null) {
-    return {};
+    return YAML_OBJECT_DEFAULT;
   }
 
   return parsed_yaml;
@@ -91,21 +98,21 @@ export function loadYAML(yaml_text: string): any {
 
 export enum TagSpecificArrayFormats {
   SingleStringSpaceDelimited = 'single string space delimited',
-  SingleLineSpaceDelimited = 'single-line space delimited',
+  SingleLineSpaceDelimited = 'single-line space delimited'
 }
 
 export enum SpecialArrayFormats {
   SingleStringToSingleLine = 'single string to single-line',
   SingleStringToMultiLine = 'single string to multi-line',
-  SingleStringCommaDelimited = 'single string comma delimited',
+  SingleStringCommaDelimited = 'single string comma delimited'
 }
 
 export enum NormalArrayFormats {
   SingleLine = 'single-line',
-  MultiLine = 'multi-line',
+  MultiLine = 'multi-line'
 }
 
-export type QuoteCharacter = '\'' | '"';
+export type QuoteCharacter = "'" | '"';
 
 /**
  * Formats the YAML array value passed in with the specified format.
@@ -116,7 +123,13 @@ export type QuoteCharacter = '\'' | '"';
  * @param {boolean} escapeNumericValues Whether or not to escape any numeric values found in the array.
  * @return {string} The formatted array in the specified YAML/obsidian YAML format.
  */
-export function formatYamlArrayValue(value: string | string[], format: NormalArrayFormats | SpecialArrayFormats | TagSpecificArrayFormats, defaultEscapeCharacter: QuoteCharacter, removeEscapeCharactersIfPossibleWhenGoingToMultiLine: boolean, escapeNumericValues: boolean = false): string {
+export function formatYamlArrayValue(
+  value: string | string[],
+  format: NormalArrayFormats | SpecialArrayFormats | TagSpecificArrayFormats,
+  defaultEscapeCharacter: QuoteCharacter,
+  removeEscapeCharactersIfPossibleWhenGoingToMultiLine: boolean,
+  escapeNumericValues: boolean = false
+): string {
   if (typeof value === 'string') {
     value = [value];
   }
@@ -127,7 +140,10 @@ export function formatYamlArrayValue(value: string | string[], format: NormalArr
   }
 
   // handle escaping numeric values and the removal of escape characters where applicable for multiline arrays
-  const shouldRemoveEscapeCharactersIfPossible = removeEscapeCharactersIfPossibleWhenGoingToMultiLine && (format == NormalArrayFormats.MultiLine || (format == SpecialArrayFormats.SingleStringToMultiLine && value.length > 1));
+  const shouldRemoveEscapeCharactersIfPossible =
+    removeEscapeCharactersIfPossibleWhenGoingToMultiLine &&
+    (format == NormalArrayFormats.MultiLine ||
+      (format == SpecialArrayFormats.SingleStringToMultiLine && value.length > 1));
   if (escapeNumericValues || shouldRemoveEscapeCharactersIfPossible) {
     for (let i = 0; i < value.length; i++) {
       let currentValue = value[i];
@@ -140,7 +156,11 @@ export function formatYamlArrayValue(value: string | string[], format: NormalArr
       if (valueIsEscaped && shouldRequireEscapeOfCurrentValue) {
         continue; // when dealing with numbers that we need escaped, we don't want to remove that escaping for multiline arrays
       } else if (shouldRequireEscapeOfCurrentValue || (valueIsEscaped && shouldRemoveEscapeCharactersIfPossible)) {
-        value[i] = escapeStringIfNecessaryAndPossible(currentValue, defaultEscapeCharacter, shouldRequireEscapeOfCurrentValue);
+        value[i] = escapeStringIfNecessaryAndPossible(
+          currentValue,
+          defaultEscapeCharacter,
+          shouldRequireEscapeOfCurrentValue
+        );
       }
     }
   }
@@ -159,7 +179,7 @@ export function formatYamlArrayValue(value: string | string[], format: NormalArr
         return ' ' + value[0];
       }
     case NormalArrayFormats.MultiLine:
-      return convertStringArrayToMultilineArray(value);
+      return '\n  - ' + value.join('\n  - ');
     case TagSpecificArrayFormats.SingleStringSpaceDelimited:
       if (value.length === 1) {
         return ' ' + value[0];
@@ -187,8 +207,9 @@ function getDefaultYAMLArrayValue(format: NormalArrayFormats | SpecialArrayForma
   switch (format) {
     case NormalArrayFormats.SingleLine:
     case TagSpecificArrayFormats.SingleLineSpaceDelimited:
-    case NormalArrayFormats.MultiLine:
       return ' []';
+    case NormalArrayFormats.MultiLine:
+      return '\n  - ';
     case SpecialArrayFormats.SingleStringToSingleLine:
     case SpecialArrayFormats.SingleStringToMultiLine:
     case TagSpecificArrayFormats.SingleStringSpaceDelimited:
@@ -204,14 +225,6 @@ function convertStringArrayToSingleLineArray(arrayItems: string[]): string {
   }
 
   return '[' + arrayItems.join(', ') + ']';
-}
-
-function convertStringArrayToMultilineArray(arrayItems: string[]): string {
-  if (arrayItems == null || arrayItems.length === 0) {
-    return '[]';
-  }
-
-  return '\n  - ' + arrayItems.join('\n  - ');
 }
 
 /**
@@ -252,7 +265,7 @@ export function splitValueIfSingleOrMultilineArray(value: string): string | stri
       return el != '';
     });
 
-    if (arrayItems == null || arrayItems.length === 0 ) {
+    if (arrayItems == null || arrayItems.length === 0) {
       return null;
     }
 
@@ -321,9 +334,9 @@ export function convertYAMLStringToArray(value: string, delimiter: string = ',')
       // case where you find a delimiter
       arrayItems.push(currentItem.trim());
       currentItem = '';
-    } else if (currentChar === '"' || currentChar === '\'') {
+    } else if (currentChar === '"' || currentChar === "'") {
       // if there is an escape character check to see if there is a closing escape character and if so, skip to it as the next part of the value
-      const endOfEscapedValue = value.indexOf(currentChar, index+1);
+      const endOfEscapedValue = value.indexOf(currentChar, index + 1);
       if (endOfEscapedValue != -1) {
         currentItem += value.substring(index, endOfEscapedValue + 1);
         index = endOfEscapedValue;
@@ -350,8 +363,10 @@ export function convertYAMLStringToArray(value: string, delimiter: string = ',')
  * @return {boolean} Whether or not the YAML string value is already escaped
  */
 export function isValueEscapedAlready(value: string): boolean {
-  return value.length > 1 && ((value.startsWith('\'') && value.endsWith('\'')) ||
-    (value.startsWith('"') && value.endsWith('"')));
+  return (
+    value.length > 1 &&
+    ((value.startsWith("'") && value.endsWith("'")) || (value.startsWith('"') && value.endsWith('"')))
+  );
 }
 
 /**
@@ -363,7 +378,12 @@ export function isValueEscapedAlready(value: string): boolean {
  * @return {string} The escaped value if it is either necessary or forced and the provided value if it cannot be escaped, is escaped,
  * or does not need escaping and the force escape is not used.
  */
-export function escapeStringIfNecessaryAndPossible(value: string, defaultEscapeCharacter: QuoteCharacter, forceEscape: boolean = false, skipValidation: boolean = false): string {
+export function escapeStringIfNecessaryAndPossible(
+  value: string,
+  defaultEscapeCharacter: QuoteCharacter,
+  forceEscape: boolean = false,
+  skipValidation: boolean = false
+): string {
   const basicEscape = basicEscapeString(value, defaultEscapeCharacter, forceEscape);
   if (skipValidation) {
     return basicEscape;
@@ -381,13 +401,13 @@ export function escapeStringIfNecessaryAndPossible(value: string, defaultEscapeC
   const escapeWithDefaultCharacter = dump(value, {
     lineWidth: -1,
     quotingType: defaultEscapeCharacter,
-    forceQuotes: forceEscape,
+    forceQuotes: forceEscape
   }).slice(0, -1);
 
   const escapeWithOtherCharacter = dump(value, {
     lineWidth: -1,
-    quotingType: defaultEscapeCharacter == '"' ? '\'' : '"',
-    forceQuotes: forceEscape,
+    quotingType: defaultEscapeCharacter == '"' ? "'" : '"',
+    forceQuotes: forceEscape
   }).slice(0, -1);
 
   if (escapeWithOtherCharacter === value || escapeWithOtherCharacter.length < escapeWithDefaultCharacter.length) {
@@ -397,13 +417,17 @@ export function escapeStringIfNecessaryAndPossible(value: string, defaultEscapeC
   return escapeWithDefaultCharacter;
 }
 
-function basicEscapeString(value: string, defaultEscapeCharacter: QuoteCharacter, forceEscape: boolean = false): string {
+function basicEscapeString(
+  value: string,
+  defaultEscapeCharacter: QuoteCharacter,
+  forceEscape: boolean = false
+): string {
   if (isValueEscapedAlready(value)) {
     return value;
   }
 
   // if there is no single quote, double quote, or colon to escape, skip this substring
-  const substringHasSingleQuote = value.includes('\'');
+  const substringHasSingleQuote = value.includes("'");
   const substringHasDoubleQuote = value.includes('"');
   const substringHasColonWithSpaceAfterIt = value.includes(': ');
   if (!substringHasSingleQuote && !substringHasDoubleQuote && !substringHasColonWithSpaceAfterIt && !forceEscape) {
@@ -431,13 +455,13 @@ export function getExactDisabledRuleValue(yaml_text: string): string[] {
     return [];
   }
 
-  let disabledRulesKeyAndValue = disabledRulesValue.includes('\n') ? `${DISABLED_RULES_KEY}:\n` : `${DISABLED_RULES_KEY}: `;
+  let disabledRulesKeyAndValue = disabledRulesValue.includes('\n')
+    ? `${DISABLED_RULES_KEY}:\n`
+    : `${DISABLED_RULES_KEY}: `;
   disabledRulesKeyAndValue += disabledRulesValue;
 
   const parsed_yaml = loadYAML(disabledRulesKeyAndValue);
-  let disabled_rules = (parsed_yaml as { 'disabled rules': string[] | string })[
-      'disabled rules'
-  ];
+  let disabled_rules = (parsed_yaml as { 'disabled rules': string[] | string })['disabled rules'];
   if (!disabled_rules) {
     return [];
   }

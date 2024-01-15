@@ -1,1 +1,1 @@
-import './rules/*.ts';
+import './rules/*.js';

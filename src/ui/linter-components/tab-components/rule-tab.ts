@@ -1,11 +1,21 @@
 import LinterPlugin from 'src/main';
-import {Tab} from './tab';
-import {Rule} from 'src/rules';
-import {SearchOptionInfo} from 'src/option';
+import { SearchOptionInfo } from 'src/option';
+import { Rule } from 'src/rules';
+import { Tab } from './tab';
 
 export class RuleTab extends Tab {
-  constructor(navEl: HTMLElement, settingsEl: HTMLElement, ruleTypeName: string, private rules: Rule[], isMobile: boolean, plugin: LinterPlugin) {
+  private rules: Rule[];
+
+  constructor(
+    navEl: HTMLElement,
+    settingsEl: HTMLElement,
+    ruleTypeName: string,
+    rules: Rule[],
+    isMobile: boolean,
+    plugin: LinterPlugin
+  ) {
     super(navEl, settingsEl, ruleTypeName, isMobile, plugin);
+    this.rules = rules ?? [];
     this.display();
   }
 
@@ -23,7 +33,13 @@ export class RuleTab extends Tab {
         optionInfo.push(option.getSearchInfo());
       }
 
-      this.addSettingSearchInfo(ruleDiv, rule.getName().toLowerCase(), rule.getDescription().toLowerCase(), optionInfo, ruleDiv.id);
+      this.addSettingSearchInfo(
+        ruleDiv,
+        rule.getName().toLowerCase(),
+        rule.getDescription().toLowerCase(),
+        optionInfo,
+        ruleDiv.id
+      );
     }
   }
 }

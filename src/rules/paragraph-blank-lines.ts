@@ -1,7 +1,7 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {makeSureThereIsOnlyOneBlankLineBeforeAndAfterParagraphs} from '../utils/mdast';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { makeSureThereIsOnlyOneBlankLineBeforeAndAfterParagraphs } from '../utils/mdast';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
 
 class ParagraphBlankLinesOptions implements Options {}
@@ -13,7 +13,7 @@ export default class ParagraphBlankLines extends RuleBuilder<ParagraphBlankLines
       nameKey: 'rules.paragraph-blank-lines.name',
       descriptionKey: 'rules.paragraph-blank-lines.description',
       type: RuleType.SPACING,
-      ruleIgnoreTypes: [IgnoreTypes.obsidianMultiLineComments, IgnoreTypes.yaml, IgnoreTypes.table],
+      ruleIgnoreTypes: [IgnoreTypes.obsidianMultiLineComments, IgnoreTypes.yaml, IgnoreTypes.table]
     });
   }
   get OptionsClass(): new () => ParagraphBlankLinesOptions {
@@ -37,10 +37,11 @@ export default class ParagraphBlankLines extends RuleBuilder<ParagraphBlankLines
           Newlines are inserted.
           ${''}
           A paragraph is a line that starts with a letter.
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Paragraphs can be extended via the use of 2 or more spaces at the end of a line or line break html',
+        description:
+          'Paragraphs can be extended via the use of 2 or more spaces at the end of a line or line break html',
         before: dedent`
           # H1
           Content${'  '}
@@ -61,8 +62,8 @@ export default class ParagraphBlankLines extends RuleBuilder<ParagraphBlankLines
           A new paragraph
           ${''}
           # H2
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<ParagraphBlankLinesOptions>[] {

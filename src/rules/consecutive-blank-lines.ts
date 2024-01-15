@@ -1,6 +1,6 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
 
 class ConsecutiveBlankLinesOptions implements Options {}
@@ -12,7 +12,14 @@ export default class ConsecutiveBlankLines extends RuleBuilder<ConsecutiveBlankL
       nameKey: 'rules.consecutive-blank-lines.name',
       descriptionKey: 'rules.consecutive-blank-lines.description',
       type: RuleType.SPACING,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag
+      ]
     });
   }
   get OptionsClass(): new () => ConsecutiveBlankLinesOptions {
@@ -21,7 +28,7 @@ export default class ConsecutiveBlankLines extends RuleBuilder<ConsecutiveBlankL
   apply(text: string, options: ConsecutiveBlankLinesOptions): string {
     // make sure to account for lines that are purely whitespace as well https://stackoverflow.com/a/3873354/8353749
     // make sure that the match ends in a newline
-    return text.replace(/(\n([\t\v\f\r \u00a0\u2000-\u200b\u2028-\u2029\u3000]+)?){2,}\n/g, '\n\n');
+    return text.replace(/(\n([\t\v\f\r \u00a0\u2000-\u200b\u2028\u2029\u3000]+)?){2,}\n/g, '\n\n');
   }
   get exampleBuilders(): ExampleBuilder<ConsecutiveBlankLinesOptions>[] {
     return [
@@ -37,8 +44,8 @@ export default class ConsecutiveBlankLines extends RuleBuilder<ConsecutiveBlankL
           Some text
           ${''}
           Some more text
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<ConsecutiveBlankLinesOptions>[] {

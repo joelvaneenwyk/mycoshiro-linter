@@ -1,8 +1,8 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {IgnoreTypes} from '../utils/ignore-types';
-import {addTwoSpacesAtEndOfLinesFollowedByAnotherLineOfTextContent} from '../utils/mdast';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { addTwoSpacesAtEndOfLinesFollowedByAnotherLineOfTextContent } from '../utils/mdast';
 
 class TwoSpacesBetweenLinesWithContentOptions implements Options {}
 
@@ -13,7 +13,7 @@ export default class TwoSpacesBetweenLinesWithContent extends RuleBuilder<TwoSpa
       nameKey: 'rules.two-spaces-between-lines-with-content.name',
       descriptionKey: 'rules.two-spaces-between-lines-with-content.description',
       type: RuleType.CONTENT,
-      ruleIgnoreTypes: [IgnoreTypes.obsidianMultiLineComments, IgnoreTypes.yaml, IgnoreTypes.table],
+      ruleIgnoreTypes: [IgnoreTypes.obsidianMultiLineComments, IgnoreTypes.yaml, IgnoreTypes.table]
     });
   }
   get OptionsClass(): new () => TwoSpacesBetweenLinesWithContentOptions {
@@ -25,7 +25,8 @@ export default class TwoSpacesBetweenLinesWithContent extends RuleBuilder<TwoSpa
   get exampleBuilders(): ExampleBuilder<TwoSpacesBetweenLinesWithContentOptions>[] {
     return [
       new ExampleBuilder({
-        description: 'Make sure two spaces are added to the ends of lines that have content on it and the next line for lists, blockquotes, and paragraphs',
+        description:
+          'Make sure two spaces are added to the ends of lines that have content on it and the next line for lists, blockquotes, and paragraphs',
         before: dedent`
           # Heading 1
           First paragraph stays as the first paragraph
@@ -105,8 +106,8 @@ export default class TwoSpacesBetweenLinesWithContent extends RuleBuilder<TwoSpa
           </div>
           Even more content here
           ${''}
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<TwoSpacesBetweenLinesWithContentOptions>[] {

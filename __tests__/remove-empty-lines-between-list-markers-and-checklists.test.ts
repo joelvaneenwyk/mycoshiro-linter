@@ -1,6 +1,6 @@
 import RemoveEmptyLinesBetweenListMarkersAndChecklists from '../src/rules/remove-empty-lines-between-list-markers-and-checklists';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: RemoveEmptyLinesBetweenListMarkersAndChecklists,
@@ -49,7 +49,7 @@ ruleTest({
         ***
         ${''}
         More Text
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/318
@@ -69,7 +69,7 @@ ruleTest({
         ${''}
         *Some more italicized item:* some detail
         ${''}
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

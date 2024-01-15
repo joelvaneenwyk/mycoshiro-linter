@@ -1,23 +1,20 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {BooleanOptionBuilder, DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase, TextAreaOptionBuilder} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, {
+  BooleanOptionBuilder,
+  DropdownOptionBuilder,
+  ExampleBuilder,
+  OptionBuilderBase,
+  TextAreaOptionBuilder
+} from './rule-builder';
 import dedent from 'ts-dedent';
-import {IgnoreTypes} from '../utils/ignore-types';
-import {allHeadersRegex, wordSplitterRegex} from '../utils/regex';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { allHeadersRegex, wordSplitterRegex } from '../utils/regex';
 
 type Style = 'Title Case' | 'ALL CAPS' | 'First letter';
 
 class CapitalizeHeadingsOptions implements Options {
   style?: Style = 'Title Case';
-  ignoreWords?: string[] = [
-    'macOS',
-    'iOS',
-    'iPhone',
-    'iPad',
-    'JavaScript',
-    'TypeScript',
-    'AppleScript',
-    'I',
-  ];
+  ignoreWords?: string[] = ['macOS', 'iOS', 'iPhone', 'iPad', 'JavaScript', 'TypeScript', 'AppleScript', 'I'];
   lowercaseWords?: string[] = [
     'a',
     'an',
@@ -61,7 +58,7 @@ class CapitalizeHeadingsOptions implements Options {
     'beside',
     'besides',
     'between',
-    '\'tween',
+    "'tween",
     'beyond',
     'but',
     'by',
@@ -102,7 +99,7 @@ class CapitalizeHeadingsOptions implements Options {
     'next',
     'notwithstanding',
     'of',
-    'o\'',
+    "o'",
     'off',
     'offshore',
     'on',
@@ -111,7 +108,7 @@ class CapitalizeHeadingsOptions implements Options {
     'out',
     'outside',
     'over',
-    'o\'er',
+    "o'er",
     'pace',
     'past',
     'pending',
@@ -138,7 +135,7 @@ class CapitalizeHeadingsOptions implements Options {
     'till',
     'times',
     'to',
-    't\'',
+    "t'",
     'touching',
     'toward',
     'towards',
@@ -163,7 +160,7 @@ class CapitalizeHeadingsOptions implements Options {
     'within',
     'w/i',
     'without',
-    '\'thout',
+    "'thout",
     'w/o',
     'abroad',
     'adrift',
@@ -391,7 +388,7 @@ class CapitalizeHeadingsOptions implements Options {
     'that',
     'yet',
     'is',
-    'it',
+    'it'
   ];
   ignoreCasedWords?: boolean = true;
 }
@@ -404,7 +401,7 @@ export default class CapitalizeHeadings extends RuleBuilder<CapitalizeHeadingsOp
       descriptionKey: 'rules.capitalize-headings.description',
       type: RuleType.HEADING,
       hasSpecialExecutionOrder: true, // this is meant to run at the end after all headers have been updated, added, or removed from the file
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag],
+      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag]
     });
   }
   get OptionsClass(): new () => CapitalizeHeadingsOptions {
@@ -424,7 +421,7 @@ export default class CapitalizeHeadings extends RuleBuilder<CapitalizeHeadingsOp
       let firstWord = true;
       for (let j = 1; j < headerWords.length; j++) {
         // based on https://stackoverflow.com/a/62032796 "/\p{L}/u" accounts for all unicode letters across languages
-        const isWord = headerWords[j].match(/^[\p{L}'-]{1,}[.?!,:;\d]*$/u);
+        const isWord = headerWords[j].match(/^[\p{L}'-]+[.?!,:;\d]*$/u);
         if (!isWord) {
           continue;
         }
@@ -466,8 +463,8 @@ export default class CapitalizeHeadings extends RuleBuilder<CapitalizeHeadingsOp
         `,
         options: {
           style: 'Title Case',
-          ignoreCasedWords: false,
-        },
+          ignoreCasedWords: false
+        }
       }),
       new ExampleBuilder({
         description: 'With `Title Case=true`, `Ignore Cased Words=true`',
@@ -483,8 +480,8 @@ export default class CapitalizeHeadings extends RuleBuilder<CapitalizeHeadingsOp
         `,
         options: {
           style: 'Title Case',
-          ignoreCasedWords: true,
-        },
+          ignoreCasedWords: true
+        }
       }),
       new ExampleBuilder({
         description: 'With `First letter=true`',
@@ -497,8 +494,8 @@ export default class CapitalizeHeadings extends RuleBuilder<CapitalizeHeadingsOp
           ## This is a heading 2
         `,
         options: {
-          style: 'First letter',
-        },
+          style: 'First letter'
+        }
       }),
       new ExampleBuilder({
         description: 'With `ALL CAPS=true`',
@@ -511,9 +508,9 @@ export default class CapitalizeHeadings extends RuleBuilder<CapitalizeHeadingsOp
           ## THIS IS A HEADING 2
         `,
         options: {
-          style: 'ALL CAPS',
-        },
-      }),
+          style: 'ALL CAPS'
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<CapitalizeHeadingsOptions>[] {
@@ -526,23 +523,23 @@ export default class CapitalizeHeadings extends RuleBuilder<CapitalizeHeadingsOp
         records: [
           {
             value: 'Title Case',
-            description: 'Capitalize Using Title Case Rules',
+            description: 'Capitalize Using Title Case Rules'
           },
           {
             value: 'ALL CAPS',
-            description: 'CAPITALIZE THE WHOLE TITLE',
+            description: 'CAPITALIZE THE WHOLE TITLE'
           },
           {
             value: 'First letter',
-            description: 'Only capitalize the first letter',
-          },
-        ],
+            description: 'Only capitalize the first letter'
+          }
+        ]
       }),
       new BooleanOptionBuilder({
         OptionsClass: CapitalizeHeadingsOptions,
         nameKey: 'rules.capitalize-headings.ignore-case-words.name',
         descriptionKey: 'rules.capitalize-headings.ignore-case-words.description',
-        optionsKey: 'ignoreCasedWords',
+        optionsKey: 'ignoreCasedWords'
       }),
       new TextAreaOptionBuilder({
         OptionsClass: CapitalizeHeadingsOptions,
@@ -550,7 +547,7 @@ export default class CapitalizeHeadings extends RuleBuilder<CapitalizeHeadingsOp
         descriptionKey: 'rules.capitalize-headings.ignore-words.description',
         optionsKey: 'ignoreWords',
         splitter: wordSplitterRegex,
-        separator: ', ',
+        separator: ', '
       }),
       new TextAreaOptionBuilder({
         OptionsClass: CapitalizeHeadingsOptions,
@@ -558,8 +555,8 @@ export default class CapitalizeHeadings extends RuleBuilder<CapitalizeHeadingsOp
         descriptionKey: 'rules.capitalize-headings.lowercase-words.description',
         optionsKey: 'lowercaseWords',
         splitter: wordSplitterRegex,
-        separator: ', ',
-      }),
+        separator: ', '
+      })
     ];
   }
 }

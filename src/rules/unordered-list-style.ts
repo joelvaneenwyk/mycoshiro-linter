@@ -1,8 +1,8 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {UnorderedListItemStyles, updateUnorderedListItemIndicators} from '../utils/mdast';
+import { UnorderedListItemStyles, updateUnorderedListItemIndicators } from '../utils/mdast';
 
 class UnorderedListStyleOptions implements Options {
   listStyle?: UnorderedListItemStyles = UnorderedListItemStyles.Consistent;
@@ -15,7 +15,7 @@ export default class UnorderedListStyle extends RuleBuilder<UnorderedListStyleOp
       nameKey: 'rules.unordered-list-style.name',
       descriptionKey: 'rules.unordered-list-style.description',
       type: RuleType.CONTENT,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.tag],
+      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.tag]
     });
   }
   get OptionsClass(): new () => UnorderedListStyleOptions {
@@ -27,7 +27,8 @@ export default class UnorderedListStyle extends RuleBuilder<UnorderedListStyleOp
   get exampleBuilders(): ExampleBuilder<UnorderedListStyleOptions>[] {
     return [
       new ExampleBuilder({
-        description: 'Unordered lists have their indicator updated to `*` when `List item style = \'consistent\'` and `*` is the first unordered list indicator',
+        description:
+          "Unordered lists have their indicator updated to `*` when `List item style = 'consistent'` and `*` is the first unordered list indicator",
         before: dedent`
           1. ordered item 1
           2. ordered item 2
@@ -65,10 +66,10 @@ export default class UnorderedListStyle extends RuleBuilder<UnorderedListStyleOp
             * Sublist 3 item 1
             * Sublist 3 item 2
           ${''}
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Unordered lists have their indicator updated to `-` when `List item style = \'-\'`',
+        description: "Unordered lists have their indicator updated to `-` when `List item style = '-'`",
         before: dedent`
           - Item 1
             * Sublist 1 item 1
@@ -110,11 +111,11 @@ export default class UnorderedListStyle extends RuleBuilder<UnorderedListStyleOp
             - Sub item 3
         `,
         options: {
-          listStyle: UnorderedListItemStyles.Dash,
-        },
+          listStyle: UnorderedListItemStyles.Dash
+        }
       }),
       new ExampleBuilder({
-        description: 'Unordered lists have their indicator updated to `*` when `List item style = \'*\'`',
+        description: "Unordered lists have their indicator updated to `*` when `List item style = '*'`",
         before: dedent`
           - Item 1
             * Sublist 1 item 1
@@ -140,11 +141,11 @@ export default class UnorderedListStyle extends RuleBuilder<UnorderedListStyleOp
           ${''}
         `,
         options: {
-          listStyle: UnorderedListItemStyles.Asterisk,
-        },
+          listStyle: UnorderedListItemStyles.Asterisk
+        }
       }),
       new ExampleBuilder({
-        description: 'Unordered list in blockquote has list item indicators set to `+` when `List item style = \'-\'`',
+        description: "Unordered list in blockquote has list item indicators set to `+` when `List item style = '-'`",
         before: dedent`
           > - Item 1
           > + Item 2
@@ -162,9 +163,9 @@ export default class UnorderedListStyle extends RuleBuilder<UnorderedListStyleOp
           > > + Subitem 3
         `,
         options: {
-          listStyle: UnorderedListItemStyles.Plus,
-        },
-      }),
+          listStyle: UnorderedListItemStyles.Plus
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<UnorderedListStyleOptions>[] {
@@ -177,22 +178,23 @@ export default class UnorderedListStyle extends RuleBuilder<UnorderedListStyleOp
         records: [
           {
             value: UnorderedListItemStyles.Consistent,
-            description: 'Makes sure unordered list items use a consistent list item indicator in the file which will be based on the first list item found',
+            description:
+              'Makes sure unordered list items use a consistent list item indicator in the file which will be based on the first list item found'
           },
           {
             value: UnorderedListItemStyles.Dash,
-            description: 'Makes sure unordered list items use `-` as their indicator',
+            description: 'Makes sure unordered list items use `-` as their indicator'
           },
           {
             value: UnorderedListItemStyles.Asterisk,
-            description: 'Makes sure unordered list items use `*` as their indicator',
+            description: 'Makes sure unordered list items use `*` as their indicator'
           },
           {
             value: UnorderedListItemStyles.Plus,
-            description: 'Makes sure unordered list items use `+` as their indicator',
-          },
-        ],
-      }),
+            description: 'Makes sure unordered list items use `+` as their indicator'
+          }
+        ]
+      })
     ];
   }
 }

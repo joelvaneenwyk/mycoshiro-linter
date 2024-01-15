@@ -1,11 +1,11 @@
-import {getAllTablesInText} from '../src/utils/mdast';
+import { getAllTablesInText } from '../src/utils/mdast';
 import dedent from 'ts-dedent';
 
 type tablesInTextTestCase = {
-  name: string,
-  text: string,
-  expectedTablesInText: number,
-  expectedPositions: {startIndex:number, endIndex: number}[]
+  name: string;
+  text: string;
+  expectedTablesInText: number;
+  expectedPositions: { startIndex: number; endIndex: number }[];
 };
 
 const getTablesInTextTestCases: tablesInTextTestCase[] = [
@@ -18,7 +18,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       | data1   | data2   |
     `,
     expectedTablesInText: 1,
-    expectedPositions: [{startIndex: 18, endIndex: 83}],
+    expectedPositions: [{ startIndex: 18, endIndex: 83 }]
   },
   {
     name: 'matches empty table as a single table',
@@ -28,7 +28,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       |-|-|
     `,
     expectedTablesInText: 1,
-    expectedPositions: [{startIndex: 18, endIndex: 27}],
+    expectedPositions: [{ startIndex: 18, endIndex: 27 }]
   },
   {
     name: 'does not get a table where the header and delimiter have a different cell count',
@@ -38,7 +38,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       |-|-|-|
     `,
     expectedTablesInText: 0,
-    expectedPositions: [],
+    expectedPositions: []
   },
   {
     name: 'matches table where delimiter has all pipes while the header is missing optional pipes',
@@ -48,7 +48,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       |-|-|
     `,
     expectedTablesInText: 1,
-    expectedPositions: [{startIndex: 18, endIndex: 41}],
+    expectedPositions: [{ startIndex: 18, endIndex: 41 }]
   },
   {
     name: 'matches table where delimiter has some pipes while the header is missing optional pipes',
@@ -58,7 +58,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       |-|-
     `,
     expectedTablesInText: 1,
-    expectedPositions: [{startIndex: 18, endIndex: 40}],
+    expectedPositions: [{ startIndex: 18, endIndex: 40 }]
   },
   {
     name: 'matches table where there is trailing space at the end of the table header and delimiter',
@@ -68,7 +68,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       |-|-|${'  '}
     `,
     expectedTablesInText: 1,
-    expectedPositions: [{startIndex: 18, endIndex: 47}],
+    expectedPositions: [{ startIndex: 18, endIndex: 47 }]
   },
   {
     name: 'matches table that uses the alignment operators (:) in table delimiter',
@@ -78,7 +78,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       |:-|-:|-| :----:  |   -${'      '}
     `,
     expectedTablesInText: 1,
-    expectedPositions: [{startIndex: 18, endIndex: 93}],
+    expectedPositions: [{ startIndex: 18, endIndex: 93 }]
   },
   {
     name: 'does not match table with a delimiter row that has an empty cell devoid of any characters',
@@ -88,7 +88,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       |:-||-|
     `,
     expectedTablesInText: 0,
-    expectedPositions: [],
+    expectedPositions: []
   },
   {
     name: 'does not match table with a delimiter row that has a cell at the start or middle that is missing a dash',
@@ -98,7 +98,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       |:-| |-|
     `,
     expectedTablesInText: 0,
-    expectedPositions: [],
+    expectedPositions: []
   },
   {
     name: 'does not match a table without a table header',
@@ -107,7 +107,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       |-|-|-|
     `,
     expectedTablesInText: 0,
-    expectedPositions: [],
+    expectedPositions: []
   },
   {
     name: 'matches text that precedes a table header when the table only has one column',
@@ -116,7 +116,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       |-|
     `,
     expectedTablesInText: 1,
-    expectedPositions: [{startIndex: 0, endIndex: 21}],
+    expectedPositions: [{ startIndex: 0, endIndex: 21 }]
   },
   {
     name: 'does not match table in blockquote that is missing table separator row',
@@ -127,7 +127,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       > | One | More |
     `,
     expectedTablesInText: 0,
-    expectedPositions: [],
+    expectedPositions: []
   },
   {
     name: 'matches a table in blockquote when it has a separator row',
@@ -138,7 +138,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       > | One | More |
     `,
     expectedTablesInText: 1,
-    expectedPositions: [{startIndex: 22, endIndex: 90}],
+    expectedPositions: [{ startIndex: 22, endIndex: 90 }]
   },
   {
     name: 'matches recognizes two separate tables in a blockquote/callout when there is a blank line between them',
@@ -155,7 +155,10 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       Some more text here...
     `,
     expectedTablesInText: 2,
-    expectedPositions: [{startIndex: 95, endIndex: 164}, {startIndex: 22, endIndex: 90}],
+    expectedPositions: [
+      { startIndex: 95, endIndex: 164 },
+      { startIndex: 22, endIndex: 90 }
+    ]
   },
   {
     name: 'matches two tables with a blank line between them',
@@ -170,7 +173,10 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       | data3   | data4   |
     `,
     expectedTablesInText: 2,
-    expectedPositions: [{startIndex: 85, endIndex: 150}, {startIndex: 18, endIndex: 83}],
+    expectedPositions: [
+      { startIndex: 85, endIndex: 150 },
+      { startIndex: 18, endIndex: 83 }
+    ]
   },
   {
     name: 'matches indented table',
@@ -181,7 +187,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       ${'   '}| data1   | data2   |
     `,
     expectedTablesInText: 1,
-    expectedPositions: [{startIndex: 18, endIndex: 92}],
+    expectedPositions: [{ startIndex: 18, endIndex: 92 }]
   },
   {
     name: 'does not match YAML indicators',
@@ -190,7 +196,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       ---
     `,
     expectedTablesInText: 0,
-    expectedPositions: [],
+    expectedPositions: []
   },
   {
     name: 'does not match YAML frontmatter',
@@ -204,7 +210,7 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       ---
     `,
     expectedTablesInText: 0,
-    expectedPositions: [],
+    expectedPositions: []
   },
   {
     name: 'does not match an empty list indicator with a blank line before it',
@@ -216,8 +222,8 @@ const getTablesInTextTestCases: tablesInTextTestCase[] = [
       ## Agenda
     `,
     expectedTablesInText: 0,
-    expectedPositions: [],
-  },
+    expectedPositions: []
+  }
 ];
 
 describe('Get All Tables in Text', () => {

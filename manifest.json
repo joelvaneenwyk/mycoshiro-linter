@@ -1,10 +1,11 @@
 {
-  "id": "obsidian-linter",
-  "name": "Linter",
-  "version": "1.20.0",
+  "manifest_version": 3,
+  "id": "mycoshiro-linter",
+  "name": "Mycoshiro Linter",
+  "version": "1.17.1",
   "minAppVersion": "0.15.6",
-  "description": "Formats and styles your notes. It can be used to format YAML tags, aliases, arrays, and metadata; footnotes; headings; spacing; math blocks; regular markdown contents like list, italics, and bold styles; and more with the use of custom rule options as well.",
-  "author": "Victor Tao",
-  "authorUrl": "https://github.com/platers",
+  "description": "Format YAML frontmatter (tags, aliases, arrays, metadata), footnotes, headings, spacing, math blocks, markdown styles, and more.",
+  "author": "Joel Van Eenwyk",
+  "authorUrl": "https://github.com/joelvaneenwyk/",
   "isDesktopOnly": false
 }

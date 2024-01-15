@@ -1,6 +1,6 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {BooleanOptionBuilder, ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { BooleanOptionBuilder, ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
 
 class TrailingSpacesOptions implements Options {
@@ -14,7 +14,14 @@ export default class TrailingSpaces extends RuleBuilder<TrailingSpacesOptions> {
       nameKey: 'rules.trailing-spaces.name',
       descriptionKey: 'rules.trailing-spaces.description',
       type: RuleType.SPACING,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag
+      ]
     });
   }
   get OptionsClass(): new () => TrailingSpacesOptions {
@@ -43,7 +50,7 @@ export default class TrailingSpaces extends RuleBuilder<TrailingSpacesOptions> {
         after: dedent`
           # H1
           Line with trailing spaces and tabs.
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'With `Two Space Linebreak = true`',
@@ -56,9 +63,9 @@ export default class TrailingSpaces extends RuleBuilder<TrailingSpacesOptions> {
           Line with trailing spaces and tabs.  ${''}
         `,
         options: {
-          twoSpaceLineBreak: true,
-        },
-      }),
+          twoSpaceLineBreak: true
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<TrailingSpacesOptions>[] {
@@ -67,8 +74,8 @@ export default class TrailingSpaces extends RuleBuilder<TrailingSpacesOptions> {
         OptionsClass: TrailingSpacesOptions,
         nameKey: 'rules.trailing-spaces.twp-space-line-break.name',
         descriptionKey: 'rules.trailing-spaces.twp-space-line-break.description',
-        optionsKey: 'twoSpaceLineBreak',
-      }),
+        optionsKey: 'twoSpaceLineBreak'
+      })
     ];
   }
 }

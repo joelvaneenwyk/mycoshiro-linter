@@ -1,18 +1,29 @@
+import { YAMLException } from 'js-yaml';
+import { getTextInLanguage, LanguageStringKey } from './lang/helpers';
+import { LinterError } from './linter-error';
+import { BooleanOption, Option } from './option';
+import { LinterSettings } from './settings-data';
+import { ignoreListOfTypes, IgnoreType } from './utils/ignore-types';
 import {
   getExactDisabledRuleValue,
   getYAMLText,
+  NormalArrayFormats,
+  QuoteCharacter,
+  SpecialArrayFormats,
+  TagSpecificArrayFormats
 } from './utils/yaml';
-import {
-  Option,
-  BooleanOption,
-} from './option';
-import {YAMLException} from 'js-yaml';
-import {LinterError} from './linter-error';
-import {getTextInLanguage, LanguageStringKey} from './lang/helpers';
-import {ignoreListOfTypes, IgnoreType} from './utils/ignore-types';
-import {LinterSettings} from './settings-data';
 
-export type Options = { [optionName: string]: any};
+// CommonStyles are settings that are used in multiple places and thus need to be external to rules themselves to help facilitate their use
+export type CommonStyles = {
+  aliasArrayStyle: NormalArrayFormats | SpecialArrayFormats;
+  tagArrayStyle: TagSpecificArrayFormats | NormalArrayFormats | SpecialArrayFormats;
+  minimumNumberOfDollarSignsToBeAMathBlock: number;
+  escapeCharacter: QuoteCharacter;
+  removeUnnecessaryEscapeCharsForMultiLineArrays: boolean;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Options = { [optionName: string]: any };
 
 type ApplyFunction = (text: string, options?: Options) => string;
 
@@ -22,13 +33,11 @@ export enum RuleType {
   FOOTNOTE = 'Footnote',
   CONTENT = 'Content',
   SPACING = 'Spacing',
-  PASTE = 'Paste',
+  PASTE = 'Paste'
 }
 
 /** Class representing a rule */
 export class Rule {
-  private ruleHeading: string;
-
   /**
    * Create a rule
    * @param {LanguageStringKey} nameKey - The name key of the rule
@@ -43,19 +52,17 @@ export class Rule {
    * @param {IgnoreType[]} [ignoreTypes=[]] - The types of elements to ignore for the rule
    */
   constructor(
-      private nameKey: LanguageStringKey,
-      private descriptionKey: LanguageStringKey,
-      public settingsKey: string,
-      public alias: string,
-      public type: RuleType,
-      public applyAfterIgnore: ApplyFunction,
-      public examples: Array<Example>,
-      public options: Array<Option> = [],
-      public readonly hasSpecialExecutionOrder: boolean = false,
-      public readonly ignoreTypes: IgnoreType[] = [],
+    private nameKey: LanguageStringKey,
+    private descriptionKey: LanguageStringKey,
+    public settingsKey: string,
+    public alias: string,
+    public type: RuleType,
+    public applyAfterIgnore: ApplyFunction,
+    public examples: Array<Example>,
+    public options: Array<Option> = [],
+    public readonly hasSpecialExecutionOrder: boolean = false,
+    public readonly ignoreTypes: IgnoreType[] = []
   ) {
-    this.ruleHeading = this.getName().toLowerCase().replaceAll(' ', '-');
-
     options.unshift(new BooleanOption('enabled', this.descriptionKey, '' as LanguageStringKey, false));
     for (const option of options) {
       option.ruleAlias = alias;
@@ -63,13 +70,13 @@ export class Rule {
   }
 
   public getDefaultOptions() {
-    const options: { [optionName: string]: any } = {};
+    const defaultOptions: Options = {};
 
     for (const option of this.options) {
-      options[option.configKey] = option.defaultValue;
+      defaultOptions[option.configKey] = option.defaultValue;
     }
 
-    return options;
+    return defaultOptions;
   }
 
   public getOptions(settings: LinterSettings) {
@@ -85,7 +92,8 @@ export class Rule {
   }
 
   public getURL(): string {
-    return 'https://platers.github.io/obsidian-linter/settings/' + this.type.toLowerCase() + '-rules/#' + this.ruleHeading;
+    const url = 'https://github.com/platers/obsidian-linter/blob/master/docs/rules.md';
+    return url + '#' + this.alias;
   }
 
   public enabledOptionName(): string {
@@ -114,12 +122,7 @@ export class Example {
    * @param {string} after - The text after the rule is applied
    * @param {object} options - The options of the example
    */
-  constructor(
-      description: string,
-      before: string,
-      after: string,
-      options: Options = {},
-  ) {
+  constructor(description: string, before: string, after: string, options: Options = {}) {
     this.description = description;
     this.options = options;
     this.before = before;
@@ -152,11 +155,14 @@ export function getDisabledRules(text: string): [string[], boolean] {
 export const rules: Rule[] = [];
 
 export const rulesDict = {} as Record<string, Rule>;
-export const ruleTypeToRules = new Map<RuleType, Rule[]>;
+export const ruleTypeToRules = new Map<RuleType, Rule[]>();
 
 export function registerRule(rule: Rule): void {
   rules.push(rule);
-  rules.sort((a, b) => (RuleTypeOrder.indexOf(a.type) - RuleTypeOrder.indexOf(b.type)) || (a.settingsKey.localeCompare(b.settingsKey)));
+  rules.sort(
+    (a, b) =>
+      RuleTypeOrder.indexOf(a.type) - RuleTypeOrder.indexOf(b.type) || a.settingsKey.localeCompare(b.settingsKey)
+  );
   rulesDict[rule.alias] = rule;
 
   if (ruleTypeToRules.has(rule.type)) {
@@ -170,7 +176,10 @@ export function wrapLintError(error: Error, ruleName: string) {
   let errorMessage: string;
   if (error instanceof YAMLException) {
     errorMessage = error.toString();
-    errorMessage = getTextInLanguage('logs.wrapper-yaml-error').replace('{ERROR_MESSAGE}', errorMessage.substring(errorMessage.indexOf(':') + 1));
+    errorMessage = getTextInLanguage('logs.wrapper-yaml-error').replace(
+      '{ERROR_MESSAGE}',
+      errorMessage.substring(errorMessage.indexOf(':') + 1)
+    );
   } else {
     errorMessage = getTextInLanguage('logs.wrapper-unknown-error').replace('{ERROR_MESSAGE}', error.message);
   }

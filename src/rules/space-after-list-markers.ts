@@ -1,6 +1,6 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
 
 class SpaceAfterListMarkersOptions implements Options {}
@@ -12,7 +12,14 @@ export default class SpaceAfterListMarkers extends RuleBuilder<SpaceAfterListMar
       nameKey: 'rules.space-after-list-markers.name',
       descriptionKey: 'rules.space-after-list-markers.description',
       type: RuleType.SPACING,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag
+      ]
     });
   }
   get OptionsClass(): new () => SpaceAfterListMarkersOptions {
@@ -22,10 +29,7 @@ export default class SpaceAfterListMarkers extends RuleBuilder<SpaceAfterListMar
     // Space after marker
     text = text.replace(/^(\s*\d+\.|\s*[-+*])[^\S\r\n]+/gm, '$1 ');
     // Space after checkbox
-    return text.replace(
-        /^(\s*\d+\.|\s*[-+*]\s+\[[ xX]\])[^\S\r\n]+/gm,
-        '$1 ',
-    );
+    return text.replace(/^(\s*\d+\.|\s*[-+*]\s+\[[ xX]\])[^\S\r\n]+/gm, '$1 ');
   }
   get exampleBuilders(): ExampleBuilder<SpaceAfterListMarkersOptions>[] {
     return [
@@ -46,8 +50,8 @@ export default class SpaceAfterListMarkers extends RuleBuilder<SpaceAfterListMar
           - [ ] Item 1
           - [x] Item 2
           \t- [ ] Item 3
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<SpaceAfterListMarkersOptions>[] {

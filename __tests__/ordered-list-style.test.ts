@@ -1,6 +1,6 @@
 import OrderedListStyle from '../src/rules/ordered-list-style';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: OrderedListStyle,
@@ -67,7 +67,7 @@ ruleTest({
             2. XXX
             3. XXX
             4. I believe I can fly
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/422
@@ -131,7 +131,7 @@ ruleTest({
               2. XXX
               3. XXX
           1. 发几封积分积分
-      `,
+      `
     },
     {
       testName: 'Make sure that tabs in lists with sublists still works correctly',
@@ -154,7 +154,7 @@ ruleTest({
           1. Sub3 1
         \t2. Sub3 2
         3. Entry 3
-      `,
+      `
     },
     {
       testName: 'Make sure indentation levels are calculated correctly for blockquotes',
@@ -167,9 +167,10 @@ ruleTest({
         > 1. Entry 1
         >  2. Entry 2
         >   1. Sub1 1
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/631
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/631
       testName: 'Ordered list item levels should be reset when a non-ordered item is encountered',
       before: dedent`
         - a
@@ -188,7 +189,7 @@ ruleTest({
         - c
           1. d
           2. d
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

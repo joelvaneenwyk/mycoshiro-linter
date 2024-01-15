@@ -1,6 +1,6 @@
 import RemoveYamlKeys from '../src/rules/remove-yaml-keys';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: RemoveYamlKeys,
@@ -33,8 +33,8 @@ ruleTest({
         ---
       `,
       options: {
-        yamlKeysToRemove: ['created'],
-      },
-    },
-  ],
+        yamlKeysToRemove: ['created']
+      }
+    }
+  ]
 });

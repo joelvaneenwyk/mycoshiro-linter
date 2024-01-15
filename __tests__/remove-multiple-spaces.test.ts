@@ -1,6 +1,6 @@
 import RemoveMultipleSpaces from '../src/rules/remove-multiple-spaces';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: RemoveMultipleSpaces,
@@ -18,7 +18,7 @@ ruleTest({
         ${''}
         Paragraph contents are here  ${''}
         Second paragraph contents here  ${''}
-      `,
+      `
     },
     {
       testName: 'Make sure spaces at the start of the line are ignored',
@@ -31,7 +31,7 @@ ruleTest({
         Paragraph contents are here
         Second paragraph here...
         ${''}
-      `,
+      `
     },
     {
       testName: 'Make sure non-letter followed or preceeded by 2 spaces has them cut down to 1 space',
@@ -44,7 +44,7 @@ ruleTest({
         # Hello world
         ${''}
         Paragraph contents (something). Something else .
-      `,
+      `
     },
     {
       testName: 'Links followed by parentheses do not prevent other removal of multiple spaces in a row',
@@ -53,7 +53,7 @@ ruleTest({
       `,
       after: dedent`
         [Link text](path/fileName.md) (2 spaces in between text)
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/244
@@ -95,7 +95,7 @@ ruleTest({
         | quux     | quuz     |
         ${''}
         New paragraph.
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/289
@@ -165,7 +165,7 @@ ruleTest({
         >     Line 1
         >     Line 2
         >     Line 3
-      `,
+      `
     },
     {
       testName: 'Multiple spaces after ">" are still removed if not the start of a line',
@@ -178,9 +178,10 @@ ruleTest({
         # Text with > with multiple spaces after it
         ${''}
         Text > other text
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/558
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/558
       testName: 'Multiple spaces are not removed in a math block',
       before: dedent`
         $$
@@ -199,17 +200,17 @@ ruleTest({
                      \end{array}
             \right.
         $$
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/558
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/558
       testName: 'Multiple spaces are not removed in inline math',
       before: dedent`
         $ x =  2y $
       `,
       after: dedent`
         $ x =  2y $
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });
-

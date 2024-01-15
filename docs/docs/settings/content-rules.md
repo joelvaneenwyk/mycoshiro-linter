@@ -1,8 +1,6 @@
 <!--- This file was automatically generated. See docs.ts and *_template.md files for the source. -->
 
-
 # Content Rules
-
 
 ## Auto-correct Common Misspellings
 
@@ -15,8 +13,6 @@ Uses a dictionary of common misspellings to automatically convert them to their 
 | Name | Description | List Items | Default Value |
 | ---- | ----------- | ---------- | ------------- |
 | `Ignore Words` | A comma separated list of lowercased words to ignore when auto-correcting | N/A |  |
-
-
 
 ### Examples
 
@@ -69,6 +65,7 @@ The same $ defenately $ applies to inline math.
 
 #defenately stays the same
 ``````
+
 </details>
 <details><summary>Auto-correct misspellings keeps first letter's case</summary>
 
@@ -83,6 +80,7 @@ After:
 `````` markdown
 Accordingly we made sure to update logic to make sure it would handle case sensitivity.
 ``````
+
 </details>
 <details><summary>Links should not be auto-corrected</summary>
 
@@ -97,6 +95,7 @@ After:
 `````` markdown
 http://www.Absoltely.com should not be corrected
 ``````
+
 </details>
 
 ## Blockquote Style
@@ -110,8 +109,6 @@ Makes sure the blockquote style is consistent.
 | Name | Description | List Items | Default Value |
 | ---- | ----------- | ---------- | ------------- |
 | `Style` | The style used on blockquote indicators | `space`: > indicator is followed by a space<br/><br/>`no space`: >indicator is not followed by a space | `space` |
-
-
 
 ### Examples
 
@@ -148,6 +145,7 @@ After:
 
 > <strong>Note that html is not affected in blockquotes</strong>
 ``````
+
 </details>
 <details><summary>When style = `no space`, spaces are removed after a blockquote indicator</summary>
 
@@ -168,6 +166,7 @@ After:
 >>>>>Especially when multiple levels are involved
 >>>>>Even when partially correct already, it is handled
 ``````
+
 </details>
 
 ## Convert Bullet List Markers
@@ -175,10 +174,6 @@ After:
 Alias: `convert-bullet-list-markers`
 
 Converts common bullet list marker symbols to markdown list markers.
-
-
-
-
 
 ### Examples
 
@@ -197,6 +192,7 @@ After:
 - item 1
 - item 2
 ``````
+
 </details>
 <details><summary>Converts §</summary>
 
@@ -215,6 +211,7 @@ After:
   - item 2
   - item 3
 ``````
+
 </details>
 
 ## Emphasis Style
@@ -228,8 +225,6 @@ Makes sure the emphasis style is consistent.
 | Name | Description | List Items | Default Value |
 | ---- | ----------- | ---------- | ------------- |
 | `Style` | The style used to denote emphasized content | `consistent`: Makes sure the first instance of emphasis is the style that will be used throughout the document<br/><br/>`asterisk`: Makes sure * is the emphasis indicator<br/><br/>`underscore`: Makes sure _ is the emphasis indicator | `consistent` |
-
-
 
 ### Examples
 
@@ -272,6 +267,7 @@ This is **_nested emphasis_ and ending bold**
 * List Item1 with _emphasized text_
 * List Item2
 ``````
+
 </details>
 <details><summary>Emphasis indicators should use asterisks when style is set to 'asterisk'</summary>
 
@@ -306,6 +302,7 @@ This is __*nested emphasis* and ending bold__
 
 __Test bold__
 ``````
+
 </details>
 <details><summary>Emphasis indicators should use consistent style based on first emphasis indicator in a file when style is set to 'consistent'</summary>
 
@@ -338,6 +335,7 @@ This is ***nested emphasis* and ending bold**
 
 __Test bold__
 ``````
+
 </details>
 <details><summary>Emphasis indicators should use consistent style based on first emphasis indicator in a file when style is set to 'consistent'</summary>
 
@@ -370,6 +368,7 @@ This is ___nested emphasis_ and ending bold__
 
 __Test bold__
 ``````
+
 </details>
 
 ## No Bare URLs
@@ -377,14 +376,6 @@ __Test bold__
 Alias: `no-bare-urls`
 
 Encloses bare URLs with angle brackets except when enclosed in back ticks, square braces, or single or double quotes.
-
-### Options
-
-| Name | Description | List Items | Default Value |
-| ---- | ----------- | ---------- | ------------- |
-| `No Bare URIs` | Attempts to enclose bare URIs with angle brackets except when enclosed in back ticks, square braces, or single or double quotes. | N/A | false |
-
-
 
 ### Examples
 
@@ -417,6 +408,7 @@ Links mid-sentence should be updated like <https://google.com> will be.
 links should stay the same: [](https://github.com)
 <https://gitlab.com>
 ``````
+
 </details>
 <details><summary>Angle brackets are added if the url is not the only text in the single quotes(') or double quotes(")</summary>
 
@@ -437,6 +429,7 @@ backticks around a url should stay the same: `https://github.com some text here`
 single quotes around a url should stay the same, but only if the contents of the single quotes is the url: '<https://github.com> some text here'
 double quotes around a url should stay the same, but only if the contents of the double quotes is the url: "<https://github.com> some text here"
 ``````
+
 </details>
 <details><summary>Multiple angle brackets at the start and or end of a url will be reduced down to 1</summary>
 
@@ -455,20 +448,7 @@ After:
 <https://google.com>
 <https://gitlab.com>
 ``````
-</details>
-<details><summary>Puts angle brackets around URIs when `No Bare URIs` is enabled</summary>
 
-Before:
-
-`````` markdown
-obsidian://show-plugin?id=cycle-in-sidebar
-``````
-
-After:
-
-`````` markdown
-<obsidian://show-plugin?id=cycle-in-sidebar>
-``````
 </details>
 
 ## Ordered List Style
@@ -483,8 +463,6 @@ Makes sure that ordered lists follow the style specified. **Note: that 2 spaces 
 | ---- | ----------- | ---------- | ------------- |
 | `Number Style` | The number style used in ordered list indicators | `ascending`: Makes sure ordered list items are ascending (i.e. 1, 2, 3, etc.)<br/><br/>`lazy`: Makes sure ordered list item indicators all are the number 1 | `ascending` |
 | `Ordered List Indicator End Style` | The ending character of an ordered list indicator | `.`: Makes sure ordered list items indicators end in '.' (i.e `1.`)<br/><br/>`)`: Makes sure ordered list item indicators end in ')' (i.e. `1)`) | `.` |
-
-
 
 ### Examples
 
@@ -517,6 +495,7 @@ Some text here
 2. Item 2
 3. Item 3
 ``````
+
 </details>
 <details><summary>Nested ordered lists have list items set to ascending numerical order when Number Style is `ascending`.</summary>
 
@@ -541,6 +520,7 @@ After:
   3. Subitem 3
 3. Item 3
 ``````
+
 </details>
 <details><summary>Ordered list in blockquote has list items set to '1.' when Number Style is `lazy`.</summary>
 
@@ -563,6 +543,7 @@ After:
 > > 1. Subitem 2
 > > 1. Subitem 3
 ``````
+
 </details>
 <details><summary>Ordered list in blockquote has list items set to ascending numerical order when Number Style is `ascending`.</summary>
 
@@ -585,6 +566,7 @@ After:
 > > 2. Subitem 2
 > > 3. Subitem 3
 ``````
+
 </details>
 <details><summary>Nested ordered list has list items set to '1)' when Number Style is `lazy` and Ordered List Indicator End Style is `)`.</summary>
 
@@ -609,6 +591,7 @@ After:
   1) Subitem 3
 1) Item 3
 ``````
+
 </details>
 
 ## Proper Ellipsis
@@ -616,10 +599,6 @@ After:
 Alias: `proper-ellipsis`
 
 Replaces three consecutive dots with an ellipsis.
-
-
-
-
 
 ### Examples
 
@@ -636,6 +615,7 @@ After:
 `````` markdown
 Lorem (…) Impsum.
 ``````
+
 </details>
 
 ## Quote Style
@@ -648,12 +628,10 @@ Updates the quotes in the body content to be updated to the specified single and
 
 | Name | Description | List Items | Default Value |
 | ---- | ----------- | ---------- | ------------- |
-| `Enable `Single Quote Style`` | Specifies that the selected single quote style should be used. | N/A | `true` |
+| `Enable`Single Quote Style`` | Specifies that the selected single quote style should be used. | N/A | `true` |
 | `Single Quote Style` | The style of single quotes to use. | `''`: Uses "'" instead of smart single quotes<br/><br/>`‘’`: Uses "‘" and "’" instead of straight single quotes | `''` |
-| `Enable `Double Quote Style`` | Specifies that the selected double quote style should be used. | N/A | `true` |
+| `Enable`Double Quote Style`` | Specifies that the selected double quote style should be used. | N/A | `true` |
 | `Double Quote Style` | The style of double quotes to use. | `""`: Uses '"' instead of smart double quotes<br/><br/>`“”`: Uses '“' and '”' instead of straight double quotes | `""` |
-
-
 
 ### Examples
 
@@ -684,6 +662,7 @@ After:
 'Another single style smart quote also gets replaced'
 'Even this style of single smart quotes is replaced'
 ``````
+
 </details>
 <details><summary>Straight quotes used in file are converted to smart quotes when styles are set to `Smart`</summary>
 
@@ -695,7 +674,7 @@ Before:
 "Nesting a quote in a quote like so: 'here I am' is handled correctly"
 'Single quotes by themselves are handled correctly'
 Possessives are handled correctly: Pam's dog is really cool!
-Templater commands are ignored: <% tp.date.now("YYYY-MM-DD", 7) %>
+Templater commands are ignored: 2023-08-08
 
 Be careful as converting straight quotes to smart quotes requires you to have an even amount of quotes
 once possessives and common contractions have been dealt with. If not, it will throw an error.
@@ -709,11 +688,12 @@ After:
 “Nesting a quote in a quote like so: ‘here I am’ is handled correctly”
 ‘Single quotes by themselves are handled correctly’
 Possessives are handled correctly: Pam’s dog is really cool!
-Templater commands are ignored: <% tp.date.now("YYYY-MM-DD", 7) %>
+Templater commands are ignored: 2023-08-08
 
 Be careful as converting straight quotes to smart quotes requires you to have an even amount of quotes
 once possessives and common contractions have been dealt with. If not, it will throw an error.
 ``````
+
 </details>
 
 ## Remove Consecutive List Markers
@@ -721,10 +701,6 @@ once possessives and common contractions have been dealt with. If not, it will t
 Alias: `remove-consecutive-list-markers`
 
 Removes consecutive list markers. Useful when copy-pasting list items.
-
-
-
-
 
 ### Examples
 
@@ -749,6 +725,7 @@ After:
   - indented item
   - copypasted item B
 ``````
+
 </details>
 
 ## Remove Empty List Markers
@@ -756,10 +733,6 @@ After:
 Alias: `remove-empty-list-markers`
 
 Removes empty list markers, i.e. list items without content.
-
-
-
-
 
 ### Examples
 
@@ -793,6 +766,7 @@ After:
 + list 3 item 1
 + list 3 item 2
 ``````
+
 </details>
 <details><summary>Removes empty ordered list markers.</summary>
 
@@ -821,6 +795,7 @@ After:
 
 _Note that this rule does not make sure that the ordered list is sequential after removal_
 ``````
+
 </details>
 <details><summary>Removes empty checklist markers.</summary>
 
@@ -843,6 +818,7 @@ After:
 
 _Note that this will affect checked and uncheck checked list items_
 ``````
+
 </details>
 <details><summary>Removes empty list, checklist, and ordered list markers in callouts/blockquotes</summary>
 
@@ -906,6 +882,7 @@ After:
 > + item 1
 > + item 2
 ``````
+
 </details>
 
 ## Remove Hyphenated Line Breaks
@@ -913,10 +890,6 @@ After:
 Alias: `remove-hyphenated-line-breaks`
 
 Removes hyphenated line breaks. Useful when pasting text from textbooks.
-
-
-
-
 
 ### Examples
 
@@ -933,17 +906,14 @@ After:
 `````` markdown
 This text has a linebreak.
 ``````
+
 </details>
 
 ## Remove Multiple Spaces
 
 Alias: `remove-multiple-spaces`
 
-Removes two or more consecutive spaces. Ignores spaces at the beginning and ending of the line. 
-
-
-
-
+Removes two or more consecutive spaces. Ignores spaces at the beginning and ending of the line.
 
 ### Examples
 
@@ -960,6 +930,7 @@ After:
 `````` markdown
 Lorem ipsum dolor sit amet.
 ``````
+
 </details>
 
 ## Strong Style
@@ -973,8 +944,6 @@ Makes sure the strong style is consistent.
 | Name | Description | List Items | Default Value |
 | ---- | ----------- | ---------- | ------------- |
 | `Style` | The style used to denote strong/bolded content | `consistent`: Makes sure the first instance of strong is the style that will be used throughout the document<br/><br/>`asterisk`: Makes sure ** is the strong indicator<br/><br/>`underscore`: Makes sure __ is the strong indicator | `consistent` |
-
-
 
 ### Examples
 
@@ -1017,6 +986,7 @@ This is __*nested emphasis* and ending bold__
 * List Item1 with __bold text__
 * List Item2
 ``````
+
 </details>
 <details><summary>Strong indicators should use asterisks when style is set to 'asterisk'</summary>
 
@@ -1051,6 +1021,7 @@ This is **_nested emphasis_ and ending bold**
 
 _Test emphasis_
 ``````
+
 </details>
 <details><summary>Strong indicators should use consistent style based on first strong indicator in a file when style is set to 'consistent'</summary>
 
@@ -1083,6 +1054,7 @@ This is **_nested emphasis_ and ending bold**
 
 **Test bold**
 ``````
+
 </details>
 <details><summary>Strong indicators should use consistent style based on first strong indicator in a file when style is set to 'consistent'</summary>
 
@@ -1115,6 +1087,7 @@ This is ___nested emphasis_ and ending bold__
 
 __Test bold__
 ``````
+
 </details>
 
 ## Two Spaces Between Lines with Content
@@ -1123,14 +1096,10 @@ Alias: `two-spaces-between-lines-with-content`
 
 Makes sure that two spaces are added to the ends of lines with content continued on the next line for paragraphs, blockquotes, and list items
 
-
-
 ### Additional Info
-
 
 !!! Warning
     Do not use with [paragraph blank lines](./spacing-rules.md#paragraph-blank-lines). They work differently and will result in unexpected results.
-
 
 ### Examples
 
@@ -1221,6 +1190,7 @@ should be ignored
 Even more content here
 
 ``````
+
 </details>
 
 ## Unordered List Style
@@ -1234,8 +1204,6 @@ Makes sure that unordered lists follow the style specified.
 | Name | Description | List Items | Default Value |
 | ---- | ----------- | ---------- | ------------- |
 | `List item style` | The list item style to use in unordered lists | `consistent`: Makes sure unordered list items use a consistent list item indicator in the file which will be based on the first list item found<br/><br/>`-`: Makes sure unordered list items use `-` as their indicator<br/><br/>`*`: Makes sure unordered list items use `*` as their indicator<br/><br/>`+`: Makes sure unordered list items use `+` as their indicator | `consistent` |
-
-
 
 ### Examples
 
@@ -1284,6 +1252,7 @@ Checklists should be ignored
   * Sublist 3 item 2
 
 ``````
+
 </details>
 <details><summary>Unordered lists have their indicator updated to `-` when `List item style = '-'`</summary>
 
@@ -1332,6 +1301,7 @@ See that the ordered list is ignored, but its sublist is not
 1. Item 3
   - Sub item 3
 ``````
+
 </details>
 <details><summary>Unordered lists have their indicator updated to `*` when `List item style = '*'`</summary>
 
@@ -1364,6 +1334,7 @@ After:
   * Sublist 3 item 2
 
 ``````
+
 </details>
 <details><summary>Unordered list in blockquote has list item indicators set to `+` when `List item style = '-'`</summary>
 
@@ -1388,4 +1359,5 @@ After:
 > >   + Sub sub item 1
 > > + Subitem 3
 ``````
+
 </details>

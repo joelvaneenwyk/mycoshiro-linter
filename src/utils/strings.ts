@@ -1,4 +1,4 @@
-import {calloutRegex} from './regex';
+import { calloutRegex } from './regex';
 /**
  * Inserts a string at the given position in a string.
  * @param {string} str - The string to insert into
@@ -18,7 +18,12 @@ export function insert(str: string, index: number, value: string): string {
  * @param {string} value - The string to insert
  * @return {string} The string with the replacement string added over the specified start and stop
  */
-export function replaceTextBetweenStartAndEndWithNewValue(str: string, start: number, end: number, value: string): string {
+export function replaceTextBetweenStartAndEndWithNewValue(
+  str: string,
+  start: number,
+  end: number,
+  value: string
+): string {
   return str.substring(0, start) + value + str.substring(end);
 }
 
@@ -60,7 +65,11 @@ function getEmptyLine(priorLine: string = ''): string {
   return '\n' + priorLineStart.trim();
 }
 
-function getEmptyLineForBlockqute(priorLine: string = '', isCallout: boolean = false, blockquoteLevel: number = 1): string {
+function getEmptyLineForBlockqute(
+  priorLine: string = '',
+  isCallout: boolean = false,
+  blockquoteLevel: number = 1
+): string {
   const potentialEmptyLine = getEmptyLine(priorLine);
   const previousBlockquoteLevel = countInstances(potentialEmptyLine, '>');
   const dealingWithACallout = isCallout || calloutRegex.test(priorLine);
@@ -95,7 +104,12 @@ function makeSureContentHasASingleEmptyLineBeforeItUnlessItStartsAFile(text: str
   return text.substring(0, startOfNewContent) + '\n' + text.substring(startOfContent);
 }
 
-function makeSureContentHasASingleEmptyLineBeforeItUnlessItStartsAFileForBlockquote(text: string, startOfLine: string, startOfContent: number, isCallout: boolean = false, addingEmptyLinesAroundBlockquotes: boolean = false): string {
+function makeSureContentHasASingleEmptyLineBeforeItUnlessItStartsAFileForBlockquote(
+  text: string,
+  startOfLine: string,
+  startOfContent: number,
+  isCallout: boolean = false
+): string {
   if (startOfContent === 0) {
     return text;
   }
@@ -118,7 +132,7 @@ function makeSureContentHasASingleEmptyLineBeforeItUnlessItStartsAFileForBlockqu
 
       lineNestingLevel++;
     } else if (currentChar === '\n') {
-      if (lineNestingLevel === 0 || lineNestingLevel === nestingLevel || (lineNestingLevel + 1) === nestingLevel) {
+      if (lineNestingLevel === 0 || lineNestingLevel === nestingLevel || lineNestingLevel + 1 === nestingLevel) {
         startOfNewContent = index;
         lineNestingLevel = 0;
 
@@ -151,13 +165,15 @@ function makeSureContentHasASingleEmptyLineBeforeItUnlessItStartsAFileForBlockqu
     priorLine = text.substring(indexOfLastNewLine, startOfNewContent);
   }
 
-  const emptyLine = addingEmptyLinesAroundBlockquotes ? getEmptyLineForBlockqute(priorLine, isCallout, nestingLevel) : getEmptyLine(priorLine);
-
-  return text.substring(0, startOfNewContent) + emptyLine + text.substring(startOfContent);
+  return (
+    text.substring(0, startOfNewContent) +
+    getEmptyLineForBlockqute(priorLine, isCallout, nestingLevel) +
+    text.substring(startOfContent)
+  );
 }
 
 function makeSureContentHasASingleEmptyLineAfterItUnlessItEndsAFile(text: string, endOfContent: number): string {
-  if (endOfContent === (text.length - 1)) {
+  if (endOfContent === text.length - 1) {
     return text;
   }
 
@@ -185,8 +201,13 @@ function makeSureContentHasASingleEmptyLineAfterItUnlessItEndsAFile(text: string
   return text.substring(0, endOfContent) + '\n' + text.substring(endOfNewContent);
 }
 
-function makeSureContentHasASingleEmptyLineAfterItUnlessItEndsAFileForBlockquote(text: string, startOfLine: string, endOfContent: number, isCallout: boolean = false, addingEmptyLinesAroundBlockquotes: boolean = false): string {
-  if (endOfContent === (text.length - 1)) {
+function makeSureContentHasASingleEmptyLineAfterItUnlessItEndsAFileForBlockquote(
+  text: string,
+  startOfLine: string,
+  endOfContent: number,
+  isCallout: boolean = false
+): string {
+  if (endOfContent === text.length - 1) {
     return text;
   }
 
@@ -209,7 +230,7 @@ function makeSureContentHasASingleEmptyLineAfterItUnlessItEndsAFileForBlockquote
 
       lineNestingLevel++;
     } else if (currentChar === '\n') {
-      if (lineNestingLevel === 0 || lineNestingLevel === nestingLevel || (lineNestingLevel + 1) === nestingLevel) {
+      if (lineNestingLevel === 0 || lineNestingLevel === nestingLevel || lineNestingLevel + 1 === nestingLevel) {
         lineNestingLevel = 0;
         if (isFirstNewLine) {
           isFirstNewLine = false;
@@ -247,9 +268,11 @@ function makeSureContentHasASingleEmptyLineAfterItUnlessItEndsAFileForBlockquote
     nextLine = text.substring(endOfNewContent + 1, indexOfSecondNewLineAfterContent);
   }
 
-  const emptyLine = addingEmptyLinesAroundBlockquotes ? getEmptyLineForBlockqute(nextLine, isCallout, nestingLevel) : getEmptyLine(nextLine);
-
-  return text.substring(0, endOfContent) + emptyLine + text.substring(endOfNewContent);
+  return (
+    text.substring(0, endOfContent) +
+    getEmptyLineForBlockqute(nextLine, isCallout, nestingLevel) +
+    text.substring(endOfNewContent)
+  );
 }
 
 /**
@@ -257,16 +280,25 @@ function makeSureContentHasASingleEmptyLineAfterItUnlessItEndsAFileForBlockquote
  * @param {string} text - The entire file's contents
  * @param {number} start - The starting index of the content to escape
  * @param {number} end - The ending index of the content to escape
- * @param {boolean} addingEmptyLinesAroundBlockquotes - Whether or not the logic is meant to add empty lines around blockquotes. This is something meant to better help with spacing around blockquotes.
  * @return {string} The new file contents after the empty lines have been added
  */
-export function makeSureContentHasEmptyLinesAddedBeforeAndAfter(text: string, start: number, end: number, addingEmptyLinesAroundBlockquotes: boolean = false): string {
+export function makeSureContentHasEmptyLinesAddedBeforeAndAfter(text: string, start: number, end: number): string {
   const [startOfLine, startOfLineIndex] = getStartOfLineWhitespaceOrBlockquoteLevel(text, start);
   if (startOfLine.trim() !== '') {
     const isCallout = calloutRegex.test(text.substring(start, end));
-    const newText = makeSureContentHasASingleEmptyLineAfterItUnlessItEndsAFileForBlockquote(text, startOfLine, end, isCallout, addingEmptyLinesAroundBlockquotes);
+    const newText = makeSureContentHasASingleEmptyLineAfterItUnlessItEndsAFileForBlockquote(
+      text,
+      startOfLine,
+      end,
+      isCallout
+    );
 
-    return makeSureContentHasASingleEmptyLineBeforeItUnlessItStartsAFileForBlockquote(newText, startOfLine, startOfLineIndex, isCallout, addingEmptyLinesAroundBlockquotes);
+    return makeSureContentHasASingleEmptyLineBeforeItUnlessItStartsAFileForBlockquote(
+      newText,
+      startOfLine,
+      startOfLineIndex,
+      isCallout
+    );
   }
 
   const newText = makeSureContentHasASingleEmptyLineAfterItUnlessItEndsAFile(text, end);
@@ -339,8 +371,7 @@ export function replaceAt(text: string, search: string, replace: string, start: 
     return text;
   }
 
-  return text.slice(0, start) +
-      text.slice(start, text.length).replace(search, replace);
+  return text.slice(0, start) + text.slice(start, text.length).replace(search, replace);
 }
 
 // based on https://stackoverflow.com/a/21730166/8353749
@@ -363,16 +394,8 @@ export function countInstances(text: string, instancesOf: string): number {
 export function isNumeric(str: string) {
   const type = typeof str;
   if (type != 'string') return type === 'number'; // we only process strings so if the value is not already a number the result is false
-  return !isNaN(str as unknown as number) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-         !isNaN(parseFloat(str)); // ...and ensure strings of whitespace fail
-}
-
-export function getSubstringIndex(substring: string, text: string): number[] {
-  const indexes = [];
-  let i = -1;
-  while ((i = text.indexOf(substring, i + 1)) >= 0) {
-    indexes.push(i);
-  }
-
-  return indexes;
+  return (
+    !isNaN(str as unknown as number) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+    !isNaN(parseFloat(str))
+  ); // ...and ensure strings of whitespace fail
 }

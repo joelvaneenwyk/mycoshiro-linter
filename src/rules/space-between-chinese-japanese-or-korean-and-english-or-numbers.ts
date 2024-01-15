@@ -1,8 +1,8 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {ignoreListOfTypes, IgnoreTypes} from '../utils/ignore-types';
-import {updateBoldText, updateItalicsText} from '../utils/mdast';
+import { ignoreListOfTypes, IgnoreTypes } from '../utils/ignore-types';
+import { updateBoldText, updateItalicsText } from '../utils/mdast';
 
 class SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbersOptions implements Options {}
 
@@ -13,27 +13,50 @@ export default class SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbers exte
       nameKey: 'rules.space-between-chinese-japanese-or-korean-and-english-or-numbers.name',
       descriptionKey: 'rules.space-between-chinese-japanese-or-korean-and-english-or-numbers.description',
       type: RuleType.SPACING,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.inlineCode, IgnoreTypes.yaml, IgnoreTypes.image, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag, IgnoreTypes.math, IgnoreTypes.inlineMath, IgnoreTypes.html],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.inlineCode,
+        IgnoreTypes.yaml,
+        IgnoreTypes.image,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag,
+        IgnoreTypes.math,
+        IgnoreTypes.inlineMath,
+        IgnoreTypes.html
+      ]
     });
   }
   get OptionsClass(): new () => SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbersOptions {
     return SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbersOptions;
   }
-  apply(
-      text: string,
-      options: SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbersOptions,
-  ): string {
-    const head = /(\p{sc=Han}|\p{sc=Katakana}|\p{sc=Hiragana}|\p{sc=Hangul})( *)(\[[^[]*\]\(.*\)|`[^`]*`|\w+|[-+'"([¥$]|\*[^*])/gmu;
-    const tail = /(\[[^[]*\]\(.*\)|`[^`]*`|\w+|[-+;:'"°%$)\]]|[^*]\*)( *)(\p{sc=Han}|\p{sc=Katakana}|\p{sc=Hiragana}|\p{sc=Hangul})/gmu;
+  apply(text: string, options: SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbersOptions): string {
+    const head =
+      /([\p{sc=Han}\p{sc=Katakana}\p{sc=Hiragana}\p{sc=Hangul}])( *)(\[[^[]*\]\(.*\)|`[^`]*`|\w+|[-+'"([¥$]|\*[^*])/gu;
+    const tail =
+      /(\[[^[]*\]\(.*\)|`[^`]*`|\w+|[-+;:'"°%$)\]]|[^*]\*)( *)([\p{sc=Han}\p{sc=Katakana}\p{sc=Hiragana}\p{sc=Hangul}])/gu;
     // inline math, inline code, markdown links, and wiki links are an exception in that even though they are to be ignored we want to keep a space around these types when surrounded by CJK characters
-    const regexEscapedIgnoreExceptionPlaceHolders = `${IgnoreTypes.link.placeholder}|${IgnoreTypes.inlineMath.placeholder}|${IgnoreTypes.inlineCode.placeholder}|${IgnoreTypes.wikiLink.placeholder}`.replaceAll('{', '\\{').replaceAll('}', '\\}');
-    const ignoreExceptionsHead = new RegExp(`(\\p{sc=Han}|\\p{sc=Katakana}|\\p{sc=Hiragana}|\\p{sc=Hangul})( *)(${regexEscapedIgnoreExceptionPlaceHolders})`, 'gmu');
-    const ignoreExceptionsTail = new RegExp(`(${regexEscapedIgnoreExceptionPlaceHolders})( *)(\\p{sc=Han}|\\p{sc=Katakana}|\\p{sc=Hiragana}|\\p{sc=Hangul})`, 'gmu');
-    const addSpaceAroundChineseJapaneseKoreanAndEnglish = function(text: string): string {
+    const regexEscapedIgnoreExceptionPlaceHolders =
+      `${IgnoreTypes.link.placeholder}|${IgnoreTypes.inlineMath.placeholder}|${IgnoreTypes.inlineCode.placeholder}|${IgnoreTypes.wikiLink.placeholder}`
+        .replaceAll('{', '\\{')
+        .replaceAll('}', '\\}');
+    const ignoreExceptionsHead = new RegExp(
+      `(\\p{sc=Han}|\\p{sc=Katakana}|\\p{sc=Hiragana}|\\p{sc=Hangul})( *)(${regexEscapedIgnoreExceptionPlaceHolders})`,
+      'gmu'
+    );
+    const ignoreExceptionsTail = new RegExp(
+      `(${regexEscapedIgnoreExceptionPlaceHolders})( *)(\\p{sc=Han}|\\p{sc=Katakana}|\\p{sc=Hiragana}|\\p{sc=Hangul})`,
+      'gmu'
+    );
+    const addSpaceAroundChineseJapaneseKoreanAndEnglish = function (text: string): string {
       return text.replace(head, '$1 $3').replace(tail, '$1 $3');
     };
 
-    let newText = ignoreListOfTypes([IgnoreTypes.italics, IgnoreTypes.bold], text, addSpaceAroundChineseJapaneseKoreanAndEnglish);
+    let newText = ignoreListOfTypes(
+      [IgnoreTypes.italics, IgnoreTypes.bold],
+      text,
+      addSpaceAroundChineseJapaneseKoreanAndEnglish
+    );
 
     newText = newText.replace(ignoreExceptionsHead, '$1 $3').replace(ignoreExceptionsTail, '$1 $3');
 
@@ -52,7 +75,7 @@ export default class SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbers exte
         `,
         after: dedent`
           中文字符串 english 中文字符串。
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Space between Chinese and link',
@@ -61,7 +84,7 @@ export default class SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbers exte
         `,
         after: dedent`
           中文字符串 [english](http://example.com) 中文字符串。
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Space between Chinese and inline code block',
@@ -70,7 +93,7 @@ export default class SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbers exte
         `,
         after: dedent`
           中文字符串 \`code\` 中文字符串。
-        `,
+        `
       }),
       new ExampleBuilder({
         // accounts for https://github.com/platers/obsidian-linter/issues/234
@@ -80,7 +103,7 @@ export default class SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbers exte
         `,
         after: dedent`
           #标签A #标签2标签
-        `,
+        `
       }),
       new ExampleBuilder({
         // accounts for https://github.com/platers/obsidian-linter/issues/301
@@ -103,7 +126,7 @@ export default class SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbers exte
           ${''}
           **_ 这是一 _ 个数学公式**
           *这是一 hello__ 个数学 world 公式 __*
-        `,
+        `
       }),
       new ExampleBuilder({
         // accounts for https://github.com/platers/obsidian-linter/issues/302
@@ -119,7 +142,7 @@ export default class SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbers exte
           ![[这是一个数学公式english.jpg]]
           [这是一个数学公式english](这是一个数学公式english.md)
           ![这是一个数学公式english](这是一个数学公式english.jpg)
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Space between CJK and English',
@@ -134,8 +157,8 @@ export default class SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbers exte
           カタカナ english カタカナ
           ﾊﾝｶｸｶﾀｶﾅ english１２３全角数字
           한글 english 한글
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<SpaceBetweenChineseJapaneseOrKoreanAndEnglishOrNumbersOptions>[] {

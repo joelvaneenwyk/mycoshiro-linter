@@ -1,6 +1,6 @@
 import MoveFootnotesToTheBottom from '../src/rules/move-footnotes-to-the-bottom';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: MoveFootnotesToTheBottom,
@@ -18,7 +18,7 @@ ruleTest({
         Line
         ${''}
         [^alpha]: bravo and charlie.
-      `,
+      `
     },
     {
       testName: 'Multiline footnotes',
@@ -49,7 +49,7 @@ ruleTest({
             but not the rest of it
         ${''}
             it will mess up every multiline note instantly
-      `,
+      `
     },
     {
       testName: 'Long Document with multiple consecutive footnotes',
@@ -116,7 +116,7 @@ ruleTest({
         [^21]: See @jippDivineVisitationsHospitality2013. Dunn in @dunnRomans181988, says, “Mel et vocent scribentur.”
         [^31]: Abraham in -@abrahamPostcolonialTheologies2015, says, “Ei eos deleniti electram. Prima prompta partiendo ius ne.”
         [^41]: Wright in -@wrightPaulFreshPerspective2005 says, “Modo omnes neglegentur cu vel.”
-      `,
+      `
     },
     {
       testName: 'Footnote already at the bottom does not add an extra newline',
@@ -129,10 +129,11 @@ ruleTest({
         Line [^alpha]
         ${''}
         [^alpha]: bravo and charlie.
-      `,
+      `
     },
     {
-      testName: 'Make sure that a footnote placed between footnotes that already have content at the end of the file properly gets properly ordered',
+      testName:
+        'Make sure that a footnote placed between footnotes that already have content at the end of the file properly gets properly ordered',
       before: dedent`
         reference A [^1]
         ${''}
@@ -153,7 +154,7 @@ ruleTest({
         [^1]: footnote A (first in document)
         [^2]: footnote C (inserted between A and B)
         [^2]: footnote B (last in document)
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/389
@@ -171,10 +172,12 @@ ruleTest({
         - [a](http://a.com)
 
         [^1]:[b](http://b.com)
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/626
-      testName: 'Make sure that footnote references are not accidentally reordered when there are multiple references to the same footnote where the first and last reference to the footnote have other footnote references in between them',
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/626
+      testName:
+        'Make sure that footnote references are not accidentally reordered when there are multiple references to the same footnote where the first and last reference to the footnote have other footnote references in between them',
       before: dedent`
         First,[^1] followed by the Second,[^2] and then the First[^1] again.
         ${''}
@@ -186,10 +189,12 @@ ruleTest({
         ${''}
         [^1]: First Reference
         [^2]: Second reference
-      `,
+      `
     },
-    { // accounts for https://github.com/platers/obsidian-linter/issues/784
-      testName: 'A footnote reference wrapped by 2 references with one at the start of a file should not cause an infinite loop and should move each reference to the end of the file',
+    {
+      // accounts for https://github.com/platers/obsidian-linter/issues/784
+      testName:
+        'A footnote reference wrapped by 2 references with one at the start of a file should not cause an infinite loop and should move each reference to the end of the file',
       before: dedent`
         [^2]: a
         ${''}
@@ -202,7 +207,7 @@ ruleTest({
         ${''}
         [^2]: a
         [^2]: b
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

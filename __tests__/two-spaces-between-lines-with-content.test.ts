@@ -1,6 +1,6 @@
 import TwoSpacesBetweenLinesWithContent from '../src/rules/two-spaces-between-lines-with-content';
 import dedent from 'ts-dedent';
-import {ruleTest} from './common';
+import { ruleTest } from './common';
 
 ruleTest({
   RuleBuilderClass: TwoSpacesBetweenLinesWithContent,
@@ -24,7 +24,7 @@ ruleTest({
         It can span
         multiple lines
         %%
-      `,
+      `
     },
     {
       // accounts for https://github.com/platers/obsidian-linter/issues/300
@@ -84,7 +84,7 @@ ruleTest({
         HW:: --
         T:: 0
         %%
-      `,
-    },
-  ],
+      `
+    }
+  ]
 });

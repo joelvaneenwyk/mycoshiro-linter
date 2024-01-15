@@ -1,18 +1,12 @@
 <!--- This file was automatically generated. See docs.ts and *_template.md files for the source. -->
 
-
 # Footnote Rules
-
 
 ## Footnote after Punctuation
 
 Alias: `footnote-after-punctuation`
 
 Ensures that footnote references are placed after punctuation, not before.
-
-
-
-
 
 ### Examples
 
@@ -29,6 +23,7 @@ After:
 `````` markdown
 Lorem.[^1] Ipsum,[^2] doletes.
 ``````
+
 </details>
 <details><summary>A footnote at the start of a task is not moved to after the punctuation</summary>
 
@@ -47,6 +42,7 @@ After:
 - [ ] This is a footnote and a task that gets swapped with the punctuation![^2]
 [^2]: This footnote got modified
 ``````
+
 </details>
 
 ## Move Footnotes to the bottom
@@ -54,10 +50,6 @@ After:
 Alias: `move-footnotes-to-the-bottom`
 
 Move all footnotes to the bottom of the document.
-
-
-
-
 
 ### Examples
 
@@ -87,6 +79,7 @@ Maecenas malesuada dignissim purus ac volutpat.
 [^1]: first footnote
 [^2]: second footnote
 ``````
+
 </details>
 
 ## Re-Index Footnotes
@@ -94,10 +87,6 @@ Maecenas malesuada dignissim purus ac volutpat.
 Alias: `re-index-footnotes`
 
 Re-indexes footnote keys and footnote, based on the order of occurrence. **Note: This rule does _not_ work if there is more than one footnote for a key.**
-
-
-
-
 
 ### Examples
 
@@ -120,6 +109,7 @@ Lorem ipsum at aliquet felis.[^1] Donec dictum turpis quis pellentesque,[^2] et 
 [^1]: first footnote
 [^2]: second footnote
 ``````
+
 </details>
 <details><summary>Re-indexing footnotes after inserting a footnote between</summary>
 
@@ -142,6 +132,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.[^1] Aenean at aliquet f
 [^2]: third footnote, inserted later
 [^3]: second footnotes
 ``````
+
 </details>
 <details><summary>Re-indexing footnotes preserves multiple references to the same footnote index</summary>
 
@@ -164,6 +155,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.[^1] Aenean at aliquet f
 [^2]: third footnote, inserted later
 [^3]: second footnotes
 ``````
+
 </details>
 <details><summary>Re-indexing footnotes condense duplicate footnotes into 1 when key and footnote are the same</summary>
 
@@ -184,4 +176,5 @@ bla[^1], bla[^1], bla[^2]
 [^1]: bla
 [^2]: bla
 ``````
+
 </details>

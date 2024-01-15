@@ -1,11 +1,18 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase, TextAreaOptionBuilder} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase, TextAreaOptionBuilder } from './rule-builder';
 import dedent from 'ts-dedent';
-import {escapeStringIfNecessaryAndPossible, formatYAML, getYamlSectionValue, isValueEscapedAlready, QuoteCharacter, setYamlSection} from '../utils/yaml';
+import {
+  escapeStringIfNecessaryAndPossible,
+  formatYAML,
+  getYamlSectionValue,
+  isValueEscapedAlready,
+  QuoteCharacter,
+  setYamlSection
+} from '../utils/yaml';
 
 class ForceYamlEscapeOptions implements Options {
   @RuleBuilder.noSettingControl()
-    defaultEscapeCharacter?: QuoteCharacter = '"';
+  defaultEscapeCharacter?: QuoteCharacter = '"';
   forceYamlEscape?: string[] = [];
 }
 
@@ -16,7 +23,7 @@ export default class ForceYamlEscape extends RuleBuilder<ForceYamlEscapeOptions>
       nameKey: 'rules.force-yaml-escape.name',
       descriptionKey: 'rules.force-yaml-escape.description',
       type: RuleType.YAML,
-      hasSpecialExecutionOrder: true, // runs before other rules to help cleanup the YAML before it can throw errors on it
+      hasSpecialExecutionOrder: true // runs before other rules to help cleanup the YAML before it can throw errors on it
     });
   }
   get OptionsClass(): new () => ForceYamlEscapeOptions {
@@ -56,10 +63,11 @@ export default class ForceYamlEscape extends RuleBuilder<ForceYamlEscapeOptions>
           key: value
           otherKey: []
           ---
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Force YAML keys to be escaped with double quotes where not already escaped with `Force YAML Escape on Keys = \'key\'\\n\'title\'\\n\'bool\'`',
+        description:
+          "Force YAML keys to be escaped with double quotes where not already escaped with `Force YAML Escape on Keys = 'key'\\n'title'\\n'bool'`",
         before: dedent`
           ---
           key: 'Already escaped value'
@@ -82,9 +90,9 @@ export default class ForceYamlEscape extends RuleBuilder<ForceYamlEscapeOptions>
         `,
         options: {
           forceYamlEscape: ['key', 'title', 'bool'],
-          defaultEscapeCharacter: '"',
-        },
-      }),
+          defaultEscapeCharacter: '"'
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<ForceYamlEscapeOptions>[] {
@@ -93,8 +101,8 @@ export default class ForceYamlEscape extends RuleBuilder<ForceYamlEscapeOptions>
         OptionsClass: ForceYamlEscapeOptions,
         nameKey: 'rules.force-yaml-escape.force-yaml-escape-keys.name',
         descriptionKey: 'rules.force-yaml-escape.force-yaml-escape-keys.description',
-        optionsKey: 'forceYamlEscape',
-      }),
+        optionsKey: 'forceYamlEscape'
+      })
     ];
   }
 }

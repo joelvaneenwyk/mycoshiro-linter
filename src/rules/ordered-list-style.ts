@@ -1,8 +1,12 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { DropdownOptionBuilder, ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {OrderListItemEndOfIndicatorStyles, OrderListItemStyles, updateOrderedListItemIndicators} from '../utils/mdast';
+import {
+  OrderListItemEndOfIndicatorStyles,
+  OrderListItemStyles,
+  updateOrderedListItemIndicators
+} from '../utils/mdast';
 
 class OrderedListStyleOptions implements Options {
   numberStyle?: OrderListItemStyles = OrderListItemStyles.Ascending;
@@ -16,7 +20,7 @@ export default class OrderedListStyle extends RuleBuilder<OrderedListStyleOption
       nameKey: 'rules.ordered-list-style.name',
       descriptionKey: 'rules.ordered-list-style.description',
       type: RuleType.CONTENT,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.tag],
+      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.tag]
     });
   }
   get OptionsClass(): new () => OrderedListStyleOptions {
@@ -50,10 +54,11 @@ export default class OrderedListStyle extends RuleBuilder<OrderedListStyleOption
           1. Item 1
           2. Item 2
           3. Item 3
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Nested ordered lists have list items set to ascending numerical order when Number Style is `ascending`.',
+        description:
+          'Nested ordered lists have list items set to ascending numerical order when Number Style is `ascending`.',
         before: dedent`
           1. Item 1
           2. Item 2
@@ -69,10 +74,10 @@ export default class OrderedListStyle extends RuleBuilder<OrderedListStyleOption
             2. Subitem 2
             3. Subitem 3
           3. Item 3
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Ordered list in blockquote has list items set to \'1.\' when Number Style is `lazy`.',
+        description: "Ordered list in blockquote has list items set to '1.' when Number Style is `lazy`.",
         before: dedent`
           > 1. Item 1
           > 4. Item 2
@@ -88,11 +93,12 @@ export default class OrderedListStyle extends RuleBuilder<OrderedListStyleOption
           > > 1. Subitem 3
         `,
         options: {
-          numberStyle: OrderListItemStyles.Lazy,
-        },
+          numberStyle: OrderListItemStyles.Lazy
+        }
       }),
       new ExampleBuilder({
-        description: 'Ordered list in blockquote has list items set to ascending numerical order when Number Style is `ascending`.',
+        description:
+          'Ordered list in blockquote has list items set to ascending numerical order when Number Style is `ascending`.',
         before: dedent`
           > 1. Item 1
           > 4. Item 2
@@ -106,10 +112,11 @@ export default class OrderedListStyle extends RuleBuilder<OrderedListStyleOption
           > > 1. Subitem 1
           > > 2. Subitem 2
           > > 3. Subitem 3
-        `,
+        `
       }),
       new ExampleBuilder({
-        description: 'Nested ordered list has list items set to \'1)\' when Number Style is `lazy` and Ordered List Indicator End Style is `)`.',
+        description:
+          "Nested ordered list has list items set to '1)' when Number Style is `lazy` and Ordered List Indicator End Style is `)`.",
         before: dedent`
           1. Item 1
           2. Item 2
@@ -128,9 +135,9 @@ export default class OrderedListStyle extends RuleBuilder<OrderedListStyleOption
         `,
         options: {
           listEndStyle: OrderListItemEndOfIndicatorStyles.Parenthesis,
-          numberStyle: OrderListItemStyles.Lazy,
-        },
-      }),
+          numberStyle: OrderListItemStyles.Lazy
+        }
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<OrderedListStyleOptions>[] {
@@ -143,13 +150,13 @@ export default class OrderedListStyle extends RuleBuilder<OrderedListStyleOption
         records: [
           {
             value: OrderListItemStyles.Ascending,
-            description: 'Makes sure ordered list items are ascending (i.e. 1, 2, 3, etc.)',
+            description: 'Makes sure ordered list items are ascending (i.e. 1, 2, 3, etc.)'
           },
           {
             value: OrderListItemStyles.Lazy,
-            description: 'Makes sure ordered list item indicators all are the number 1',
-          },
-        ],
+            description: 'Makes sure ordered list item indicators all are the number 1'
+          }
+        ]
       }),
       new DropdownOptionBuilder<OrderedListStyleOptions, OrderListItemEndOfIndicatorStyles>({
         OptionsClass: OrderedListStyleOptions,
@@ -159,14 +166,14 @@ export default class OrderedListStyle extends RuleBuilder<OrderedListStyleOption
         records: [
           {
             value: OrderListItemEndOfIndicatorStyles.Period,
-            description: 'Makes sure ordered list items indicators end in \'.\' (i.e `1.`)',
+            description: "Makes sure ordered list items indicators end in '.' (i.e `1.`)"
           },
           {
             value: OrderListItemEndOfIndicatorStyles.Parenthesis,
-            description: 'Makes sure ordered list item indicators end in \')\' (i.e. `1)`)',
-          },
-        ],
-      }),
+            description: "Makes sure ordered list item indicators end in ')' (i.e. `1)`)"
+          }
+        ]
+      })
     ];
   }
 }

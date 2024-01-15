@@ -1,6 +1,6 @@
 // based on https://github.com/mgmeyers/obsidian-kanban/blob/main/src/lang/helpers.ts
-import {getString, NestedKeyOf} from '../utils/nested-keyof';
-import {logWarn} from '../utils/logger';
+import { getString, NestedKeyOf } from '../utils/nested-keyof';
+import { logWarn } from '../utils/logger';
 import ar from './locale/ar';
 import cz from './locale/cz';
 import da from './locale/da';
@@ -25,7 +25,6 @@ import tr from './locale/tr';
 import uk from './locale/tr';
 import zhCN from './locale/zh-cn';
 import zhTW from './locale/zh-tw';
-
 
 type LanguageStrings = typeof en;
 
@@ -53,10 +52,10 @@ export const localeMap: { [k: string]: Partial<LanguageStrings> } = {
   tr,
   uk,
   'zh-TW': zhTW,
-  'zh': zhCN,
+  zh: zhCN
 };
 
-export type LanguageStringKey = NestedKeyOf<LanguageStrings>
+export type LanguageStringKey = NestedKeyOf<LanguageStrings>;
 
 let lang = 'en';
 let locale = localeMap[lang];
@@ -72,7 +71,6 @@ export function getTextInLanguage(str: LanguageStringKey): string {
   }
 
   const text: unknown = (locale && getString<LanguageStrings>(locale, str)) || getString<LanguageStrings>(en, str);
-
   return text as string;
 }
 

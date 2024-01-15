@@ -1,8 +1,8 @@
-import {IgnoreTypes} from '../utils/ignore-types';
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {lineStartingWithWhitespaceOrBlockquoteTemplate} from '../utils/regex';
+import { lineStartingWithWhitespaceOrBlockquoteTemplate } from '../utils/regex';
 
 class RemoveEmptyListMarkersOptions implements Options {}
 
@@ -13,14 +13,24 @@ export default class RemoveEmptyListMarkers extends RuleBuilder<RemoveEmptyListM
       nameKey: 'rules.remove-empty-list-markers.name',
       descriptionKey: 'rules.remove-empty-list-markers.description',
       type: RuleType.CONTENT,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.math, IgnoreTypes.yaml, IgnoreTypes.link, IgnoreTypes.wikiLink, IgnoreTypes.tag],
+      ruleIgnoreTypes: [
+        IgnoreTypes.code,
+        IgnoreTypes.math,
+        IgnoreTypes.yaml,
+        IgnoreTypes.link,
+        IgnoreTypes.wikiLink,
+        IgnoreTypes.tag
+      ]
     });
   }
   get OptionsClass(): new () => RemoveEmptyListMarkersOptions {
     return RemoveEmptyListMarkersOptions;
   }
   apply(text: string, options: RemoveEmptyListMarkersOptions): string {
-    const emptyListMarkerRegex = new RegExp(`^${lineStartingWithWhitespaceOrBlockquoteTemplate}(-|\\*|\\+|\\d+[.)]|- (\\[( |x)\\]))\\s*?$`, 'gm');
+    const emptyListMarkerRegex = new RegExp(
+      `^${lineStartingWithWhitespaceOrBlockquoteTemplate}(-|\\*|\\+|\\d+[.)]|- (\\[( |x)\\]))\\s*?$`,
+      'gm'
+    );
     // remove all empty list markers followed by a new line
     text = text.replace(new RegExp(emptyListMarkerRegex.source + '\\n', 'gm'), '');
     // remove all empty list markers proceeded by a new line
@@ -54,7 +64,7 @@ export default class RemoveEmptyListMarkers extends RuleBuilder<RemoveEmptyListM
           ${''}
           + list 3 item 1
           + list 3 item 2
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Removes empty ordered list markers.',
@@ -77,7 +87,7 @@ export default class RemoveEmptyListMarkers extends RuleBuilder<RemoveEmptyListM
           2. list 2 item 2
           ${''}
           _Note that this rule does not make sure that the ordered list is sequential after removal_
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Removes empty checklist markers.',
@@ -94,7 +104,7 @@ export default class RemoveEmptyListMarkers extends RuleBuilder<RemoveEmptyListM
           - [ ] item 2
           ${''}
           _Note that this will affect checked and uncheck checked list items_
-        `,
+        `
       }),
       new ExampleBuilder({
         description: 'Removes empty list, checklist, and ordered list markers in callouts/blockquotes',
@@ -152,8 +162,8 @@ export default class RemoveEmptyListMarkers extends RuleBuilder<RemoveEmptyListM
           >
           > + item 1
           > + item 2
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<RemoveEmptyListMarkersOptions>[] {

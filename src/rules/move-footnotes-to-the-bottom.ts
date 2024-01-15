@@ -1,8 +1,8 @@
-import {Options, RuleType} from '../rules';
-import RuleBuilder, {ExampleBuilder, OptionBuilderBase} from './rule-builder';
+import { Options, RuleType } from '../rules';
+import RuleBuilder, { ExampleBuilder, OptionBuilderBase } from './rule-builder';
 import dedent from 'ts-dedent';
-import {IgnoreTypes} from '../utils/ignore-types';
-import {moveFootnotesToEnd} from '../utils/mdast';
+import { IgnoreTypes } from '../utils/ignore-types';
+import { moveFootnotesToEnd } from '../utils/mdast';
 
 class MoveFootnotesToTheBottomOptions implements Options {}
 
@@ -13,7 +13,7 @@ export default class MoveFootnotesToTheBottom extends RuleBuilder<MoveFootnotesT
       nameKey: 'rules.move-footnotes-to-the-bottom.name',
       descriptionKey: 'rules.move-footnotes-to-the-bottom.description',
       type: RuleType.FOOTNOTE,
-      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.inlineCode, IgnoreTypes.math, IgnoreTypes.yaml],
+      ruleIgnoreTypes: [IgnoreTypes.code, IgnoreTypes.inlineCode, IgnoreTypes.math, IgnoreTypes.yaml]
     });
   }
   get OptionsClass(): new () => MoveFootnotesToTheBottomOptions {
@@ -44,8 +44,8 @@ export default class MoveFootnotesToTheBottom extends RuleBuilder<MoveFootnotesT
           ${''}
           [^1]: first footnote
           [^2]: second footnote
-        `,
-      }),
+        `
+      })
     ];
   }
   get optionBuilders(): OptionBuilderBase<MoveFootnotesToTheBottomOptions>[] {
